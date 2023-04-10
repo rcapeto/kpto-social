@@ -9,3 +9,63 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+// Developer: Name, github, techs: string[], createdAt, id, posts, friends, avatarURL
+// posts: title, description, developerId, comments, likes
+// chats: //firebase
+
+model Developers {
+  id         String    @id @default(uuid())
+  name       String
+  avatar_url String
+  techs      String //react,react-native
+  password   String
+  createdAt  DateTime? @default(now())
+  github     String
+
+  //relationship
+  posts    Posts[]
+  comments Comments[]
+  likes    Likes[]
+}
+
+model Posts {
+  id          String    @id @default(uuid())
+  createdAt   DateTime? @default(now())
+  editAt      DateTime?
+  title       String
+  thumbnail   String
+  description String
+
+  // Who create/update the post
+  author      Developers @relation(fields: [developerId], references: [id])
+  developerId String
+
+  // Comments & Likes
+  comments Comments[]
+  likes    Likes[]
+}
+
+model Comments {
+  id        String    @id @default(uuid())
+  createdAt DateTime? @default(now())
+
+  // Who create the comment
+  author      Developers @relation(fields: [developerId], references: [id])
+  developerId String
+
+  // Where is this comment?
+  post   Posts  @relation(fields: [postId], references: [id])
+  postId String
+}
+
+model Likes {
+  id String @id @default(uuid())
+
+  author      Developers @relation(fields: [developerId], references: [id])
+  developerId String
+
+  // Where is this like?
+  post   Posts  @relation(fields: [postId], references: [id])
+  postId String
+}
