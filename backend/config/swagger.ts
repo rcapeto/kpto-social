@@ -456,6 +456,70 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [serverConfig.routes.developers.delete]: {
+      delete: {
+        tags: ['Developer'],
+        summary: 'Developers',
+        description: 'Delete developer',
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: {
+            description: 'Delete developer with success',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {

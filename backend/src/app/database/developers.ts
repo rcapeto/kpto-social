@@ -1,6 +1,8 @@
 import { getErrorMessage } from '~/utils/getErrorMessage';
 import {
   DevelopersRepository,
+  DevelopersRepositoryDeleteParams,
+  DevelopersRepositoryDeleteResponse,
   DevelopersRepositoryFindManyParams,
   DevelopersRepositoryFindManyResponse,
   DevelopersRepositoryFindOneParams,
@@ -8,8 +10,32 @@ import {
 } from '../repositories/developers';
 import { client } from '~/service/prisma';
 import { DeveloperEntity } from '../models/entity/developer';
+import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
 
 export class DevelopersPrismaRepository implements DevelopersRepository {
+  async delete(
+    params: DevelopersRepositoryDeleteParams,
+  ): DevelopersRepositoryDeleteResponse {
+    try {
+      const { developerId } = params;
+
+      const { developer } = await this.findOne({ developerId });
+
+      if (!developer) {
+        return;
+      }
+
+      await client.developers.delete({
+        where: {
+          id: developerId,
+        },
+      });
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async findMany(
     params: DevelopersRepositoryFindManyParams,
   ): DevelopersRepositoryFindManyResponse {

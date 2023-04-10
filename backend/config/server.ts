@@ -23,6 +23,7 @@ export const serverConfig = {
       findOne: '/developers/:id',
       me: '/developer/me',
       findMany: '/developers',
+      delete: '/developer/delete',
     },
   },
 };

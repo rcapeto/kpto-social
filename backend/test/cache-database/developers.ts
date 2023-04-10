@@ -3,6 +3,8 @@ import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
 import { DeveloperEntity } from '~/app/models/entity/developer';
 import {
   DevelopersRepository,
+  DevelopersRepositoryDeleteParams,
+  DevelopersRepositoryDeleteResponse,
   DevelopersRepositoryFindManyParams,
   DevelopersRepositoryFindManyResponse,
   DevelopersRepositoryFindOneParams,
@@ -66,6 +68,13 @@ export class DevelopersInCacheDatabase implements DevelopersRepository {
       search,
       count: this.developers.length,
     };
+  }
+
+  async delete(
+    params: DevelopersRepositoryDeleteParams,
+  ): DevelopersRepositoryDeleteResponse {
+    const { developerId } = params;
+    this.developers = this.developers.filter((dev) => dev.id !== developerId);
   }
 
   populateDB() {

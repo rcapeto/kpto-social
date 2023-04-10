@@ -21,6 +21,12 @@ export type DevelopersRepositoryFindManyResponse = Promise<
   } & DevelopersRepositoryFindManyParams
 >;
 
+export interface DevelopersRepositoryDeleteParams {
+  developerId: string;
+}
+
+export type DevelopersRepositoryDeleteResponse = Promise<void>;
+
 export abstract class DevelopersRepository {
   findOne: (
     params: DevelopersRepositoryFindOneParams,
@@ -28,4 +34,7 @@ export abstract class DevelopersRepository {
   findMany: (
     params: DevelopersRepositoryFindManyParams,
   ) => DevelopersRepositoryFindManyResponse;
+  delete: (
+    params: DevelopersRepositoryDeleteParams,
+  ) => DevelopersRepositoryDeleteResponse;
 }

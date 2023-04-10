@@ -6,7 +6,6 @@ import { renderDeveloper } from '~/app/views/renderDeveloper';
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
 import { getControllerError } from '~/utils/getControllerError';
-import { findOneDeveloperSchema } from '~/validation/developers/findOne';
 
 export class DevelopersFindManyController implements BaseController {
   constructor(private usecase: DevelopersFindManyUsecase) {}

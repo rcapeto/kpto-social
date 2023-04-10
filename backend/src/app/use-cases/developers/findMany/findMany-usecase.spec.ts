@@ -1,6 +1,5 @@
 import { DevelopersInCacheDatabase } from '@test/cache-database/developers';
 import { DevelopersFindManyUsecase } from './findMany-usecase';
-import { ErrorMessage } from '~/app/models/ErrorMessage';
 
 const repository = new DevelopersInCacheDatabase();
 const usecase = new DevelopersFindManyUsecase(repository);
