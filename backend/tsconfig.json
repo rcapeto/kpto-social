@@ -22,7 +22,8 @@
     "strictPropertyInitialization": false,
     "paths": {
       "~/*": ["./src/*"],
-      "@config/*": ["./config/*"]
+      "@config/*": ["./config/*"],
+      "@test/*": ["./test/*"]
     },
     "allowJs": true,
     "moduleResolution": "node",
