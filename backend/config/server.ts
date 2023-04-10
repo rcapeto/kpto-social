@@ -24,6 +24,7 @@ export const serverConfig = {
       me: '/developer/me',
       findMany: '/developers',
       delete: '/developer/delete',
+      update: '/developer/update',
     },
   },
 };

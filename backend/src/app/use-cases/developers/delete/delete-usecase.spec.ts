@@ -1,6 +1,5 @@
 import { DevelopersInCacheDatabase } from '@test/cache-database/developers';
 import { DevelopersDeleteUsecase } from './delete-usecase';
-import { makeDeveloper } from '@test/factory/developer';
 import { ErrorMessage } from '~/app/models/ErrorMessage';
 
 const repository = new DevelopersInCacheDatabase();

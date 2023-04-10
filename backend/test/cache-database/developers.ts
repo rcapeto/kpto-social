@@ -9,6 +9,8 @@ import {
   DevelopersRepositoryFindManyResponse,
   DevelopersRepositoryFindOneParams,
   DevelopersRepositoryFindOneResponse,
+  DevelopersRepositoryUpdateResponse,
+  DevelopersUpdateParams,
 } from '~/app/repositories/developers';
 import { getControllerError } from '~/utils/getControllerError';
 import { findOneDeveloperSchema } from '~/validation/developers/findOne';
@@ -77,11 +79,32 @@ export class DevelopersInCacheDatabase implements DevelopersRepository {
     this.developers = this.developers.filter((dev) => dev.id !== developerId);
   }
 
+  async update(
+    developerId: string,
+    params: DevelopersUpdateParams,
+  ): DevelopersRepositoryUpdateResponse {
+    const { avatar_url, name, password, techs } = params;
+
+    const { developer } = await this.findOne({ developerId });
+
+    if (developer) {
+      developer.avatar_url = avatar_url || developer.avatar_url;
+      developer.name = name || developer.name;
+      developer.password = password || developer.password;
+      developer.techs = techs || developer.techs;
+    }
+
+    return { developer };
+  }
+
   populateDB() {
     for (let i = 0; i <= 20; i++) {
+      const value = `test-${i}`;
+
       const developer = makeDeveloper({
-        name: `test-${i}`,
-        github: `test-${i}`,
+        name: value,
+        github: value,
+        id: value,
       });
 
       this.developers.push(developer);

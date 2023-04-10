@@ -1,4 +1,5 @@
-import { DeveloperEntity } from '../models/entity/developer';
+import { DeveloperEntity } from '~/app/models/entity/developer';
+import { UpdateDeveloperSchema } from '~/validation/developers/update';
 
 export interface DevelopersRepositoryFindOneParams {
   developerId: string;
@@ -27,6 +28,14 @@ export interface DevelopersRepositoryDeleteParams {
 
 export type DevelopersRepositoryDeleteResponse = Promise<void>;
 
+export interface DevelopersUpdateParams extends UpdateDeveloperSchema {
+  avatar_url: string;
+}
+
+export type DevelopersRepositoryUpdateResponse = Promise<{
+  developer?: DeveloperEntity | null;
+}>;
+
 export abstract class DevelopersRepository {
   findOne: (
     params: DevelopersRepositoryFindOneParams,
@@ -37,4 +46,8 @@ export abstract class DevelopersRepository {
   delete: (
     params: DevelopersRepositoryDeleteParams,
   ) => DevelopersRepositoryDeleteResponse;
+  update: (
+    developerId: string,
+    params: DevelopersUpdateParams,
+  ) => DevelopersRepositoryUpdateResponse;
 }

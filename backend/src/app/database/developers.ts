@@ -7,9 +7,12 @@ import {
   DevelopersRepositoryFindManyResponse,
   DevelopersRepositoryFindOneParams,
   DevelopersRepositoryFindOneResponse,
-} from '../repositories/developers';
+  DevelopersRepositoryUpdateResponse,
+  DevelopersUpdateParams,
+} from '~/app/repositories/developers';
 import { client } from '~/service/prisma';
 import { DeveloperEntity } from '../models/entity/developer';
+import { checkPassword, encryptPassword } from '~/utils/password';
 import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
 
 export class DevelopersPrismaRepository implements DevelopersRepository {
@@ -104,5 +107,65 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
       },
     });
     return developer;
+  }
+
+  async update(
+    developerId: string,
+    params: DevelopersUpdateParams,
+  ): DevelopersRepositoryUpdateResponse {
+    try {
+      const { avatar_url, name, password, techs } = params;
+
+      const fields: DevelopersUpdateParams = {
+        avatar_url,
+        name,
+        password,
+        techs,
+      };
+
+      const developer = await this.findOneById(developerId);
+
+      if (!developer) {
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      if (password) {
+        const isSamePassword = await checkPassword({
+          password,
+          encryptedPassword: developer.password,
+        });
+
+        if (isSamePassword) {
+          throw new ErrorMessage(
+            'You can not use the same password',
+            ErrorMessageCause.VALIDATION,
+          );
+        }
+
+        fields.password = await encryptPassword({ password });
+      }
+
+      const updatedDeveloper = await client.developers.update({
+        where: {
+          id: developerId,
+        },
+        data: {
+          avatar_url: fields.avatar_url || developer.avatar_url,
+          name: fields.name || developer.name,
+          techs: fields.techs || developer.techs,
+          password: fields.password || developer.password,
+        },
+      });
+
+      return {
+        developer: updatedDeveloper as DeveloperEntity,
+      };
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
   }
 }

@@ -520,6 +520,108 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [serverConfig.routes.developers.update]: {
+      put: {
+        tags: ['Developer'],
+        summary: 'Developers',
+        description: 'Update developer data',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UpdateDeveloperParams',
+              },
+              example: {
+                name: 'John Doe [new name]',
+                password: '@Password123',
+                avatar_url: 'FormData File',
+                techs: 'react,node,react-native',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Update developer with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/DeveloperEntity',
+                },
+                example: {
+                  data: {
+                    developer: {
+                      id: 'the-incredible-developer-id',
+                      name: 'John Doe',
+                      techs: 'react,react-native,typescript',
+                      createdAt: '2023-04-10T05:05:21.713Z',
+                      github: 'johndoe',
+                      avatar_url: {
+                        origin: '',
+                        web: '',
+                        mobile: '',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -649,6 +751,23 @@ export const swaggerConfig: JsonObject = {
                 },
               },
             },
+          },
+        },
+      },
+      UpdateDeveloperParams: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+          },
+          password: {
+            type: 'string',
+          },
+          techs: {
+            type: 'string',
+          },
+          avatar_url: {
+            type: 'string',
           },
         },
       },
