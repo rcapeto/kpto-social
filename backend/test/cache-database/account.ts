@@ -2,11 +2,15 @@ import { DeveloperEntity } from '~/app/models/entity/developer';
 import {
   AccountRepository,
   AccountRepositoryRegisterParams,
+  AccountRepositoryLoginParams,
+  AccountRepositoryLoginResponse,
 } from '~/app/repositories/account';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
-import { getZodError } from '~/utils/getZodError';
 import { registerSchema } from '~/validation/account/register';
 import { makeDeveloper } from '@test/factory/developer';
+import { loginSchema } from '~/validation/account/login';
+import { createToken } from '~/utils/token';
+import { getControllerError } from '~/utils/getControllerError';
 
 export class AccountInCacheDatabase implements AccountRepository {
   private developers: DeveloperEntity[];
@@ -26,11 +30,46 @@ export class AccountInCacheDatabase implements AccountRepository {
 
       this.developers.push(developer);
     } catch (error) {
-      const { isZodError, message } = getZodError(error);
-      const cause = isZodError
-        ? ErrorMessageCause.VALIDATION
-        : ErrorMessageCause.ERROR;
-      throw new ErrorMessage(message, cause);
+      const { error: errorMessage } = getControllerError(error);
+      throw errorMessage;
     }
+  }
+
+  async login(
+    params: AccountRepositoryLoginParams,
+  ): AccountRepositoryLoginResponse {
+    try {
+      const { github, password } = loginSchema.parse(params);
+      const developer = this.findOne(github);
+
+      if (!developer) {
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      if (developer.password !== password) {
+        throw new ErrorMessage(
+          'Please verify the username or password, something is incorrect',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      const token = createToken({
+        developerId: developer.id,
+        github: developer.github,
+      });
+
+      return { token };
+    } catch (error) {
+      const { error: errorMessage } = getControllerError(error);
+      throw errorMessage;
+    }
+  }
+
+  findOne(github: string) {
+    const developer = this.developers.find((dev) => dev.github === github);
+    return developer;
   }
 }

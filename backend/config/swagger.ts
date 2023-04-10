@@ -42,11 +42,109 @@ export const swaggerConfig: JsonObject = {
             description: 'Developer was created with success',
           },
           400: {
-            description:
-              'Validation error, developer already exists or passwords do not match',
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
           },
           500: {
             description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [serverConfig.routes.account.login]: {
+      post: {
+        tags: ['Account'],
+        summary: 'Login',
+        description: 'Sign in a developer in application.',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/AccountLoginParams',
+              },
+              example: {
+                github: 'johndoe',
+                password: '@Password123',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Login with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/AccountLoginResponse',
+                },
+                example: {
+                  data: {
+                    token: 'token',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -68,6 +166,39 @@ export const swaggerConfig: JsonObject = {
           },
           confirm_password: {
             type: 'string',
+          },
+        },
+      },
+      AccountLoginParams: {
+        type: 'object',
+        properties: {
+          github: {
+            type: 'string',
+          },
+          password: {
+            type: 'string',
+          },
+        },
+      },
+      AccountLoginResponse: {
+        type: 'object',
+        properties: {
+          token: {
+            type: 'string',
+          },
+        },
+      },
+      ErrorResponse: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+          },
+          cause: {
+            type: 'string',
+          },
+          error: {
+            type: 'boolean',
           },
         },
       },

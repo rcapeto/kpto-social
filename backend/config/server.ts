@@ -14,6 +14,7 @@ export const serverConfig = {
   routes: {
     account: {
       register: '/account/register',
+      login: '/account/login',
     },
   },
 };
