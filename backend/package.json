@@ -36,7 +36,9 @@
   },
   "scripts": {
     "test": "jest",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
+    "types:check": "tsc --noEmit --pretty"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
