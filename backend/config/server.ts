@@ -12,6 +12,9 @@ export const serverConfig = {
     posts: process.env.UPLOAD_PATH_POST ?? 'uploads_posts',
   },
   routes: {
+    docs: {
+      swagger: '/api-docs',
+    },
     account: {
       register: '/account/register',
       login: '/account/login',
@@ -19,6 +22,7 @@ export const serverConfig = {
     developers: {
       findOne: '/developers/:id',
       me: '/developer/me',
+      findMany: '/developers',
     },
   },
 };
