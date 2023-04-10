@@ -1,10 +1,5 @@
 name: CI - Backend
 on:
-  push:
-    paths:
-      - 'backend/**'
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -21,13 +16,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
+          cache: 'yarn'
 
-      - name: Clean install dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./backend
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
         working-directory: ./backend
   
   types:
@@ -39,11 +35,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
+          cache: 'yarn'
 
-      - name: Clean install dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./backend
 
       - name: Types check
-        run: npm run types:check
+        run: yarn types:check
         working-directory: ./backend
