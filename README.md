@@ -49,3 +49,7 @@ O `servidor` vai ficar disponível no [endereço](http://localhost:3333).
 - [Raphael Capeto](https://github.com/rcapeto)
 
 Made with 🖤 by Developers.
+
+## 📃 Licença
+
+[MIT](https://github.com/diego3g/rsxp-2023/blob/main/LICENSE)
