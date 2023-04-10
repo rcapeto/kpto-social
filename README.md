@@ -3,7 +3,8 @@
 
 ## Versões
 ### `v1.0.0`
-- [ ] Autenticação (Login/Cadastro e validação nas rotas)
+- [x] Autenticação (Login/Cadastro e validação nas rotas)
+- [ ] `API's` => Post(C.R.U.D), Developers
 - [ ] Tela de início (conter todos os posts, possibilidade para criar novos posts)
 - [ ] Tela de Posts
 - [ ] Tela de Perfil
