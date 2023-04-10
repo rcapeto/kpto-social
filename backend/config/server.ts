@@ -11,5 +11,10 @@ export const serverConfig = {
     developers: process.env.UPLOAD_PATH_DEVELOPER ?? 'uploads_developers',
     posts: process.env.UPLOAD_PATH_POST ?? 'uploads_posts',
   },
-  routes: {},
+  routes: {
+    account: {
+      register: '/account/register',
+      login: '/account/login',
+    },
+  },
 };

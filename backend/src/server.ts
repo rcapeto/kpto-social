@@ -24,3 +24,8 @@ for (const route of routes) {
 }
 
 server.listen(PORT, serverConfig.runningCallback(PORT));
+
+/**
+ * Usuário para teste:
+ *  user: admin, password: @Senha123
+ */
