@@ -79,7 +79,7 @@ export const swaggerConfig: JsonObject = {
       },
     },
     [serverConfig.routes.account.login]: {
-      post: {
+      get: {
         tags: ['Account'],
         summary: 'Login',
         description: 'Sign in a developer in application.',
@@ -124,6 +124,192 @@ export const swaggerConfig: JsonObject = {
                     error: true,
                     message: 'Some validation error',
                     cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [serverConfig.routes.developers.findOne]: {
+      get: {
+        tags: ['Developer'],
+        summary: 'Developers',
+        description: 'Find one developer in application.',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            security: [{ bearerAuth: [] }],
+            required: true,
+            description: 'Developer ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get developer data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/DeveloperEntity',
+                },
+                example: {
+                  data: {
+                    developer: {
+                      id: 'the-incredible-developer-id',
+                      name: 'John Doe',
+                      techs: 'react,react-native,typescript',
+                      createdAt: '2023-04-10T05:05:21.713Z',
+                      github: 'johndoe',
+                      avatar_url: {
+                        origin: '',
+                        web: '',
+                        mobile: '',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [serverConfig.routes.developers.me]: {
+      get: {
+        tags: ['Developer'],
+        summary: 'Developers',
+        description: 'Get logged developer profile.',
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: {
+            description: 'Get developer data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/DeveloperEntity',
+                },
+                example: {
+                  data: {
+                    developer: {
+                      id: 'the-incredible-developer-id',
+                      name: 'John Doe',
+                      techs: 'react,react-native,typescript',
+                      createdAt: '2023-04-10T05:05:21.713Z',
+                      github: 'johndoe',
+                      avatar_url: {
+                        origin: '',
+                        web: '',
+                        mobile: '',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
                   },
                 },
               },
@@ -201,6 +387,44 @@ export const swaggerConfig: JsonObject = {
             type: 'boolean',
           },
         },
+      },
+      DeveloperEntity: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+          },
+          name: {
+            type: 'string',
+          },
+          techs: {
+            type: 'string',
+          },
+          createdAt: {
+            type: 'string',
+          },
+          avatar_url: {
+            type: 'object',
+            properties: {
+              origin: {
+                type: 'string',
+              },
+              web: {
+                type: 'string',
+              },
+              mobile: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    },
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
       },
     },
   },

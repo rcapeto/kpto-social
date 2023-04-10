@@ -16,5 +16,9 @@ export const serverConfig = {
       register: '/account/register',
       login: '/account/login',
     },
+    developers: {
+      findOne: '/developers/:id',
+      me: '/developer/me',
+    },
   },
 };
