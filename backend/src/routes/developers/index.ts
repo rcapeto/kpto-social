@@ -28,4 +28,4 @@ route.put(
   updateDeveloper,
 );
 
-export { route as developersRoutes };
+export { route as developersRoute };

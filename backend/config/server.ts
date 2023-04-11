@@ -26,5 +26,10 @@ export const serverConfig = {
       delete: '/developer/delete',
       update: '/developer/update',
     },
+    friends: {
+      add: '/friends/add/:id',
+      remove: '/friends/remove/:id',
+      findMany: '/friends/all/:id',
+    },
   },
 };

@@ -13,4 +13,6 @@ export interface DeveloperEntity {
   posts?: PostEntity[];
   comments?: CommentEntity[];
   likes?: LikeEntity[];
+  friends?: DeveloperEntity[];
+  symmetricFriends?: DeveloperEntity[];
 }

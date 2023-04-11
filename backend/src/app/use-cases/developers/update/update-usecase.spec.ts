@@ -19,18 +19,18 @@ describe('Developers', () => {
 
     expect(developer?.name).toBe(name);
   });
-});
 
-it('should not be able to update developer data', async () => {
-  repository.populateDB();
+  it('should not be able to update developer data', async () => {
+    repository.populateDB();
 
-  const developerId = 'wrong-id';
-  const name = 'John Doe';
+    const developerId = 'wrong-id';
+    const name = 'John Doe';
 
-  expect(() => {
-    return usecase.execute({
-      developerId,
-      params: { name },
-    });
-  }).rejects.toBe(ErrorMessage);
+    expect(() => {
+      return usecase.execute({
+        developerId,
+        params: { name },
+      });
+    }).rejects.toBe(ErrorMessage);
+  });
 });

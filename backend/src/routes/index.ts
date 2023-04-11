@@ -1,5 +1,11 @@
 import { swaggerRoute } from '~/routes/swagger';
 import { accountRoute } from '~/routes/account';
-import { developersRoutes } from '~/routes/developers';
+import { developersRoute } from '~/routes/developers';
+import { friendsRoute } from '~/routes/friends';
 
-export const routes = [swaggerRoute, accountRoute, developersRoutes];
+export const routes = [
+  swaggerRoute,
+  accountRoute,
+  developersRoute,
+  friendsRoute,
+];

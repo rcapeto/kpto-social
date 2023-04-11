@@ -1,5 +1,6 @@
 import { DeveloperEntity } from '~/app/models/entity/developer';
 import { UpdateDeveloperSchema } from '~/validation/developers/update';
+import { DevelopersFindManySchema } from '~/validation/developers/findMany';
 
 export interface DevelopersRepositoryFindOneParams {
   developerId: string;
@@ -9,11 +10,7 @@ export type DevelopersRepositoryFindOneResponse = Promise<{
   developer?: DeveloperEntity | null;
 }>;
 
-export interface DevelopersRepositoryFindManyParams {
-  perPage: number;
-  page: number;
-  search: string;
-}
+export type DevelopersRepositoryFindManyParams = DevelopersFindManySchema;
 
 export type DevelopersRepositoryFindManyResponse = Promise<
   {

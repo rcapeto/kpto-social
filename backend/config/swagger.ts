@@ -339,7 +339,7 @@ export const swaggerConfig: JsonObject = {
       get: {
         tags: ['Developer'],
         summary: 'Developers',
-        description: 'Get logged developer profile.',
+        description: 'Get developers',
         security: [{ bearerAuth: [] }],
         parameters: [
           {
@@ -622,6 +622,277 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [serverConfig.routes.friends.add]: {
+      post: {
+        tags: ['Friend'],
+        summary: 'Friendship',
+        description: 'Create a friend to a developer',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Developer ID [want to add]',
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Create a friend',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [serverConfig.routes.friends.findMany]: {
+      get: {
+        tags: ['Friend'],
+        summary: 'Friendship',
+        description: 'Get friends.',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of developers per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Filter by developer name, techs and github',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get developer friends with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyFriendsResponse',
+                },
+                example: {
+                  data: {
+                    friends: [
+                      {
+                        id: 'the-incredible-developer-id',
+                        name: 'John Doe',
+                        techs: 'react,react-native,typescript',
+                        createdAt: '2023-04-10T05:05:21.713Z',
+                        github: 'johndoe',
+                        avatar_url: {
+                          origin: '',
+                          web: '',
+                          mobile: '',
+                        },
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: 'react',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [serverConfig.routes.friends.remove]: {
+      delete: {
+        tags: ['Friend'],
+        summary: 'Friendship',
+        description: 'Remove a friend from a developer',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Developer ID [want to remove]',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Remove a friend',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -768,6 +1039,62 @@ export const swaggerConfig: JsonObject = {
           },
           avatar_url: {
             type: 'string',
+          },
+        },
+      },
+      FriendshipParams: {
+        type: 'object',
+        properties: {
+          userId: {
+            type: 'string',
+          },
+        },
+      },
+      FindManyFriendsResponse: {
+        type: 'object',
+        properties: {
+          page: {
+            type: 'number',
+          },
+          perPage: {
+            type: 'number',
+          },
+          search: {
+            type: 'string',
+          },
+          friends: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                },
+                name: {
+                  type: 'string',
+                },
+                techs: {
+                  type: 'string',
+                },
+                createdAt: {
+                  type: 'string',
+                },
+                avatar_url: {
+                  type: 'object',
+                  properties: {
+                    origin: {
+                      type: 'string',
+                    },
+                    web: {
+                      type: 'string',
+                    },
+                    mobile: {
+                      type: 'string',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
