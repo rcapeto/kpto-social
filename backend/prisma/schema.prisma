@@ -27,6 +27,10 @@ model Developers {
   posts    Posts[]
   comments Comments[]
   likes    Likes[]
+
+  // Friends Feature
+  friends          Developers[] @relation("UserFriends")
+  symmetricFriends Developers[] @relation("UserFriends")
 }
 
 model Posts {

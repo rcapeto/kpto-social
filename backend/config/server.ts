@@ -12,9 +12,24 @@ export const serverConfig = {
     posts: process.env.UPLOAD_PATH_POST ?? 'uploads_posts',
   },
   routes: {
+    docs: {
+      swagger: '/api-docs',
+    },
     account: {
       register: '/account/register',
       login: '/account/login',
+    },
+    developers: {
+      findOne: '/developers/:id',
+      me: '/developer/me',
+      findMany: '/developers',
+      delete: '/developer/delete',
+      update: '/developer/update',
+    },
+    friends: {
+      add: '/friends/add/:id',
+      remove: '/friends/remove/:id',
+      findMany: '/friends/all/:id',
     },
   },
 };
