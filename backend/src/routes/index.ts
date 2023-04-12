@@ -4,6 +4,7 @@ import { developersRoute } from '~/routes/developers';
 import { friendsRoute } from '~/routes/friends';
 import { postsRoute } from '~/routes/posts';
 import { commentsRoute } from '~/routes/comments';
+import { likesRoute } from '~/routes/likes';
 
 export const routes = [
   swaggerRoute,
@@ -12,4 +13,5 @@ export const routes = [
   friendsRoute,
   postsRoute,
   commentsRoute,
+  likesRoute,
 ];
