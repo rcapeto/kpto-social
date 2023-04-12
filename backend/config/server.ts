@@ -37,6 +37,8 @@ export const serverConfig = {
       delete: '/posts/delete/:id',
       findMany: '/posts',
       findOne: '/posts/detail/:id',
+      comments: '/posts/comments/:id',
+      likes: '/posts/likes/:id',
     },
   },
 };
