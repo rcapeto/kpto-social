@@ -7,7 +7,7 @@ import {
 type Request = FindManyLikesParams;
 type Response = FindManyLikesResponse;
 
-export class LikesManyUsecase {
+export class LikesFindManyUsecase {
   constructor(private repository: LikesRepository) {}
 
   async execute(request: Request): Response {

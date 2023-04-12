@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
 import { BaseController } from '~/app/controllers';
-import { LikesManyUsecase } from '~/app/use-cases/likes/findMany/findMany-usecase';
+import { LikesFindManyUsecase } from '~/app/use-cases/likes/findMany/findMany-usecase';
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
 import { getControllerError } from '~/utils/getControllerError';
 import { likesFindManySchema } from '~/validation/likes/findMany';
 
 export class LikesFindManyController implements BaseController {
-  constructor(private usecase: LikesManyUsecase) {}
+  constructor(private usecase: LikesFindManyUsecase) {}
 
   async handler(request: Request, response: Response) {
     try {
