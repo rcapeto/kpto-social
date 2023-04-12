@@ -5,12 +5,40 @@ import {
   FindManyCommentsResponse,
   DeleteCommentParams,
   DeleteCommentResponse,
+  CreateCommentParams,
+  CreateCommentResponse,
 } from '~/app/repositories/comments';
 import { CommentEntity } from '../models/entity/comment';
 import { client } from '~/service/prisma';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
 
 export class CommentsPrismaRepository implements CommentsRepository {
+  async create(params: CreateCommentParams): CreateCommentResponse {
+    try {
+      const { developerId, postId, text } = params;
+
+      const post = await this.findPostWithId(postId);
+
+      if (!post) {
+        throw new ErrorMessage(
+          'Post does not exists, please check the ID',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      await client.comments.create({
+        data: {
+          developerId,
+          postId,
+          text,
+        },
+      });
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async delete(params: DeleteCommentParams): DeleteCommentResponse {
     try {
       const { commentId, developerId } = params;

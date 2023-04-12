@@ -42,6 +42,7 @@ export const serverConfig = {
     comments: {
       findMany: '/comments/posts/:id',
       delete: '/comments/delete/:id',
+      create: '/comments/create',
     },
   },
 };

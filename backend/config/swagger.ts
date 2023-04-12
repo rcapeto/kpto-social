@@ -1603,6 +1603,83 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [routes.comments.create]: {
+      post: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Create a comment',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/CreateCommentParams',
+              },
+              example: {
+                text: 'Create text with this text',
+                postId: 'post-id-example',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Create comment with success',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -2110,6 +2187,17 @@ export const swaggerConfig: JsonObject = {
                 },
               },
             },
+          },
+        },
+      },
+      CreateCommentParams: {
+        type: 'object',
+        properties: {
+          postId: {
+            type: 'string',
+          },
+          text: {
+            type: 'string',
           },
         },
       },
