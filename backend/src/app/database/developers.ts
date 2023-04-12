@@ -22,10 +22,20 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
     try {
       const { developerId } = params;
 
-      const { developer } = await this.findOne({ developerId });
+      const developer = await this.findOneById(developerId);
 
       if (!developer) {
-        return;
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      if (developer.id !== developerId) {
+        throw new ErrorMessage(
+          'You can not delete this account, only the correct user can delete it.',
+          ErrorMessageCause.VALIDATION,
+        );
       }
 
       await client.developers.delete({
