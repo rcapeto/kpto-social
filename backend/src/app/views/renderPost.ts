@@ -7,7 +7,7 @@ export function renderPost(post?: PostEntity) {
     return null;
   }
 
-  const { thumbnail: image, author, _count, ...rest } = post;
+  const { thumbnail: image, author, _count, comments, likes, ...rest } = post;
   const isEmptyImage = !String(image).length;
   const mobile = getUrlEnvironment({ imagePath: image, isMobile: true });
   const web = getUrlEnvironment({ imagePath: image });
@@ -20,9 +20,9 @@ export function renderPost(post?: PostEntity) {
 
   return {
     ...rest,
-    author: author ? renderDeveloper(author) : undefined,
-    thumbnail,
     comments: _count?.comments ?? 0,
     likes: _count?.likes ?? 0,
+    author: author ? renderDeveloper(author) : undefined,
+    thumbnail,
   };
 }

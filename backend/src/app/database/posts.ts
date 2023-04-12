@@ -7,12 +7,43 @@ import {
   PostsFindManyResponse,
   PostsDeleteParams,
   PostsDeleteResponse,
+  PostsFindOneResponse,
+  PostsFindOneParams,
 } from '../repositories/posts';
 import { client } from '~/service/prisma';
-import { PostEntity } from '../models/entity/post';
-import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
+import { PostEntity } from '~/app/models/entity/post';
+import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
 
 export class PostsPrismaRepository implements PostsRepository {
+  async findOne(params: PostsFindOneParams): PostsFindOneResponse {
+    try {
+      const { postId } = params;
+
+      const post = await client.posts.findUnique({
+        where: {
+          id: postId,
+        },
+        select: {
+          _count: true,
+          createdAt: true,
+          editAt: true,
+          author: true,
+          thumbnail: true,
+          description: true,
+          id: true,
+          developerId: true,
+        },
+      });
+
+      return {
+        post: post as PostEntity,
+      };
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async delete(params: PostsDeleteParams): PostsDeleteResponse {
     try {
       const { postId, developerId } = params;
