@@ -15,13 +15,12 @@ export class DevelopersUpdateController implements BaseController {
     try {
       const developerId = request.developer_id;
       const { name, password, techs } = request.body;
-      const query = { name, password, techs };
-
-      const zodParams = updateDeveloperSchema.parse(query);
       const avatar_url = request.file?.filename ?? '';
-      const params = Object.assign({ avatar_url }, zodParams);
 
-      await this.usecase.execute({ developerId, params });
+      const query = { name, password, techs, developerId, avatar_url };
+      const params = updateDeveloperSchema.parse(query);
+
+      await this.usecase.execute(params);
 
       return response.status(Status.OK).send();
     } catch (err) {

@@ -154,13 +154,12 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
   }
 
   async update(
-    developerId: string,
     params: DevelopersUpdateParams,
   ): DevelopersRepositoryUpdateResponse {
     try {
-      const { avatar_url, name, password, techs } = params;
+      const { avatar_url, name, password, techs, developerId } = params;
 
-      const fields: DevelopersUpdateParams = {
+      const fields: Omit<DevelopersUpdateParams, 'developerId'> = {
         avatar_url,
         name,
         password,
@@ -197,7 +196,7 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
           id: developerId,
         },
         data: {
-          avatar_url: fields.avatar_url || developer.avatar_url,
+          avatar_url: fields.avatar_url,
           name: fields.name || developer.name,
           techs: fields.techs || developer.techs,
           password: fields.password || developer.password,

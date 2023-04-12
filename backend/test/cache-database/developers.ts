@@ -80,10 +80,9 @@ export class DevelopersInCacheDatabase implements DevelopersRepository {
   }
 
   async update(
-    developerId: string,
     params: DevelopersUpdateParams,
   ): DevelopersRepositoryUpdateResponse {
-    const { avatar_url, name, password, techs } = params;
+    const { avatar_url, name, password, techs, developerId } = params;
 
     const { developer } = await this.findOne({ developerId });
 

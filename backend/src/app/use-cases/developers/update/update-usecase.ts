@@ -15,15 +15,14 @@ const defaultParams: DevelopersUpdateParams = {
   name: '',
   password: '',
   techs: '',
+  developerId: '',
 };
 
 export class DevelopersUpdateUsecase {
   constructor(private repository: DevelopersRepository) {}
 
   async execute(request: Request): Response {
-    const { developerId, params: incomeParams } = request;
-    const params = Object.assign(defaultParams, incomeParams);
-
-    await this.repository.update(developerId, params);
+    const params = Object.assign(defaultParams, request);
+    await this.repository.update(params);
   }
 }
