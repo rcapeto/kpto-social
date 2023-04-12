@@ -1232,6 +1232,7 @@ export const swaggerConfig: JsonObject = {
                     post: {
                       createdAt: '2023-04-10T05:05:21.742Z',
                       editAt: null,
+                      title: 'Post Title',
                       description: 'Post description',
                       id: '017ee7f0-6a23-4205-bd75-205b7fe32bde',
                       developerId: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
@@ -1259,6 +1260,84 @@ export const swaggerConfig: JsonObject = {
                 },
               },
             },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.edit]: {
+      put: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Update post data',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UpdatePostParams',
+              },
+              example: {
+                title: 'New post title',
+                description: 'New post description',
+                thumbnail: 'FormData File',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Update post with success',
           },
           400: {
             description: 'Validation error',
@@ -1745,6 +1824,20 @@ export const swaggerConfig: JsonObject = {
           },
           comments: {
             type: 'number',
+          },
+        },
+      },
+      UpdatePostParams: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          thumbnail: {
+            type: 'string',
           },
         },
       },

@@ -2,6 +2,11 @@ import multer from 'multer';
 import path from 'path';
 import { serverConfig } from '@config/server';
 
+/**
+ * info: You need to create the folders: uploads_developers and uploads_posts
+ * in backend root project
+ */
+
 function createFilename(file: Express.Multer.File) {
   const filename = file.originalname;
   return `${Date.now()}-${filename}`;

@@ -9,12 +9,54 @@ import {
   PostsDeleteResponse,
   PostsFindOneResponse,
   PostsFindOneParams,
+  PostsUpdateParams,
+  PostsUpdateResponse,
 } from '../repositories/posts';
 import { client } from '~/service/prisma';
 import { PostEntity } from '~/app/models/entity/post';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
 
 export class PostsPrismaRepository implements PostsRepository {
+  async update(params: PostsUpdateParams): PostsUpdateResponse {
+    try {
+      const { developerId, postId, description, thumbnail, title } = params;
+
+      const post = await client.posts.findUnique({
+        where: {
+          id: postId,
+        },
+      });
+
+      if (!post) {
+        throw new ErrorMessage(
+          'Post does not exists, please check the ID',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      if (post.developerId !== developerId) {
+        throw new ErrorMessage(
+          'You can not update this post, only the post author can update it.',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      await client.posts.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          thumbnail: thumbnail || post.thumbnail,
+          title: title || post.title,
+          description: description || post.description,
+        },
+      });
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async findOne(params: PostsFindOneParams): PostsFindOneResponse {
     try {
       const { postId } = params;
@@ -32,8 +74,16 @@ export class PostsPrismaRepository implements PostsRepository {
           description: true,
           id: true,
           developerId: true,
+          title: true,
         },
       });
+
+      if (!post) {
+        throw new ErrorMessage(
+          'Post does not exists, please check the ID',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
 
       return {
         post: post as PostEntity,

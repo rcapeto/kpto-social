@@ -8,6 +8,7 @@ import { createPost } from './create';
 import { findManyPosts } from './findMany';
 import { deletePost } from './delete';
 import { findOnePost } from './findOne';
+import { updatePost } from './update';
 
 import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
@@ -26,5 +27,12 @@ route.post(
 route.get(routes.findMany, ensureDeveloperIsAuthenticate, findManyPosts);
 route.delete(routes.delete, ensureDeveloperIsAuthenticate, deletePost);
 route.get(routes.findOne, ensureDeveloperIsAuthenticate, findOnePost);
+
+route.put(
+  routes.edit,
+  ensureDeveloperIsAuthenticate,
+  multerPath.single('thumbnail'),
+  updatePost,
+);
 
 export { route as postsRoute };
