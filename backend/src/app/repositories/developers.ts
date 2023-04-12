@@ -29,9 +29,7 @@ export interface DevelopersUpdateParams extends UpdateDeveloperSchema {
   avatar_url: string;
 }
 
-export type DevelopersRepositoryUpdateResponse = Promise<{
-  developer?: DeveloperEntity | null;
-}>;
+export type DevelopersRepositoryUpdateResponse = Promise<void>;
 
 export abstract class DevelopersRepository {
   findOne: (

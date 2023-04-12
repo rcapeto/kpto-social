@@ -24,7 +24,6 @@ export class DevelopersUpdateUsecase {
     const { developerId, params: incomeParams } = request;
     const params = Object.assign(defaultParams, incomeParams);
 
-    const response = await this.repository.update(developerId, params);
-    return response;
+    await this.repository.update(developerId, params);
   }
 }

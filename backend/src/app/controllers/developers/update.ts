@@ -20,13 +20,9 @@ export class DevelopersUpdateController implements BaseController {
       const avatar_url = request.file?.filename ?? '';
       const params = { avatar_url, name, password, techs };
 
-      const { developer } = await this.usecase.execute({ developerId, params });
+      await this.usecase.execute({ developerId, params });
 
-      return response.status(Status.OK).json({
-        data: {
-          developer: renderDeveloper(developer),
-        },
-      });
+      return response.status(Status.OK).send();
     } catch (err) {
       const { error, message, status } = getControllerError(err);
 

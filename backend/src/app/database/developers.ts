@@ -175,7 +175,7 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
         fields.password = await encryptPassword({ password });
       }
 
-      const updatedDeveloper = await client.developers.update({
+      await client.developers.update({
         where: {
           id: developerId,
         },
@@ -186,10 +186,6 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
           password: fields.password || developer.password,
         },
       });
-
-      return {
-        developer: updatedDeveloper as DeveloperEntity,
-      };
     } catch (err) {
       const error = getErrorMessage(err);
       throw error;

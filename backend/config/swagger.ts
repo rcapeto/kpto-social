@@ -591,29 +591,6 @@ export const swaggerConfig: JsonObject = {
         responses: {
           200: {
             description: 'Update developer with success',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/DeveloperEntity',
-                },
-                example: {
-                  data: {
-                    developer: {
-                      id: 'the-incredible-developer-id',
-                      name: 'John Doe',
-                      techs: 'react,react-native,typescript',
-                      createdAt: '2023-04-10T05:05:21.713Z',
-                      github: 'johndoe',
-                      avatar_url: {
-                        origin: '',
-                        web: '',
-                        mobile: '',
-                      },
-                    },
-                  },
-                },
-              },
-            },
           },
           400: {
             description: 'Validation error',
