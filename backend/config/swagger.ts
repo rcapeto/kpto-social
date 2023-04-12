@@ -1528,6 +1528,81 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [routes.comments.delete]: {
+      delete: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Delete a comment',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Comment ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Delete a comment',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {

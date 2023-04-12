@@ -40,7 +40,8 @@ export const serverConfig = {
       likes: '/posts/likes/:id',
     },
     comments: {
-      findMany: '/comments/post/:id',
+      findMany: '/comments/posts/:id',
+      delete: '/comments/delete/:id',
     },
   },
 };
