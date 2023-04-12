@@ -9,6 +9,7 @@ import { findManyPosts } from './findMany';
 import { deletePost } from './delete';
 import { findOnePost } from './findOne';
 import { updatePost } from './update';
+import { getPostComments } from './comments';
 
 import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
@@ -34,5 +35,7 @@ route.put(
   multerPath.single('thumbnail'),
   updatePost,
 );
+
+route.get(routes.comments, ensureDeveloperIsAuthenticate, getPostComments);
 
 export { route as postsRoute };

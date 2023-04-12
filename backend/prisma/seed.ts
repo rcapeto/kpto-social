@@ -43,6 +43,7 @@ async function main() {
         data: {
           developerId: user.id,
           postId: mainPost.id,
+          text: `Comment add by: user: ${user.id}`,
         },
       });
     } else {

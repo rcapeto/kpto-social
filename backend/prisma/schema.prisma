@@ -53,6 +53,7 @@ model Posts {
 model Comments {
   id        String    @id @default(uuid())
   createdAt DateTime? @default(now())
+  text      String
 
   // Who create the comment
   author      Developers @relation(fields: [developerId], references: [id])

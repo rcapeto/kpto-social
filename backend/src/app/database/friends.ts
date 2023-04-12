@@ -195,14 +195,10 @@ export class FriendsPrismaRepository implements FriendsRepository {
         id: developerId,
       },
       select: {
-        friends: {
-          select: {
-            id: true,
-          },
-        },
+        _count: true,
       },
     });
 
-    return data?.friends.length ?? 0;
+    return data?._count?.friends ?? 0;
   }
 }

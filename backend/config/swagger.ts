@@ -1393,6 +1393,141 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [routes.posts.comments]: {
+      get: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Get post comments',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of posts per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description:
+              'Filter by post title, post description or author name',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get post comments data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyCommentsResponse',
+                },
+                example: {
+                  data: {
+                    comments: [
+                      {
+                        id: 'comment-id',
+                        author: {
+                          name: 'John Doe',
+                          github: 'johndoe',
+                          id: '2ea5c516-e42b-4f7d-bafb-d06a116f38d4',
+                          avatar_url: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                        },
+                        text: 'Comment text',
+                        createdAt: '2023-04-12T16:00:05.430Z',
+                        postId: '5cd67d6f-9dc4-4f25-808e-c8998a166663',
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: '',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -1838,6 +1973,68 @@ export const swaggerConfig: JsonObject = {
           },
           thumbnail: {
             type: 'string',
+          },
+        },
+      },
+      FindManyCommentsResponse: {
+        type: 'object',
+        properties: {
+          page: {
+            type: 'number',
+          },
+          perPage: {
+            type: 'number',
+          },
+          search: {
+            type: 'string',
+          },
+          comments: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                },
+                text: {
+                  type: 'string',
+                },
+                postId: {
+                  type: 'string',
+                },
+                createdAt: {
+                  type: 'string',
+                },
+                author: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    github: {
+                      type: 'string',
+                    },
+                    id: {
+                      type: 'string',
+                    },
+                    avatar_url: {
+                      type: 'object',
+                      properties: {
+                        origin: {
+                          type: 'string',
+                        },
+                        web: {
+                          type: 'string',
+                        },
+                        mobile: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },

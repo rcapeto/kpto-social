@@ -11,21 +11,86 @@ import {
   PostsFindOneParams,
   PostsUpdateParams,
   PostsUpdateResponse,
+  PostsGetCommentsAndLikesParams,
+  PostGetCommentsResponse,
 } from '../repositories/posts';
 import { client } from '~/service/prisma';
 import { PostEntity } from '~/app/models/entity/post';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
+import { CommentEntity } from '../models/entity/comment';
 
 export class PostsPrismaRepository implements PostsRepository {
+  async comments(
+    params: PostsGetCommentsAndLikesParams,
+  ): PostGetCommentsResponse {
+    try {
+      const { postId, page, perPage, search } = params;
+
+      const post = await this.findOneById(postId);
+
+      if (!post) {
+        throw new ErrorMessage(
+          'Post does not exists, please check the ID',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      const count = await this.countCommentsByPost(postId);
+
+      const comments = await client.comments.findMany({
+        where: {
+          postId: postId,
+          OR: [
+            {
+              text: {
+                contains: search,
+              },
+            },
+            {
+              author: {
+                name: {
+                  contains: search,
+                },
+              },
+            },
+          ],
+        },
+        take: perPage,
+        skip: (page - 1) * perPage,
+        select: {
+          author: {
+            select: {
+              name: true,
+              github: true,
+              avatar_url: true,
+              id: true,
+            },
+          },
+          text: true,
+          createdAt: true,
+          postId: true,
+          id: true,
+        },
+      });
+
+      return {
+        comments: comments as unknown as CommentEntity[],
+        count,
+        page,
+        perPage,
+        search,
+      };
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async update(params: PostsUpdateParams): PostsUpdateResponse {
     try {
       const { developerId, postId, description, thumbnail, title } = params;
 
-      const post = await client.posts.findUnique({
-        where: {
-          id: postId,
-        },
-      });
+      const post = await this.findOneById(postId);
 
       if (!post) {
         throw new ErrorMessage(
@@ -98,11 +163,7 @@ export class PostsPrismaRepository implements PostsRepository {
     try {
       const { postId, developerId } = params;
 
-      const post = await client.posts.findUnique({
-        where: {
-          id: postId,
-        },
-      });
+      const post = await this.findOneById(postId);
 
       if (!post) {
         throw new ErrorMessage(
@@ -202,6 +263,26 @@ export class PostsPrismaRepository implements PostsRepository {
 
   async countPosts() {
     const count = await client.posts.count();
+    return count;
+  }
+
+  async findOneById(postId: string) {
+    const post = await client.posts.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+
+    return post;
+  }
+
+  async countCommentsByPost(postId: string) {
+    const count = await client.comments.count({
+      where: {
+        postId: postId,
+      },
+    });
+
     return count;
   }
 }
