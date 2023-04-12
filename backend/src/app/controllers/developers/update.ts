@@ -14,19 +14,15 @@ export class DevelopersUpdateController implements BaseController {
   async handler(request: Request, response: Response) {
     try {
       const developerId = request.developer_id;
-      const { name, password, techs } = updateDeveloperSchema.parse(
-        request.body,
-      );
+      const { name, password, techs } = request.body;
       const avatar_url = request.file?.filename ?? '';
-      const params = { avatar_url, name, password, techs };
 
-      const { developer } = await this.usecase.execute({ developerId, params });
+      const query = { name, password, techs, developerId, avatar_url };
+      const params = updateDeveloperSchema.parse(query);
 
-      return response.status(Status.OK).json({
-        data: {
-          developer: renderDeveloper(developer),
-        },
-      });
+      await this.usecase.execute(params);
+
+      return response.status(Status.OK).send();
     } catch (err) {
       const { error, message, status } = getControllerError(err);
 

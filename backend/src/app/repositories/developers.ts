@@ -27,11 +27,10 @@ export type DevelopersRepositoryDeleteResponse = Promise<void>;
 
 export interface DevelopersUpdateParams extends UpdateDeveloperSchema {
   avatar_url: string;
+  developerId: string;
 }
 
-export type DevelopersRepositoryUpdateResponse = Promise<{
-  developer?: DeveloperEntity | null;
-}>;
+export type DevelopersRepositoryUpdateResponse = Promise<void>;
 
 export abstract class DevelopersRepository {
   findOne: (
@@ -44,7 +43,6 @@ export abstract class DevelopersRepository {
     params: DevelopersRepositoryDeleteParams,
   ) => DevelopersRepositoryDeleteResponse;
   update: (
-    developerId: string,
     params: DevelopersUpdateParams,
   ) => DevelopersRepositoryUpdateResponse;
 }

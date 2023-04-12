@@ -1,3 +1,10 @@
 node_modules
 # Keep environment variables out of version control
 .env
+
+# DB
+dev.db
+
+# Uploads
+uploads_developers
+uploads_posts

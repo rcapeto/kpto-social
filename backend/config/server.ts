@@ -31,5 +31,18 @@ export const serverConfig = {
       remove: '/friends/remove/:id',
       findMany: '/friends/all/:id',
     },
+    posts: {
+      create: '/posts/create',
+      edit: '/posts/edit/:id',
+      delete: '/posts/delete/:id',
+      findMany: '/posts',
+      findOne: '/posts/detail/:id',
+      likes: '/posts/likes/:id',
+    },
+    comments: {
+      findMany: '/comments/posts/:id',
+      delete: '/comments/delete/:id',
+      create: '/comments/create',
+    },
   },
 };

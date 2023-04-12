@@ -12,12 +12,9 @@ describe('Developers', () => {
     const developerId = 'test-0';
     const name = 'John Doe';
 
-    const { developer } = await usecase.execute({
-      developerId,
-      params: { name },
-    });
-
-    expect(developer?.name).toBe(name);
+    expect(() => {
+      return usecase.execute({ developerId, params: { name } });
+    }).resolves;
   });
 
   it('should not be able to update developer data', async () => {

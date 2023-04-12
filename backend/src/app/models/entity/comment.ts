@@ -3,7 +3,7 @@ import { PostEntity } from './post';
 
 export interface CommentEntity {
   id: string;
-  createdAt: Date;
+  createdAt: Date | null;
   author?: DeveloperEntity;
   developerId: string;
   post?: PostEntity;

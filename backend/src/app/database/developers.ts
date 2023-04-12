@@ -22,10 +22,20 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
     try {
       const { developerId } = params;
 
-      const { developer } = await this.findOne({ developerId });
+      const developer = await this.findOneById(developerId);
 
       if (!developer) {
-        return;
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
+      if (developer.id !== developerId) {
+        throw new ErrorMessage(
+          'You can not delete this account, only the correct user can delete it.',
+          ErrorMessageCause.VALIDATION,
+        );
       }
 
       await client.developers.delete({
@@ -68,6 +78,15 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
             },
           ],
         },
+        select: {
+          _count: true,
+          avatar_url: true,
+          createdAt: true,
+          github: true,
+          id: true,
+          name: true,
+          techs: true,
+        },
       })) as DeveloperEntity[];
 
       return {
@@ -91,6 +110,13 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
 
       const developer = await this.findOneById(developerId);
 
+      if (!developer) {
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
       return {
         developer: developer as DeveloperEntity,
       };
@@ -105,18 +131,35 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
       where: {
         id: developerId,
       },
+      select: {
+        _count: true,
+        avatar_url: true,
+        createdAt: true,
+        github: true,
+        id: true,
+        name: true,
+        techs: true,
+        password: true,
+        posts: {
+          take: 5,
+          select: {
+            title: true,
+            thumbnail: true,
+            _count: true,
+          },
+        },
+      },
     });
     return developer;
   }
 
   async update(
-    developerId: string,
     params: DevelopersUpdateParams,
   ): DevelopersRepositoryUpdateResponse {
     try {
-      const { avatar_url, name, password, techs } = params;
+      const { avatar_url, name, password, techs, developerId } = params;
 
-      const fields: DevelopersUpdateParams = {
+      const fields: Omit<DevelopersUpdateParams, 'developerId'> = {
         avatar_url,
         name,
         password,
@@ -148,21 +191,17 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
         fields.password = await encryptPassword({ password });
       }
 
-      const updatedDeveloper = await client.developers.update({
+      await client.developers.update({
         where: {
           id: developerId,
         },
         data: {
-          avatar_url: fields.avatar_url || developer.avatar_url,
+          avatar_url: fields.avatar_url,
           name: fields.name || developer.name,
           techs: fields.techs || developer.techs,
           password: fields.password || developer.password,
         },
       });
-
-      return {
-        developer: updatedDeveloper as DeveloperEntity,
-      };
     } catch (err) {
       const error = getErrorMessage(err);
       throw error;

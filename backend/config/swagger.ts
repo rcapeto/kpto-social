@@ -1,6 +1,8 @@
 import { JsonObject } from 'swagger-ui-express';
 import { serverConfig } from '@config/server';
 
+const routes = serverConfig.routes;
+
 export const swaggerConfig: JsonObject = {
   openapi: '3.0.0',
   info: {
@@ -17,7 +19,7 @@ export const swaggerConfig: JsonObject = {
     },
   ],
   paths: {
-    [serverConfig.routes.account.register]: {
+    [routes.account.register]: {
       post: {
         tags: ['Account'],
         summary: 'Register',
@@ -78,7 +80,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.account.login]: {
+    [routes.account.login]: {
       get: {
         tags: ['Account'],
         summary: 'Login',
@@ -149,7 +151,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.developers.findOne]: {
+    [routes.developers.findOne]: {
       get: {
         tags: ['Developer'],
         summary: 'Developers',
@@ -183,11 +185,30 @@ export const swaggerConfig: JsonObject = {
                       techs: 'react,react-native,typescript',
                       createdAt: '2023-04-10T05:05:21.713Z',
                       github: 'johndoe',
+                      _count: {
+                        posts: 2,
+                        comments: 0,
+                        likes: 0,
+                        friends: 1,
+                        symmetricFriends: 1,
+                      },
                       avatar_url: {
                         origin: '',
                         web: '',
                         mobile: '',
                       },
+                      posts: [
+                        {
+                          title: 'Post pelo backend',
+                          thumbnail: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                          comments: 0,
+                          likes: 0,
+                        },
+                      ],
                     },
                   },
                 },
@@ -248,7 +269,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.developers.me]: {
+    [routes.developers.me]: {
       get: {
         tags: ['Developer'],
         summary: 'Developers',
@@ -270,11 +291,30 @@ export const swaggerConfig: JsonObject = {
                       techs: 'react,react-native,typescript',
                       createdAt: '2023-04-10T05:05:21.713Z',
                       github: 'johndoe',
+                      _count: {
+                        posts: 2,
+                        comments: 0,
+                        likes: 0,
+                        friends: 1,
+                        symmetricFriends: 1,
+                      },
                       avatar_url: {
                         origin: '',
                         web: '',
                         mobile: '',
                       },
+                      posts: [
+                        {
+                          title: 'Post pelo backend',
+                          thumbnail: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                          comments: 0,
+                          likes: 0,
+                        },
+                      ],
                     },
                   },
                 },
@@ -335,7 +375,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.developers.findMany]: {
+    [routes.developers.findMany]: {
       get: {
         tags: ['Developer'],
         summary: 'Developers',
@@ -372,7 +412,7 @@ export const swaggerConfig: JsonObject = {
         ],
         responses: {
           200: {
-            description: 'Get developer data with success',
+            description: 'Get developers data with success',
             content: {
               'application/json': {
                 schema: {
@@ -387,6 +427,13 @@ export const swaggerConfig: JsonObject = {
                         techs: 'react,react-native,typescript',
                         createdAt: '2023-04-10T05:05:21.713Z',
                         github: 'johndoe',
+                        _count: {
+                          posts: 2,
+                          comments: 0,
+                          likes: 0,
+                          friends: 1,
+                          symmetricFriends: 1,
+                        },
                         avatar_url: {
                           origin: '',
                           web: '',
@@ -456,7 +503,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.developers.delete]: {
+    [routes.developers.delete]: {
       delete: {
         tags: ['Developer'],
         summary: 'Developers',
@@ -520,7 +567,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.developers.update]: {
+    [routes.developers.update]: {
       put: {
         tags: ['Developer'],
         summary: 'Developers',
@@ -544,29 +591,6 @@ export const swaggerConfig: JsonObject = {
         responses: {
           200: {
             description: 'Update developer with success',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/DeveloperEntity',
-                },
-                example: {
-                  data: {
-                    developer: {
-                      id: 'the-incredible-developer-id',
-                      name: 'John Doe',
-                      techs: 'react,react-native,typescript',
-                      createdAt: '2023-04-10T05:05:21.713Z',
-                      github: 'johndoe',
-                      avatar_url: {
-                        origin: '',
-                        web: '',
-                        mobile: '',
-                      },
-                    },
-                  },
-                },
-              },
-            },
           },
           400: {
             description: 'Validation error',
@@ -622,7 +646,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.friends.add]: {
+    [routes.friends.add]: {
       post: {
         tags: ['Friend'],
         summary: 'Friendship',
@@ -697,7 +721,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.friends.findMany]: {
+    [routes.friends.findMany]: {
       get: {
         tags: ['Friend'],
         summary: 'Friendship',
@@ -818,7 +842,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [serverConfig.routes.friends.remove]: {
+    [routes.friends.remove]: {
       delete: {
         tags: ['Friend'],
         summary: 'Friendship',
@@ -838,6 +862,769 @@ export const swaggerConfig: JsonObject = {
         responses: {
           200: {
             description: 'Remove a friend',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.create]: {
+      post: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Create a post',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/CreatePostParams',
+              },
+              example: {
+                title: 'Post Title',
+                description: 'Post description',
+                thumbnail: 'FormData File',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'Create a post',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.findMany]: {
+      get: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Get posts',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of posts per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description:
+              'Filter by post title, post description or author name',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get posts data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyPostsResponse',
+                },
+                example: {
+                  data: {
+                    posts: [
+                      {
+                        id: 'the-incredible-post-id',
+                        title: 'React Documentation',
+                        description: 'Look this new react documentation here: ',
+                        createdAt: '2023-04-10T05:05:21.713Z',
+                        editAt: null,
+                        developerId: 'developerId',
+                        author: {
+                          name: 'John Doe',
+                          avatar_url: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                          github: 'johndoe',
+                        },
+                        thumbnail: {
+                          origin: '',
+                          web: '',
+                          mobile: '',
+                        },
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: 'react',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.delete]: {
+      delete: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Delete a post',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Delete a post',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.findOne]: {
+      get: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Find a post',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Post data',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindOnePostResponse',
+                },
+                example: {
+                  data: {
+                    post: {
+                      createdAt: '2023-04-10T05:05:21.742Z',
+                      editAt: null,
+                      title: 'Post Title',
+                      description: 'Post description',
+                      id: '017ee7f0-6a23-4205-bd75-205b7fe32bde',
+                      developerId: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
+                      comments: 8,
+                      likes: 8,
+                      author: {
+                        id: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
+                        name: 'John Doe',
+                        techs: 'react,react-native,typescript',
+                        createdAt: '2023-04-10T05:05:21.713Z',
+                        github: 'johndoe',
+                        avatar_url: {
+                          origin: '',
+                          web: '',
+                          mobile: '',
+                        },
+                      },
+                      thumbnail: {
+                        origin: '',
+                        web: '',
+                        mobile: '',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.edit]: {
+      put: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Update post data',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UpdatePostParams',
+              },
+              example: {
+                title: 'New post title',
+                description: 'New post description',
+                thumbnail: 'FormData File',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Update post with success',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.comments.findMany]: {
+      get: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Get post comments',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of posts per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description:
+              'Filter by post title, post description or author name',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get post comments data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyCommentsResponse',
+                },
+                example: {
+                  data: {
+                    comments: [
+                      {
+                        id: 'comment-id',
+                        author: {
+                          name: 'John Doe',
+                          github: 'johndoe',
+                          id: '2ea5c516-e42b-4f7d-bafb-d06a116f38d4',
+                          avatar_url: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                        },
+                        text: 'Comment text',
+                        createdAt: '2023-04-12T16:00:05.430Z',
+                        postId: '5cd67d6f-9dc4-4f25-808e-c8998a166663',
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: '',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.comments.delete]: {
+      delete: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Delete a comment',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Comment ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Delete a comment',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.comments.create]: {
+      post: {
+        tags: ['Comment'],
+        summary: 'Comments',
+        description: 'Create a comment',
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/CreateCommentParams',
+              },
+              example: {
+                text: 'Create text with this text',
+                postId: 'post-id-example',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Create comment with success',
           },
           400: {
             description: 'Validation error',
@@ -961,6 +1748,23 @@ export const swaggerConfig: JsonObject = {
           createdAt: {
             type: 'string',
           },
+          _count: {
+            type: 'object',
+            properties: {
+              posts: {
+                type: 'number',
+              },
+              comments: {
+                type: 'number',
+              },
+              likes: {
+                type: 'number',
+              },
+              friends: {
+                type: 'number',
+              },
+            },
+          },
           avatar_url: {
             type: 'object',
             properties: {
@@ -972,6 +1776,40 @@ export const swaggerConfig: JsonObject = {
               },
               mobile: {
                 type: 'string',
+              },
+            },
+          },
+          posts: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                title: {
+                  type: 'string',
+                },
+                description: {
+                  type: 'string',
+                },
+                thumbnail: {
+                  type: 'object',
+                  properties: {
+                    origin: {
+                      type: 'string',
+                    },
+                    web: {
+                      type: 'string',
+                    },
+                    mobile: {
+                      type: 'string',
+                    },
+                  },
+                },
+                comments: {
+                  type: 'number',
+                },
+                likes: {
+                  type: 'number',
+                },
               },
             },
           },
@@ -1005,6 +1843,23 @@ export const swaggerConfig: JsonObject = {
                 },
                 createdAt: {
                   type: 'string',
+                },
+                _count: {
+                  type: 'object',
+                  properties: {
+                    posts: {
+                      type: 'number',
+                    },
+                    comments: {
+                      type: 'number',
+                    },
+                    likes: {
+                      type: 'number',
+                    },
+                    friends: {
+                      type: 'number',
+                    },
+                  },
                 },
                 avatar_url: {
                   type: 'object',
@@ -1095,6 +1950,254 @@ export const swaggerConfig: JsonObject = {
                 },
               },
             },
+          },
+        },
+      },
+      CreatePostParams: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          thumbnail: {
+            type: 'string',
+          },
+        },
+      },
+      FindManyPostsResponse: {
+        type: 'object',
+        properties: {
+          page: {
+            type: 'number',
+          },
+          perPage: {
+            type: 'number',
+          },
+          search: {
+            type: 'string',
+          },
+          posts: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                },
+                title: {
+                  type: 'string',
+                },
+                description: {
+                  type: 'string',
+                },
+                createdAt: {
+                  type: 'string',
+                },
+                updatedAt: {
+                  type: 'string',
+                },
+                thumbnail: {
+                  type: 'object',
+                  properties: {
+                    origin: {
+                      type: 'string',
+                    },
+                    web: {
+                      type: 'string',
+                    },
+                    mobile: {
+                      type: 'string',
+                    },
+                  },
+                },
+                developerId: {
+                  type: 'string',
+                },
+                author: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    github: {
+                      type: 'string',
+                    },
+                    avatar_url: {
+                      type: 'object',
+                      properties: {
+                        origin: {
+                          type: 'string',
+                        },
+                        web: {
+                          type: 'string',
+                        },
+                        mobile: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      FindOnePostResponse: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+          },
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          createdAt: {
+            type: 'string',
+          },
+          updatedAt: {
+            type: 'string',
+          },
+          thumbnail: {
+            type: 'object',
+            properties: {
+              origin: {
+                type: 'string',
+              },
+              web: {
+                type: 'string',
+              },
+              mobile: {
+                type: 'string',
+              },
+            },
+          },
+          developerId: {
+            type: 'string',
+          },
+          author: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string',
+              },
+              github: {
+                type: 'string',
+              },
+              avatar_url: {
+                type: 'object',
+                properties: {
+                  origin: {
+                    type: 'string',
+                  },
+                  web: {
+                    type: 'string',
+                  },
+                  mobile: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+          likes: {
+            type: 'number',
+          },
+          comments: {
+            type: 'number',
+          },
+        },
+      },
+      UpdatePostParams: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          thumbnail: {
+            type: 'string',
+          },
+        },
+      },
+      FindManyCommentsResponse: {
+        type: 'object',
+        properties: {
+          page: {
+            type: 'number',
+          },
+          perPage: {
+            type: 'number',
+          },
+          search: {
+            type: 'string',
+          },
+          comments: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                },
+                text: {
+                  type: 'string',
+                },
+                postId: {
+                  type: 'string',
+                },
+                createdAt: {
+                  type: 'string',
+                },
+                author: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                    },
+                    github: {
+                      type: 'string',
+                    },
+                    id: {
+                      type: 'string',
+                    },
+                    avatar_url: {
+                      type: 'object',
+                      properties: {
+                        origin: {
+                          type: 'string',
+                        },
+                        web: {
+                          type: 'string',
+                        },
+                        mobile: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      CreateCommentParams: {
+        type: 'object',
+        properties: {
+          postId: {
+            type: 'string',
+          },
+          text: {
+            type: 'string',
           },
         },
       },

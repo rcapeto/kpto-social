@@ -15,7 +15,7 @@ export class FriendsPrismaRepository implements FriendsRepository {
     params: FriendsRepositoryFindManyParams,
   ): FriendsRepositoryFindManyResponse {
     try {
-      const { id: developerId, page, search, perPage } = params;
+      const { developerId, page, search, perPage } = params;
 
       const developer = await this.findById(developerId);
 
@@ -195,14 +195,10 @@ export class FriendsPrismaRepository implements FriendsRepository {
         id: developerId,
       },
       select: {
-        friends: {
-          select: {
-            id: true,
-          },
-        },
+        _count: true,
       },
     });
 
-    return data?.friends.length ?? 0;
+    return data?._count?.friends ?? 0;
   }
 }
