@@ -404,7 +404,7 @@ export const swaggerConfig: JsonObject = {
             in: 'query',
             name: 'search',
             schema: {
-              type: 'number',
+              type: 'string',
             },
             required: false,
             description: 'Filter by developer name, techs and github',
@@ -750,7 +750,7 @@ export const swaggerConfig: JsonObject = {
             in: 'query',
             name: 'search',
             schema: {
-              type: 'number',
+              type: 'string',
             },
             required: false,
             description: 'Filter by developer name, techs and github',
@@ -1024,7 +1024,7 @@ export const swaggerConfig: JsonObject = {
             in: 'query',
             name: 'search',
             schema: {
-              type: 'number',
+              type: 'string',
             },
             required: false,
             description:
@@ -1431,7 +1431,7 @@ export const swaggerConfig: JsonObject = {
             in: 'query',
             name: 'search',
             schema: {
-              type: 'number',
+              type: 'string',
             },
             required: false,
             description:
@@ -1625,6 +1625,132 @@ export const swaggerConfig: JsonObject = {
         responses: {
           200: {
             description: 'Create comment with success',
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.likes.findMany]: {
+      get: {
+        tags: ['Like'],
+        summary: 'Likes',
+        description: 'Get post likes',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of likes per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'string',
+            },
+            required: false,
+            description: 'Filter by author name',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get post likes data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyLikesResponse',
+                },
+                example: {
+                  data: {
+                    likes: [
+                      {
+                        id: 'like-id',
+                        author: {
+                          name: 'string',
+                        },
+                        developerId: 'string',
+                        postId: 'string',
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: '',
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Validation error',
@@ -2198,6 +2324,22 @@ export const swaggerConfig: JsonObject = {
           },
           text: {
             type: 'string',
+          },
+        },
+      },
+      FindManyLikesResponse: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+          },
+          author: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string',
+              },
+            },
           },
         },
       },
