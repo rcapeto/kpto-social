@@ -7,7 +7,7 @@
 - [x] `API` -> C.R.U.D [Developers]
 - [x] `API` -> C.R.U.D [Posts]
 - [x] `API` -> C.R.D [Comments]
-- [x] `API` -> [C.R.D] [Likes]
+- [ ] `API` -> [C.R.D] [Likes]
 - [ ] Tela de início (conter todos os posts, possibilidade para criar novos posts)
 - [ ] Tela de Posts
 - [ ] Tela de Perfil
