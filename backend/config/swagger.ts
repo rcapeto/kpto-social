@@ -1806,6 +1806,93 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [routes.likes.check]: {
+      get: {
+        tags: ['Like'],
+        summary: 'Likes',
+        description: 'Get post like',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get if the post is liked',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/CheckLikeResponse',
+                },
+                example: {
+                  data: {
+                    liked: true,
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -2340,6 +2427,14 @@ export const swaggerConfig: JsonObject = {
                 type: 'string',
               },
             },
+          },
+        },
+      },
+      CheckLikeResponse: {
+        type: 'object',
+        properties: {
+          liked: {
+            type: 'boolean',
           },
         },
       },
