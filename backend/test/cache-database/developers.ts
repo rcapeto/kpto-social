@@ -93,8 +93,6 @@ export class DevelopersInCacheDatabase implements DevelopersRepository {
       developer.password = password || developer.password;
       developer.techs = techs || developer.techs;
     }
-
-    return { developer };
   }
 
   populateDB() {
