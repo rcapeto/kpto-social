@@ -14,7 +14,7 @@ const developers = {
   }),
 };
 
-const publications = {
+const posts = {
   storage: multer.diskStorage({
     destination: path.join(__dirname, '..', serverConfig.uploads.posts),
     filename: (request, file, callback) => callback(null, createFilename(file)),
@@ -23,5 +23,5 @@ const publications = {
 
 export const multerConfig = {
   developers,
-  publications,
+  posts,
 };

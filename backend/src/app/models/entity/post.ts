@@ -13,4 +13,8 @@ export interface PostEntity {
   developerId: string;
   comments: CommentEntity[];
   likes: LikeEntity[];
+  _count?: {
+    likes: number;
+    comments: number;
+  };
 }
