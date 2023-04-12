@@ -100,6 +100,13 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
 
       const developer = await this.findOneById(developerId);
 
+      if (!developer) {
+        throw new ErrorMessage(
+          'Developer not found, please register',
+          ErrorMessageCause.VALIDATION,
+        );
+      }
+
       return {
         developer: developer as DeveloperEntity,
       };

@@ -14,11 +14,12 @@ export class DevelopersUpdateController implements BaseController {
   async handler(request: Request, response: Response) {
     try {
       const developerId = request.developer_id;
-      const { name, password, techs } = updateDeveloperSchema.parse(
-        request.body,
-      );
+      const { name, password, techs } = request.body;
+      const query = { name, password, techs };
+
+      const zodParams = updateDeveloperSchema.parse(query);
       const avatar_url = request.file?.filename ?? '';
-      const params = { avatar_url, name, password, techs };
+      const params = Object.assign({ avatar_url }, zodParams);
 
       await this.usecase.execute({ developerId, params });
 
