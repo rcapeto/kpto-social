@@ -1393,7 +1393,7 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
-    [routes.posts.comments]: {
+    [routes.comments.findMany]: {
       get: {
         tags: ['Comment'],
         summary: 'Comments',

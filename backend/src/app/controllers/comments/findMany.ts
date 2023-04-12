@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
 import { BaseController } from '~/app/controllers';
-import { PostsCommentsUsecase } from '~/app/use-cases/posts/comments/comments-usecase';
+import { CommentsFindManyUsecase } from '~/app/use-cases/comments/findMany/findMany-usecase';
 import { renderComment } from '~/app/views/renderComment';
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
 import { getControllerError } from '~/utils/getControllerError';
 
-export class PostsCommentsController implements BaseController {
-  constructor(private usecase: PostsCommentsUsecase) {}
+export class CommentsFindManyController implements BaseController {
+  constructor(private usecase: CommentsFindManyUsecase) {}
 
   async handler(request: Request, response: Response) {
     try {
