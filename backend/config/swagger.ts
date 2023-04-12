@@ -1225,6 +1225,118 @@ export const swaggerConfig: JsonObject = {
         },
       },
     },
+    [routes.posts.findOne]: {
+      get: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Find a post',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Post ID',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Post data',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindOnePostResponse',
+                },
+                example: {
+                  data: {
+                    post: {
+                      createdAt: '2023-04-10T05:05:21.742Z',
+                      editAt: null,
+                      description: 'Post description',
+                      id: '017ee7f0-6a23-4205-bd75-205b7fe32bde',
+                      developerId: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
+                      comments: 8,
+                      likes: 8,
+                      author: {
+                        id: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
+                        name: 'John Doe',
+                        techs: 'react,react-native,typescript',
+                        createdAt: '2023-04-10T05:05:21.713Z',
+                        github: 'johndoe',
+                        avatar_url: {
+                          origin: '',
+                          web: '',
+                          mobile: '',
+                        },
+                      },
+                      thumbnail: {
+                        origin: '',
+                        web: '',
+                        mobile: '',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -1588,6 +1700,74 @@ export const swaggerConfig: JsonObject = {
                 },
               },
             },
+          },
+        },
+      },
+      FindOnePostResponse: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+          },
+          title: {
+            type: 'string',
+          },
+          description: {
+            type: 'string',
+          },
+          createdAt: {
+            type: 'string',
+          },
+          updatedAt: {
+            type: 'string',
+          },
+          thumbnail: {
+            type: 'object',
+            properties: {
+              origin: {
+                type: 'string',
+              },
+              web: {
+                type: 'string',
+              },
+              mobile: {
+                type: 'string',
+              },
+            },
+          },
+          developerId: {
+            type: 'string',
+          },
+          author: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string',
+              },
+              github: {
+                type: 'string',
+              },
+              avatar_url: {
+                type: 'object',
+                properties: {
+                  origin: {
+                    type: 'string',
+                  },
+                  web: {
+                    type: 'string',
+                  },
+                  mobile: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+          likes: {
+            type: 'number',
+          },
+          comments: {
+            type: 'number',
           },
         },
       },
