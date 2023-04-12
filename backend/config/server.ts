@@ -44,8 +44,7 @@ export const serverConfig = {
       create: '/comments/create',
     },
     likes: {
-      add: '/likes/add/:id',
-      remove: '/likes/remove/:id',
+      toggle: '/likes/toggle/:id',
       check: '/like/post/:id', //ver se está curtido ou não
       findMany: '/likes/posts/:id', //ver todas os likes da publicação,
     },

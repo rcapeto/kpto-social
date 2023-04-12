@@ -15,7 +15,6 @@ import {
 import { client } from '~/service/prisma';
 import { PostEntity } from '~/app/models/entity/post';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
-import { CommentEntity } from '../models/entity/comment';
 
 export class PostsPrismaRepository implements PostsRepository {
   async update(params: PostsUpdateParams): PostsUpdateResponse {
@@ -159,6 +158,7 @@ export class PostsPrismaRepository implements PostsRepository {
           developerId: true,
           id: true,
           thumbnail: true,
+          title: true,
         },
       });
 

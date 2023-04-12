@@ -7,9 +7,47 @@ import {
   FindManyLikesResponse,
   LikesCheckParams,
   LikesCheckResponse,
+  LikesToggleParams,
+  LikesToggleResponse,
 } from '../repositories/likes';
 
 export class LikesPrismaRepository implements LikesRepository {
+  async toggle(params: LikesToggleParams): LikesToggleResponse {
+    try {
+      const { developerId, postId } = params;
+
+      const post = await this.checkHasPost(postId);
+
+      const [like] = await client.likes.findMany({
+        where: {
+          postId: post.id,
+          developerId,
+        },
+      });
+
+      console.log('like >>>>', { like, developerId, post });
+
+      if (!like) {
+        await client.likes.create({
+          data: {
+            developerId,
+            postId,
+          },
+        });
+      } else {
+        await client.likes.delete({
+          where: {
+            id: like.id,
+          },
+        });
+      }
+    } catch (err) {
+      console.log('error here', err);
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
   async check(params: LikesCheckParams): LikesCheckResponse {
     try {
       const { postId, developerId } = params;

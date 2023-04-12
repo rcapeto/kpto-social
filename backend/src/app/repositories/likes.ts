@@ -11,7 +11,11 @@ export type FindManyLikesResponse = Promise<
 
 export type LikesCheckParams = LikeSchema;
 export type LikesCheckResponse = Promise<{ liked: boolean }>;
+
+export type LikesToggleParams = LikeSchema;
+export type LikesToggleResponse = Promise<void>;
 export abstract class LikesRepository {
   findMany: (params: FindManyLikesParams) => FindManyLikesResponse;
   check: (params: LikesCheckParams) => LikesCheckResponse;
+  toggle: (params: LikesToggleParams) => LikesToggleResponse;
 }
