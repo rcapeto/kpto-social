@@ -1,12 +1,13 @@
 import { getUrlEnvironment } from '~/utils/url-environment';
 import { DeveloperEntity } from '../models/entity/developer';
+import { renderPost } from './renderPost';
 
 export function renderDeveloper(developer?: DeveloperEntity | null) {
   if (!developer) {
     return null;
   }
 
-  const { password: _, avatar_url: image, ...rest } = developer;
+  const { password: _, avatar_url: image, posts, ...rest } = developer;
   const isEmptyImage = !String(image).length;
   const mobile = getUrlEnvironment({ imagePath: image, isMobile: true });
   const web = getUrlEnvironment({ imagePath: image });
@@ -20,5 +21,6 @@ export function renderDeveloper(developer?: DeveloperEntity | null) {
   return {
     ...rest,
     avatar_url,
+    posts: posts ? posts.map(renderPost) : undefined,
   };
 }

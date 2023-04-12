@@ -68,6 +68,15 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
             },
           ],
         },
+        select: {
+          _count: true,
+          avatar_url: true,
+          createdAt: true,
+          github: true,
+          id: true,
+          name: true,
+          techs: true,
+        },
       })) as DeveloperEntity[];
 
       return {
@@ -104,6 +113,24 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
     const developer = await client.developers.findUnique({
       where: {
         id: developerId,
+      },
+      select: {
+        _count: true,
+        avatar_url: true,
+        createdAt: true,
+        github: true,
+        id: true,
+        name: true,
+        techs: true,
+        password: true,
+        posts: {
+          take: 5,
+          select: {
+            title: true,
+            thumbnail: true,
+            _count: true,
+          },
+        },
       },
     });
     return developer;
