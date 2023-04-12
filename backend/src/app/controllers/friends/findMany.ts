@@ -13,18 +13,18 @@ export class FriendsFindManyController implements BaseController {
 
   async handler(request: Request, response: Response) {
     try {
-      const id = request.params?.id ?? '';
+      const developerId = request.params?.id ?? '';
       const page = +(request.query?.page ?? 1);
       const perPage = +(request.query?.perPage ?? 10);
       const search = (request.query?.search as string) ?? '';
 
-      const query = { perPage, page, search, id };
+      const query = { perPage, page, search, developerId };
 
       const params = friendshipFindManySchema.parse(query);
 
       const { count, ...rest } = await this.usecase.execute(params);
 
-      const message = `Get Developer[${id}] Friends[${count}] with success`;
+      const message = `Get Developer[${developerId}] Friends[${count}] with success`;
       logger('success', message);
 
       response.setHeader('X-TOTAL-COUNT', count);
