@@ -15,4 +15,11 @@ export interface DeveloperEntity {
   likes?: LikeEntity[];
   friends?: DeveloperEntity[];
   symmetricFriends?: DeveloperEntity[];
+  _count?: {
+    posts: number;
+    comments: number;
+    likes: number;
+    friends: number;
+    symmetricFriends: number;
+  };
 }
