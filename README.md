@@ -4,7 +4,10 @@
 ## Versões
 ### `v1.0.0`
 - [x] Autenticação (Login/Cadastro e validação nas rotas)
-- [ ] `API's` => Post(C.R.U.D), Developers
+- [x] `API` -> C.R.U.D [Developers]
+- [x] `API` -> C.R.U.D [Posts]
+- [x] `API` -> C.R.D [Comments]
+- [x] `API` -> [C.R.D] [Likes]
 - [ ] Tela de início (conter todos os posts, possibilidade para criar novos posts)
 - [ ] Tela de Posts
 - [ ] Tela de Perfil
@@ -19,6 +22,8 @@
 - [x] Typescript `Backend|Mobile`
 - [x] Jest `Backend`
 - [x] Multer `Backend`
+- [x] bcrypt `Backend`
+- [x] jsonwebtoken `Backend`
 - [x] Swagger `Backend` *Documentação*
 - [x] Zod `Backend|Mobile` *Validação*
 - [x] ESLint & Prettier `Backend|Mobile`
