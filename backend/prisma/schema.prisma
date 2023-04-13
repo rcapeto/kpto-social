@@ -67,10 +67,8 @@ model Comments {
 model Likes {
   id String @id @default(uuid())
 
-  author      Developers @relation(fields: [developerId], references: [id])
-  developerId String
-
-  // Where is this like?
-  post   Posts  @relation(fields: [postId], references: [id])
-  postId String
+  author      Developers? @relation(fields: [developerId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  developerId String?
+  post        Posts?      @relation(fields: [postId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  postId      String?
 }

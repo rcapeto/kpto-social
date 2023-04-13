@@ -94,7 +94,7 @@ export class CommentsPrismaRepository implements CommentsRepository {
 
       const comments = await client.comments.findMany({
         where: {
-          postId: postId,
+          postId,
           OR: [
             {
               text: {

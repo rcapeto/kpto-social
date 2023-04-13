@@ -37,12 +37,16 @@ export const serverConfig = {
       delete: '/posts/delete/:id',
       findMany: '/posts',
       findOne: '/posts/detail/:id',
-      likes: '/posts/likes/:id',
     },
     comments: {
       findMany: '/comments/posts/:id',
       delete: '/comments/delete/:id',
       create: '/comments/create',
+    },
+    likes: {
+      toggle: '/likes/toggle/:id',
+      check: '/like/post/:id', //ver se está curtido ou não
+      findMany: '/likes/posts/:id', //ver todas os likes da publicação,
     },
   },
 };

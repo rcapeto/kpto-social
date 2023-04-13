@@ -37,7 +37,7 @@ export class DevelopersInCacheDatabase implements DevelopersRepository {
 
       if (!developer) {
         throw new ErrorMessage(
-          'Developer not found, please register',
+          'Developer not found, please check the ID',
           ErrorMessageCause.VALIDATION,
         );
       }
