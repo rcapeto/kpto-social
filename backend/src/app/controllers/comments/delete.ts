@@ -16,7 +16,6 @@ export class CommentsDeleteController implements BaseController {
       const commentId = request.params?.id ?? '';
 
       const query = { developerId, commentId };
-
       const params = deleteCommentSchema.parse(query);
 
       await this.usecase.execute(params);

@@ -5,18 +5,18 @@ import { DevelopersDeleteUsecase } from '~/app/use-cases/developers/delete/delet
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
 import { getControllerError } from '~/utils/getControllerError';
-
 export class DevelopersDeleteController implements BaseController {
   constructor(private usecase: DevelopersDeleteUsecase) {}
 
   async handler(request: Request, response: Response) {
     try {
       const developerId = request.developer_id;
+      const params = { developerId };
 
-      await this.usecase.execute({ developerId });
+      await this.usecase.execute(params);
 
-      const message = `Developer[${developerId}] was deleted with success`;
-      logger('success', message);
+      const successMessage = `Developer[${developerId}] was deleted with success`;
+      logger('success', successMessage);
 
       return response.status(Status.OK).send();
     } catch (err) {

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { BaseController } from '~/app/controllers';
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
-import { CreatePostSchema, createPostSchema } from '~/validation/posts/create';
+import { createPostSchema } from '~/validation/posts/create';
 import { getControllerError } from '~/utils/getControllerError';
 import { PostsCreateUsecase } from '~/app/use-cases/posts/create/create-usecase';
 
@@ -14,17 +14,15 @@ export class PostsCreateController implements BaseController {
     try {
       const developerId = request.developer_id;
       const thumbnail = request.file?.filename ?? '';
+      const { title, description } = request.body;
 
-      const data: CreatePostSchema = Object.assign(
-        { developerId, thumbnail },
-        request.body,
-      );
+      const query = { title, description, thumbnail, developerId };
+      const params = createPostSchema.parse(query);
 
-      const params = createPostSchema.parse(data);
       await this.usecase.execute(params);
 
-      const message = `A new post was created, by: Developer[${developerId}]`;
-      logger('success', message);
+      const successMessage = `A new post was created, by: Developer[${developerId}]`;
+      logger('success', successMessage);
 
       return response.status(Status.CREATED).send();
     } catch (err) {

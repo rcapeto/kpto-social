@@ -14,8 +14,8 @@ export class LikesToggleController implements BaseController {
     try {
       const postId = request.params?.id ?? '';
       const developerId = request.developer_id;
-      const query = { developerId, postId };
 
+      const query = { developerId, postId };
       const params = likeSchema.parse(query);
 
       await this.usecase.execute(params);

@@ -8,28 +8,23 @@ import {
   CreateCommentParams,
   CreateCommentResponse,
 } from '~/app/repositories/comments';
-import { CommentEntity } from '../models/entity/comment';
+import { CommentEntity } from '~/app/models/entity/comment';
 import { client } from '~/service/prisma';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
+import { messages } from '@config/messages';
 
 export class CommentsPrismaRepository implements CommentsRepository {
   async create(params: CreateCommentParams): CreateCommentResponse {
     try {
       const { developerId, postId, text } = params;
 
-      const post = await this.findPostWithId(postId);
-
-      if (!post) {
-        throw new ErrorMessage(
-          'Post does not exists, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
+      const post = await this.findPostById(postId);
+      const developer = await this.findDeveloperById(developerId);
 
       await client.comments.create({
         data: {
-          developerId,
-          postId,
+          developerId: developer.id,
+          postId: post.id,
           text,
         },
       });
@@ -43,32 +38,35 @@ export class CommentsPrismaRepository implements CommentsRepository {
     try {
       const { commentId, developerId } = params;
 
+      const developer = await this.findDeveloperById(developerId);
+
       const comment = await client.comments.findUnique({
         where: {
           id: commentId,
         },
         select: {
+          id: true,
           developerId: true,
         },
       });
 
       if (!comment) {
         throw new ErrorMessage(
-          'Comment does not exists, please check the ID',
+          messages.NOT_FOUND_COMMENT,
           ErrorMessageCause.VALIDATION,
         );
       }
 
-      if (comment.developerId !== developerId) {
+      if (comment.developerId !== developer.id) {
         throw new ErrorMessage(
-          'You can not delete this comment, only the comment author can delete it.',
+          messages.AUTHORIZATION_COMMENT,
           ErrorMessageCause.VALIDATION,
         );
       }
 
       await client.comments.delete({
         where: {
-          id: commentId,
+          id: comment.id,
         },
       });
     } catch (err) {
@@ -81,20 +79,12 @@ export class CommentsPrismaRepository implements CommentsRepository {
     try {
       const { postId, page, perPage, search } = params;
 
-      const post = await this.findPostWithId(postId);
-
-      if (!post) {
-        throw new ErrorMessage(
-          'Post does not exists, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
+      const post = await this.findPostById(postId);
       const count = await this.countComments(postId);
 
       const comments = await client.comments.findMany({
         where: {
-          postId,
+          postId: post.id,
           OR: [
             {
               text: {
@@ -141,12 +131,43 @@ export class CommentsPrismaRepository implements CommentsRepository {
     }
   }
 
-  async findPostWithId(postId: string) {
+  async findDeveloperById(developerId: string) {
+    const developer = await client.developers.findUnique({
+      where: {
+        id: developerId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!developer) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_DEVELOPER,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
+    return developer;
+  }
+
+  async findPostById(postId: string) {
     const post = await client.posts.findUnique({
       where: {
         id: postId,
       },
+      select: {
+        id: true,
+      },
     });
+
+    if (!post) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_POST,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
     return post;
   }
 

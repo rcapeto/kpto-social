@@ -14,12 +14,14 @@ export class FriendsRemoveController implements BaseController {
     try {
       const developerId = request.developer_id;
       const userId = request.params?.id ?? '';
-      const params = friendshipSchema.parse({ developerId, userId });
+
+      const query = { developerId, userId };
+      const params = friendshipSchema.parse(query);
 
       await this.usecase.execute(params);
 
-      const message = `Developer[${developerId}] remove a friend[${params.userId}]`;
-      logger('success', message);
+      const successMessage = `Developer[${developerId}] remove a friend[${params.userId}]`;
+      logger('success', successMessage);
 
       return response.status(Status.OK).send();
     } catch (err) {

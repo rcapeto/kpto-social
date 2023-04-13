@@ -3,14 +3,13 @@ import multer from 'multer';
 
 import { serverConfig } from '@config/server';
 import { multerConfig } from '@config/multer';
-
-import { createPost } from './create';
-import { findManyPosts } from './findMany';
-import { deletePost } from './delete';
-import { findOnePost } from './findOne';
-import { updatePost } from './update';
-
 import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
+
+import { createPost } from '~/routes/posts/create';
+import { findManyPosts } from '~/routes/posts/findMany';
+import { deletePost } from '~/routes/posts/delete';
+import { findOnePost } from '~/routes/posts/findOne';
+import { updatePost } from '~/routes/posts/update';
 
 const multerPath = multer(multerConfig.posts);
 

@@ -12,11 +12,14 @@ export class AccountRegisterController implements BaseController {
 
   async handler(request: Request, response: Response) {
     try {
-      const body = registerSchema.parse(request.body);
+      const { confirm_password, password, github, name } = request.body;
 
-      await this.usecase.execute(body);
+      const query = { confirm_password, password, github, name };
+      const params = registerSchema.parse(query);
 
-      const successMessage = `Create developer with: ${body.github}`;
+      await this.usecase.execute(params);
+
+      const successMessage = `Create developer with: ${params.github}`;
       logger('success', successMessage);
 
       return response.status(Status.CREATED).send();

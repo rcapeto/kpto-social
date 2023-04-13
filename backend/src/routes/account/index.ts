@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { serverConfig } from '@config/server';
+
 import { registerDeveloper } from '~/routes/account/register';
 import { loginDeveloper } from '~/routes/account/login';
 

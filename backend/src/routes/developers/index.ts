@@ -3,14 +3,13 @@ import multer from 'multer';
 
 import { serverConfig } from '@config/server';
 import { multerConfig } from '@config/multer';
+import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
 import { findOneDeveloper } from '~/routes/developers/findOne';
 import { me } from '~/routes/developers/me';
 import { findManyDevelopers } from '~/routes/developers/findMany';
 import { deleteDeveloper } from '~/routes/developers/delete';
 import { updateDeveloper } from '~/routes/developers/update';
-
-import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
 const multerPath = multer(multerConfig.developers);
 

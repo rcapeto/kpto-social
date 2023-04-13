@@ -4,11 +4,12 @@ import {
   AccountRepositoryRegisterParams,
   AccountRepositoryLoginParams,
   AccountRepositoryLoginResponse,
-} from '../repositories/account';
+} from '~/app/repositories/account';
 import { client } from '~/service/prisma';
-import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
+import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
 import { getErrorMessage } from '~/utils/getErrorMessage';
 import { createToken } from '~/utils/token';
+import { messages } from '@config/messages';
 
 export class AccountPrismaRepository implements AccountRepository {
   async login(
@@ -17,14 +18,7 @@ export class AccountPrismaRepository implements AccountRepository {
     try {
       const { github, password } = params;
 
-      const developer = await this.findOneWithGithub(github);
-
-      if (!developer) {
-        throw new ErrorMessage(
-          'Developer not found, please register',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
+      const developer = await this.findOneDeveloperByGithub(github);
 
       const isCorrectPassword = await checkPassword({
         password,
@@ -33,7 +27,7 @@ export class AccountPrismaRepository implements AccountRepository {
 
       if (!isCorrectPassword) {
         throw new ErrorMessage(
-          'Please verify the username or password, something is incorrect',
+          messages.WRONG_PASSWORD,
           ErrorMessageCause.VALIDATION,
         );
       }
@@ -52,18 +46,18 @@ export class AccountPrismaRepository implements AccountRepository {
     try {
       const { confirm_password, github, name, password } = params;
 
-      const developer = await this.findOneWithGithub(github);
+      const developer = await this.findOneDeveloperByGithub(github);
 
       if (password !== confirm_password) {
         throw new ErrorMessage(
-          'Fill both password fields equally',
+          messages.WRONG_PASSWORD,
           ErrorMessageCause.VALIDATION,
         );
       }
 
       if (developer) {
         throw new ErrorMessage(
-          'There is already a developer with this github',
+          messages.DEVELOPER_ALREADY_EXISTS,
           ErrorMessageCause.ERROR,
         );
       }
@@ -85,12 +79,20 @@ export class AccountPrismaRepository implements AccountRepository {
     }
   }
 
-  async findOneWithGithub(github: string) {
+  async findOneDeveloperByGithub(github: string) {
     const [developer] = await client.developers.findMany({
       where: {
         github,
       },
     });
+
+    if (!developer) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_DEVELOPER,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
     return developer;
   }
 }

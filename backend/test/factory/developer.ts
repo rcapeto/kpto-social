@@ -1,5 +1,6 @@
-import { DeveloperEntity } from '~/app/models/entity/developer';
 import { randomUUID } from 'node:crypto';
+
+import { DeveloperEntity } from '~/app/models/entity/developer';
 
 type Override = Partial<DeveloperEntity>;
 

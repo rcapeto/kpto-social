@@ -1,6 +1,6 @@
 import { getUrlEnvironment } from '~/utils/url-environment';
-import { DeveloperEntity } from '../models/entity/developer';
-import { renderPost } from './renderPost';
+import { DeveloperEntity } from '~/app/models/entity/developer';
+import { renderPost } from '~/app/views/renderPost';
 
 export function renderDeveloper(developer?: DeveloperEntity | null) {
   if (!developer) {

@@ -1,12 +1,11 @@
 import { Router } from 'express';
 
 import { serverConfig } from '@config/server';
-
 import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
-import { likesFindMany } from './findMany';
-import { checkLike } from './check';
-import { toggleLike } from './toggle';
+import { likesFindMany } from '~/routes/likes/findMany';
+import { checkLike } from '~/routes/likes/check';
+import { toggleLike } from '~/routes/likes/toggle';
 
 const route = Router();
 const routes = serverConfig.routes.likes;

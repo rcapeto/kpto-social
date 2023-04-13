@@ -11,10 +11,11 @@ import {
   PostsFindOneParams,
   PostsUpdateParams,
   PostsUpdateResponse,
-} from '../repositories/posts';
+} from '~/app/repositories/posts';
 import { client } from '~/service/prisma';
 import { PostEntity } from '~/app/models/entity/post';
 import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
+import { messages } from '@config/messages';
 
 export class PostsPrismaRepository implements PostsRepository {
   async update(params: PostsUpdateParams): PostsUpdateResponse {
@@ -22,24 +23,18 @@ export class PostsPrismaRepository implements PostsRepository {
       const { developerId, postId, description, thumbnail, title } = params;
 
       const post = await this.findOneById(postId);
+      const developer = await this.findDeveloperById(developerId);
 
-      if (!post) {
+      if (post.developerId !== developer.id) {
         throw new ErrorMessage(
-          'Post does not exists, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
-      if (post.developerId !== developerId) {
-        throw new ErrorMessage(
-          'You can not update this post, only the post author can update it.',
+          messages.AUTHORIZATION_POST_UPDATE,
           ErrorMessageCause.VALIDATION,
         );
       }
 
       await client.posts.update({
         where: {
-          id: postId,
+          id: post.id,
         },
         data: {
           thumbnail: thumbnail || post.thumbnail,
@@ -76,7 +71,7 @@ export class PostsPrismaRepository implements PostsRepository {
 
       if (!post) {
         throw new ErrorMessage(
-          'Post does not exists, please check the ID',
+          messages.NOT_FOUND_POST,
           ErrorMessageCause.VALIDATION,
         );
       }
@@ -95,24 +90,18 @@ export class PostsPrismaRepository implements PostsRepository {
       const { postId, developerId } = params;
 
       const post = await this.findOneById(postId);
+      const developer = await this.findDeveloperById(developerId);
 
-      if (!post) {
+      if (post.developerId !== developer.id) {
         throw new ErrorMessage(
-          'Post does not exists, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
-      if (post.developerId !== developerId) {
-        throw new ErrorMessage(
-          'You can not delete this post, only the post author can delete it.',
+          messages.AUTHORIZATION_POST_DELETE,
           ErrorMessageCause.VALIDATION,
         );
       }
 
       await client.posts.delete({
         where: {
-          id: postId,
+          id: post.id,
         },
       });
     } catch (err) {
@@ -120,6 +109,7 @@ export class PostsPrismaRepository implements PostsRepository {
       throw error;
     }
   }
+
   async findMany(params: PostsFindManyParams): PostsFindManyResponse {
     try {
       const { page, perPage, search } = params;
@@ -205,7 +195,34 @@ export class PostsPrismaRepository implements PostsRepository {
       },
     });
 
+    if (!post) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_POST,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
     return post;
+  }
+
+  async findDeveloperById(developerId: string) {
+    const developer = await client.developers.findUnique({
+      where: {
+        id: developerId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!developer) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_DEVELOPER,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
+    return developer;
   }
 
   async countCommentsByPost(postId: string) {

@@ -1,12 +1,11 @@
 import { Router } from 'express';
 
 import { serverConfig } from '@config/server';
+import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
 import { addFriend } from '~/routes/friends/add';
 import { removeFriend } from '~/routes/friends/remove';
 import { friendsFindMany } from '~/routes/friends/findMany';
-
-import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
 const route = Router();
 const routes = serverConfig.routes.friends;

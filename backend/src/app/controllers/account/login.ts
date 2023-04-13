@@ -12,11 +12,14 @@ export class AccountLoginController implements BaseController {
 
   async handler(request: Request, response: Response) {
     try {
-      const body = loginSchema.parse(request.body);
+      const { github, password } = request.body;
 
-      const { token } = await this.usecase.execute(body);
+      const query = { github, password };
+      const params = loginSchema.parse(query);
 
-      const successMessage = `Developer login with success: ${body.github}`;
+      const { token } = await this.usecase.execute(params);
+
+      const successMessage = `Developer login with success: ${params.github}`;
       logger('success', successMessage);
 
       return response.status(Status.OK).json({

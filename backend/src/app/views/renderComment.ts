@@ -1,5 +1,5 @@
 import { CommentEntity } from '~/app/models/entity/comment';
-import { renderDeveloper } from './renderDeveloper';
+import { renderDeveloper } from '~/app/views/renderDeveloper';
 
 export function renderComment(comment: CommentEntity) {
   const { author, ...rest } = comment;

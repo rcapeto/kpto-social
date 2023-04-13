@@ -1,5 +1,5 @@
 import { renderDeveloper } from '~/app/views/renderDeveloper';
-import { PostEntity } from '../models/entity/post';
+import { PostEntity } from '~/app/models/entity/post';
 import { getUrlEnvironment } from '~/utils/url-environment';
 
 export function renderPost(post?: PostEntity) {
