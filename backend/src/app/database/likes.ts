@@ -123,7 +123,7 @@ export class LikesPrismaRepository implements LikesRepository {
 
     if (!developer) {
       throw new ErrorMessage(
-        'Developer does not exists, please check the ID',
+        'Developer not found, please check the ID',
         ErrorMessageCause.VALIDATION,
       );
     }
