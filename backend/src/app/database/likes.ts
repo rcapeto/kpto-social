@@ -17,21 +17,20 @@ export class LikesPrismaRepository implements LikesRepository {
       const { developerId, postId } = params;
 
       const post = await this.checkHasPost(postId);
+      const developer = await this.checkHasDeveloper(developerId);
 
       const [like] = await client.likes.findMany({
         where: {
           postId: post.id,
-          developerId,
+          developerId: developer.id,
         },
       });
-
-      console.log('like >>>>', { like, developerId, post });
 
       if (!like) {
         await client.likes.create({
           data: {
-            developerId,
-            postId,
+            developerId: developer.id,
+            postId: post.id,
           },
         });
       } else {
@@ -75,19 +74,11 @@ export class LikesPrismaRepository implements LikesRepository {
       const { page, perPage, postId, search } = params;
 
       const post = await this.checkHasPost(postId);
-
-      if (!post) {
-        throw new ErrorMessage(
-          'Post does not exists, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
       const count = await this.countLikes(postId);
 
       const likes = await client.likes.findMany({
         where: {
-          postId: postId,
+          postId: post.id,
           OR: [
             {
               author: {
@@ -121,6 +112,23 @@ export class LikesPrismaRepository implements LikesRepository {
       const error = getErrorMessage(err);
       throw error;
     }
+  }
+
+  async checkHasDeveloper(developerId: string) {
+    const developer = await client.developers.findUnique({
+      where: {
+        id: developerId,
+      },
+    });
+
+    if (!developer) {
+      throw new ErrorMessage(
+        'Developer does not exists, please check the ID',
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
+    return developer;
   }
 
   async countLikes(postId: string) {
