@@ -45,8 +45,8 @@ export const serverConfig = {
     },
     likes: {
       toggle: '/likes/toggle/:id',
-      check: '/like/post/:id', //ver se está curtido ou não
-      findMany: '/likes/posts/:id', //ver todas os likes da publicação,
+      check: '/like/post/:id',
+      findMany: '/likes/posts/:id',
     },
   },
 };

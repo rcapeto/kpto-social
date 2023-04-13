@@ -13,10 +13,10 @@ server.use(cors());
 server.use(express.json());
 
 for (const uploadPath of uploadsPaths) {
-  server.use(
-    `/${uploadPath}`,
-    express.static(path.join(__dirname, '..', uploadPath)),
-  );
+  const staticPath = express.static(path.join(__dirname, '..', uploadPath));
+  const formattedUploadPath = `/${uploadPath}`;
+
+  server.use(formattedUploadPath, staticPath);
 }
 
 for (const route of routes) {

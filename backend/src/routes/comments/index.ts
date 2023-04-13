@@ -3,9 +3,9 @@ import { Router } from 'express';
 import { serverConfig } from '@config/server';
 import { ensureDeveloperIsAuthenticate } from '~/middlewares/ensureDeveloperIsAuthenticated';
 
-import { findManyComments } from './findMany';
-import { deleteComment } from './delete';
-import { createComment } from './create';
+import { findManyComments } from '~/routes/comments/findMany';
+import { deleteComment } from '~/routes/comments/delete';
+import { createComment } from '~/routes/comments/create';
 
 const route = Router();
 const routes = serverConfig.routes.comments;

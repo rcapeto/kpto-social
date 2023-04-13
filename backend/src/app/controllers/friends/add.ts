@@ -14,12 +14,14 @@ export class FriendsAddController implements BaseController {
     try {
       const developerId = request.developer_id;
       const userId = request.params?.id ?? '';
-      const params = friendshipSchema.parse({ developerId, userId });
+
+      const query = { developerId, userId };
+      const params = friendshipSchema.parse(query);
 
       await this.usecase.execute(params);
 
-      const message = `Developer[${developerId}] has a new friend[${params.userId}]`;
-      logger('success', message);
+      const successMessage = `Developer[${developerId}] has a new friend[${params.userId}]`;
+      logger('success', successMessage);
 
       return response.status(Status.CREATED).send();
     } catch (err) {

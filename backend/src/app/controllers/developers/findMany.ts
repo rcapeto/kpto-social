@@ -6,6 +6,7 @@ import { renderDeveloper } from '~/app/views/renderDeveloper';
 import { Status } from '~/constants/status';
 import { logger } from '~/service/logger';
 import { getControllerError } from '~/utils/getControllerError';
+import { developersFindManySchema } from '~/validation/developers/findMany';
 
 export class DevelopersFindManyController implements BaseController {
   constructor(private usecase: DevelopersFindManyUsecase) {}
@@ -17,8 +18,9 @@ export class DevelopersFindManyController implements BaseController {
       const search = (request.query?.search as string) ?? '';
 
       const query = { perPage, page, search };
+      const params = developersFindManySchema.parse(query);
 
-      const { count, developers, ...rest } = await this.usecase.execute(query);
+      const { count, developers, ...rest } = await this.usecase.execute(params);
 
       const successMessage = `Get all developers[${count}] with success`;
       logger('success', successMessage);

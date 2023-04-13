@@ -14,12 +14,14 @@ export class PostsDeleteController implements BaseController {
     try {
       const postId = request.params?.id ?? '';
       const developerId = request.developer_id;
-      const params = deletePostSchema.parse({ postId, developerId });
+
+      const query = { postId, developerId };
+      const params = deletePostSchema.parse(query);
 
       await this.usecase.execute(params);
 
-      const message = `Post[${postId}] was deleted with success!`;
-      logger('success', message);
+      const successMessage = `Post[${postId}] was deleted with success!`;
+      logger('success', successMessage);
 
       return response.status(Status.OK).send();
     } catch (err) {

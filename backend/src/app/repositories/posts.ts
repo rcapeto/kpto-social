@@ -3,7 +3,6 @@ import { PostsFindManySchema } from '~/validation/posts/findMany';
 import { DeletePostSchema } from '~/validation/posts/delete';
 import { FindOnePostSchema } from '~/validation/posts/findOne';
 import { UpdatePostSchema } from '~/validation/posts/update';
-
 import { PostEntity } from '~/app/models/entity/post';
 
 export type PostsCreateParams = CreatePostSchema;

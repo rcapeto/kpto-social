@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getValidationErrors } from '../validationErrors';
+import { getValidationErrors } from '~/validation/validationErrors';
 
 const errors = {
   developerId: getValidationErrors('developerId'),

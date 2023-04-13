@@ -22,7 +22,6 @@ export class CommentsFindManyController implements BaseController {
       const { comments, count, ...rest } = await this.usecase.execute(query);
 
       const successMessage = `Get all Post[${postId}] comments[${count}] with success`;
-
       logger('success', successMessage);
 
       response.setHeader('X-TOTAL-COUNT', count);

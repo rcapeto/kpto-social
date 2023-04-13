@@ -11,9 +11,10 @@ import {
   DevelopersUpdateParams,
 } from '~/app/repositories/developers';
 import { client } from '~/service/prisma';
-import { DeveloperEntity } from '../models/entity/developer';
+import { DeveloperEntity } from '~/app/models/entity/developer';
 import { checkPassword, encryptPassword } from '~/utils/password';
-import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
+import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
+import { messages } from '@config/messages';
 
 export class DevelopersPrismaRepository implements DevelopersRepository {
   async delete(
@@ -24,23 +25,16 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
 
       const developer = await this.findOneById(developerId);
 
-      if (!developer) {
-        throw new ErrorMessage(
-          'Developer not found, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
       if (developer.id !== developerId) {
         throw new ErrorMessage(
-          'You can not delete this account, only the correct user can delete it.',
+          messages.AUTHORIZATION_ACCOUNT,
           ErrorMessageCause.VALIDATION,
         );
       }
 
       await client.developers.delete({
         where: {
-          id: developerId,
+          id: developer.id,
         },
       });
     } catch (err) {
@@ -110,13 +104,6 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
 
       const developer = await this.findOneById(developerId);
 
-      if (!developer) {
-        throw new ErrorMessage(
-          'Developer not found, please check the ID',
-          ErrorMessageCause.VALIDATION,
-        );
-      }
-
       return {
         developer: developer as DeveloperEntity,
       };
@@ -150,6 +137,14 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
         },
       },
     });
+
+    if (!developer) {
+      throw new ErrorMessage(
+        messages.NOT_FOUND_DEVELOPER,
+        ErrorMessageCause.VALIDATION,
+      );
+    }
+
     return developer;
   }
 

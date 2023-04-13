@@ -5,10 +5,11 @@ import {
   FriendsRepositoryToggleParams,
   FriendsRepositoryFindManyParams,
   FriendsRepositoryFindManyResponse,
-} from '../repositories/friends';
+} from '~/app/repositories/friends';
 import { getErrorMessage } from '~/utils/getErrorMessage';
-import { ErrorMessage, ErrorMessageCause } from '../models/ErrorMessage';
-import { DeveloperEntity } from '../models/entity/developer';
+import { ErrorMessage, ErrorMessageCause } from '~/app/models/ErrorMessage';
+import { DeveloperEntity } from '~/app/models/entity/developer';
+import { messages } from '@config/messages';
 
 export class FriendsPrismaRepository implements FriendsRepository {
   async findMany(
@@ -17,20 +18,12 @@ export class FriendsPrismaRepository implements FriendsRepository {
     try {
       const { developerId, page, search, perPage } = params;
 
-      const developer = await this.findById(developerId);
-
-      if (!developer) {
-        throw new ErrorMessage(
-          'To get a new friend, please register in application.',
-          ErrorMessageCause.UNAUTHORIZED,
-        );
-      }
-
+      const developer = await this.findDeveloperById(developerId);
       const count = await this.countFriends(developerId);
 
-      const developerFriends = await client.developers.findUnique({
+      const developerWithFriends = await client.developers.findUnique({
         where: {
-          id: developerId,
+          id: developer.id,
         },
         select: {
           friends: {
@@ -71,7 +64,7 @@ export class FriendsPrismaRepository implements FriendsRepository {
         perPage,
         count,
         search,
-        friends: (developerFriends?.friends ?? []) as DeveloperEntity[],
+        friends: (developerWithFriends?.friends ?? []) as DeveloperEntity[],
         page,
       };
     } catch (err) {
@@ -86,41 +79,27 @@ export class FriendsPrismaRepository implements FriendsRepository {
     try {
       const { developerId, userId } = params;
 
-      const developer = await this.findById(developerId);
-      const user = await this.findById(userId);
-
-      if (!developer) {
-        throw new ErrorMessage(
-          'To get a new friend, please register in application.',
-          ErrorMessageCause.UNAUTHORIZED,
-        );
-      }
-
-      if (!user) {
-        throw new ErrorMessage(
-          'The developer you want to be a friend does not exist',
-          ErrorMessageCause.ERROR,
-        );
-      }
+      const developer = await this.findDeveloperById(developerId);
+      const user = await this.findDeveloperById(userId, true);
 
       await client.developers.update({
         where: {
-          id: developerId,
+          id: developer.id,
         },
         data: {
           friends: {
-            connect: [{ id: userId }],
+            connect: [{ id: user.id }],
           },
         },
       });
 
       await client.developers.update({
         where: {
-          id: userId,
+          id: user.id,
         },
         data: {
           friends: {
-            connect: [{ id: developerId }],
+            connect: [{ id: developer.id }],
           },
         },
       });
@@ -136,41 +115,27 @@ export class FriendsPrismaRepository implements FriendsRepository {
     try {
       const { developerId, userId } = params;
 
-      const developer = await this.findById(developerId);
-      const user = await this.findById(userId);
-
-      if (!developer) {
-        throw new ErrorMessage(
-          'To remove a friend, please register in application.',
-          ErrorMessageCause.UNAUTHORIZED,
-        );
-      }
-
-      if (!user) {
-        throw new ErrorMessage(
-          'The developer you want to remove a friendship does not exist',
-          ErrorMessageCause.ERROR,
-        );
-      }
+      const developer = await this.findDeveloperById(developerId);
+      const user = await this.findDeveloperById(userId, true);
 
       await client.developers.update({
         where: {
-          id: developerId,
+          id: developer.id,
         },
         data: {
           friends: {
-            disconnect: [{ id: userId }],
+            disconnect: [{ id: user.id }],
           },
         },
       });
 
       await client.developers.update({
         where: {
-          id: userId,
+          id: user.id,
         },
         data: {
           friends: {
-            disconnect: [{ id: developerId }],
+            disconnect: [{ id: developer.id }],
           },
         },
       });
@@ -180,12 +145,25 @@ export class FriendsPrismaRepository implements FriendsRepository {
     }
   }
 
-  async findById(developerId: string) {
+  async findDeveloperById(developerId: string, isFriend?: boolean) {
     const developer = await client.developers.findUnique({
       where: {
         id: developerId,
       },
+      select: {
+        id: true,
+        friends: true,
+      },
     });
+
+    if (!developer) {
+      const message =
+        messages[
+          isFriend ? 'NOT_FOUND_DEVELOPER_FRIEND' : 'NOT_FOUND_DEVELOPER'
+        ];
+      throw new ErrorMessage(message, ErrorMessageCause.UNAUTHORIZED);
+    }
+
     return developer;
   }
 

@@ -13,13 +13,14 @@ export class DevelopersMeController implements BaseController {
 
   async handler(request: Request, response: Response) {
     try {
-      const id = request.developer_id;
-      const { developerId } = findOneDeveloperSchema.parse({ developerId: id });
+      const developerId = request.developer_id;
 
-      const { developer } = await this.usecase.execute({ developerId });
+      const query = { developerId };
+      const params = findOneDeveloperSchema.parse(query);
+
+      const { developer } = await this.usecase.execute(params);
 
       const successMessage = `Get developer with ID: ${developerId}`;
-
       logger('success', successMessage);
 
       return response.status(Status.OK).json({

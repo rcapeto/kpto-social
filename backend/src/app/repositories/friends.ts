@@ -2,7 +2,7 @@ import {
   FriendshipSchema,
   FriendshipFindManySchema,
 } from '~/validation/friends';
-import { DeveloperEntity } from '../models/entity/developer';
+import { DeveloperEntity } from '~/app/models/entity/developer';
 
 export type FriendsRepositoryToggleParams = FriendshipSchema;
 export type FriendsRepositoryToggleResponse = Promise<void>;
