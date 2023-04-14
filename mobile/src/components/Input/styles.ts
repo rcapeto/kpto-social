@@ -44,4 +44,5 @@ export default StyleSheet.create({
     color: colors.red[500],
     fontFamily: fontFamily.regular,
   },
+  renderValidation: {},
 })

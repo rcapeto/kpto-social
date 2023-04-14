@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useState, ReactNode } from 'react'
 import {
   View,
   TextInput,
@@ -32,9 +32,11 @@ export interface InputProps {
   isPassword?: boolean
   iconLeft?: ReactElement
   placeholder?: string
-  inputProps?: NativeProps
+  nativeProps?: NativeProps
   required?: boolean
   name: string
+  hasValidation?: boolean
+  validationComponent?: (text: string) => ReactNode
 }
 
 const { colors, fontSize } = useTheme()
@@ -47,9 +49,11 @@ export function Input({
   iconLeft,
   isPassword = false,
   placeholder,
-  inputProps,
+  nativeProps,
   required,
   name,
+  hasValidation,
+  validationComponent,
 }: InputProps) {
   const [hideValue, setHideValue] = useState(isPassword)
 
@@ -82,7 +86,7 @@ export function Input({
 
         <TextInput
           style={styles.input}
-          {...inputProps}
+          {...nativeProps}
           id={name}
           placeholder={placeholder}
           placeholderTextColor={colors.gray[300]}
@@ -114,6 +118,16 @@ export function Input({
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{errorMessage}</Text>
           </View>
+        }
+      />
+
+      <RenderValidation
+        validation={Boolean(hasValidation)}
+        validComponent={
+          <RenderValidation
+            validation={Boolean(validationComponent)}
+            validComponent={validationComponent?.(value ?? '')}
+          />
         }
       />
     </View>
