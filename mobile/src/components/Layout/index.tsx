@@ -7,22 +7,25 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native'
-import { useTheme } from '@hooks/useTheme'
-import { ComponentWithChildren } from '@interfaces/children'
-import { type HeaderProps, Header } from '@components/Header'
-import { RenderValidation } from '../RenderValidation'
+
+import { useTheme } from '~/hooks/useTheme'
+import { ComponentWithChildren } from '~/interfaces/children'
+import { type HeaderProps, Header } from '~/components/Header'
+import { RenderValidation } from '~/components/RenderValidation'
 
 import styles from './styles'
 
 export interface LayoutProps extends ComponentWithChildren {
   activeHeader?: boolean
   headerProps?: HeaderProps
+  contentWithPadding?: boolean
 }
 
 export function Layout({
   children,
   activeHeader = false,
   headerProps = {},
+  contentWithPadding = false,
 }: LayoutProps) {
   const { isAndroid } = useTheme()
 
@@ -36,18 +39,27 @@ export function Layout({
     return style
   }, [activeHeader])
 
+  const contentStyles = useMemo(() => {
+    const style: StyleProp<ViewStyle>[] = [styles.content]
+
+    if (contentWithPadding) {
+      style.push(styles.padding)
+    }
+
+    return style
+  }, [contentWithPadding])
+
   return (
     <KeyboardAvoidingView
       behavior={isAndroid ? 'height' : 'padding'}
-      style={styles.flexOne}
-    >
+      style={styles.flexOne}>
       <View style={containerStyles}>
         <RenderValidation
           validation={activeHeader}
           validComponent={<Header {...headerProps} />}
         />
 
-        <View style={styles.content}>
+        <View style={contentStyles}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Fragment>{children}</Fragment>
           </TouchableWithoutFeedback>

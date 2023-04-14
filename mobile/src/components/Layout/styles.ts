@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { useTheme } from '@hooks/useTheme'
+import { useTheme } from '~/hooks/useTheme'
 
 const { colors, isAndroid } = useTheme()
 
@@ -12,8 +12,10 @@ export default StyleSheet.create({
     flex: 1,
   },
   content: {
-    paddingHorizontal: 15,
     flex: 1,
+  },
+  padding: {
+    paddingHorizontal: 20,
   },
   withNotHeader: {
     paddingTop: isAndroid ? 20 : 70,

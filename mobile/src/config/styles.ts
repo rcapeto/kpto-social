@@ -33,6 +33,7 @@ export const fontSize = {
 export const isAndroid = Platform.OS === 'android'
 
 export const fontFamily = {
+  black: 'Roboto_900Black',
   bold: 'Roboto_700Bold',
   regular: 'Roboto_400Regular',
   medium: 'Roboto_500Medium',

@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
+import { useTheme } from '~/hooks/useTheme'
+import { RenderValidation } from '~/components/RenderValidation'
+
 import styles from './styles'
-import { useTheme } from '@hooks/useTheme'
-import { RenderValidation } from '@components/RenderValidation'
 
 export interface HeaderProps {
   showBack?: boolean

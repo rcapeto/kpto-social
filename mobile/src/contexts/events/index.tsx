@@ -1,9 +1,9 @@
 import React, { createContext } from 'react'
-import { ComponentWithChildren } from '@interfaces/children'
+import { ComponentWithChildren } from '~/interfaces/children'
 
-import { EventContextValues } from '@contexts/events/types'
+import { EventContextValues } from '~/contexts/events/types'
 import { EventManager } from '@events/event-manager'
-import { startListeners } from '@contexts/events/listeners'
+import { startListeners } from '~/contexts/events/listeners'
 
 export const EventContext = createContext({} as EventContextValues)
 
