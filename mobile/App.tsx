@@ -7,8 +7,9 @@ import {
   Roboto_900Black,
   useFonts,
 } from '@expo-google-fonts/roboto'
-import { Login } from '~/screens/authentication/Login'
+
 import { Fragment } from 'react'
+import { Routes } from '~/routes'
 
 export default function App() {
   const [isFontsLoaded] = useFonts({
@@ -25,7 +26,7 @@ export default function App() {
   return (
     <Fragment>
       <StatusBar style="light" />
-      <Login />
+      <Routes />
     </Fragment>
   )
 }
