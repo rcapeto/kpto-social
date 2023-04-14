@@ -1,22 +1,21 @@
 import { useMemo } from 'react'
-import { View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigation } from '@react-navigation/native'
 
 import { Layout } from '~/components/Layout'
-import { SectionTitle } from '~/components/SectionTitle'
 import { Input, InputProps } from '~/components/Input'
 import { Mapper } from '~/components/Mapper'
 import { useTheme } from '~/hooks/useTheme'
 import {
-  LoginSchema,
-  loginSchema,
-} from '~/utils/validations/authentication/login'
+  RegisterSchema,
+  registerSchema,
+} from '~/utils/validations/authentication/register'
 
 import styles from './styles'
 import { Button } from '~/components/Button'
+import { HelpPassword } from '~/components/HelpPassword'
 
 const { colors, fontSize } = useTheme()
 
@@ -25,27 +24,35 @@ const defaultIconStyle = {
   size: fontSize.lg,
 }
 
-export function Login() {
-  const navigation = useNavigation()
-
-  const { control, handleSubmit } = useForm<LoginSchema>({
+export function Register() {
+  const { control, handleSubmit } = useForm<RegisterSchema>({
     defaultValues: {
       github: '',
       password: '',
+      confirm_password: '',
+      name: '',
     },
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(registerSchema),
   })
 
-  function handlePressLoginButton(values: LoginSchema) {
+  function handlePressRegisterButton(values: RegisterSchema) {
     console.log('values here', values)
-  }
-
-  function handleGoToRegisterScreen() {
-    navigation.navigate('register')
   }
 
   const inputs = useMemo<InputProps[]>(() => {
     return [
+      {
+        label: 'Nome Completo',
+        placeholder: 'John Doe',
+        required: true,
+        iconLeft: <Feather name="user" {...defaultIconStyle} />,
+        name: 'name',
+        nativeProps: {
+          autoComplete: 'name',
+          autoCorrect: false,
+          autoCapitalize: 'words',
+        },
+      },
       {
         label: 'Github',
         placeholder: '@seu-git',
@@ -53,8 +60,9 @@ export function Login() {
         iconLeft: <Feather name="user" {...defaultIconStyle} />,
         name: 'github',
         nativeProps: {
-          autoComplete: 'off',
           autoCorrect: false,
+          autoCapitalize: 'none',
+          autoComplete: 'off',
         },
       },
       {
@@ -65,18 +73,33 @@ export function Login() {
         iconLeft: <Feather name="lock" {...defaultIconStyle} />,
         name: 'password',
         nativeProps: {
-          autoComplete: 'off',
           autoCorrect: false,
+          autoComplete: 'off',
+        },
+      },
+      {
+        label: 'Confirmação de senha',
+        required: true,
+        isPassword: true,
+        placeholder: 'Confirme sua senha',
+        iconLeft: <Feather name="lock" {...defaultIconStyle} />,
+        name: 'confirm_password',
+        nativeProps: {
+          autoCorrect: false,
+          autoComplete: 'off',
         },
       },
     ]
   }, [])
 
   return (
-    <Layout contentWithPadding>
-      <SectionTitle text="Entrar" isCenter />
-
-      <View style={styles.form}>
+    <Layout
+      contentWithPadding
+      activeHeader
+      headerProps={{ showBack: true, title: 'Novo usuário' }}>
+      <ScrollView
+        contentContainerStyle={styles.form}
+        showsVerticalScrollIndicator={false}>
         <Mapper
           items={inputs}
           keyExtractor={(input) => input.name}
@@ -84,7 +107,7 @@ export function Login() {
             <View style={styles.input}>
               <Controller
                 control={control}
-                name={input.name as keyof LoginSchema}
+                name={input.name as keyof RegisterSchema}
                 rules={{ required: input.required }}
                 render={({
                   field: { onBlur, onChange, name, value },
@@ -97,6 +120,8 @@ export function Login() {
                     onChangeText={onChange}
                     errorMessage={errors[name]?.message}
                     nativeProps={{ onBlur }}
+                    hasValidation={name === 'confirm_password'}
+                    validationComponent={(text) => <HelpPassword text={text} />}
                   />
                 )}
               />
@@ -104,21 +129,11 @@ export function Login() {
           )}
         />
 
-        <Button onPress={handleSubmit(handlePressLoginButton)} text="Entrar" />
-
         <Button
-          onPress={handleGoToRegisterScreen}
-          text="Não possui uma conta? Cadastre=se"
-          rightIcon={
-            <Feather
-              name="arrow-right"
-              {...defaultIconStyle}
-              color={colors.purple[500]}
-            />
-          }
-          variation="outlined"
+          onPress={handleSubmit(handlePressRegisterButton)}
+          text="Cadastre-se"
         />
-      </View>
+      </ScrollView>
     </Layout>
   )
 }
