@@ -1,5 +1,4 @@
 import { StatusBar } from 'expo-status-bar'
-import { Text } from 'react-native'
 import {
   Roboto_400Regular,
   Roboto_500Medium,
@@ -10,6 +9,8 @@ import {
 
 import { Fragment } from 'react'
 import { Routes } from '~/routes'
+import { LoadingPage } from '~/screens/static/Loading'
+import { RenderValidation } from '~/components/RenderValidation'
 
 export default function App() {
   const [isFontsLoaded] = useFonts({
@@ -19,14 +20,15 @@ export default function App() {
     Roboto_900Black,
   })
 
-  if (!isFontsLoaded) {
-    return <Text>Carregando</Text>
-  }
-
   return (
     <Fragment>
       <StatusBar style="light" />
-      <Routes />
+
+      <RenderValidation
+        validation={isFontsLoaded}
+        validComponent={<Routes />}
+        unvalidComponent={<LoadingPage />}
+      />
     </Fragment>
   )
 }
