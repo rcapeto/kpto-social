@@ -24,9 +24,23 @@ export type PostsFindOneResponse = Promise<{ post: PostEntity }>;
 
 export type PostsUpdateParams = UpdatePostSchema;
 export type PostsUpdateResponse = Promise<void>;
+
+export type PostsFindManyDeveloperParams = PostsFindManySchema & {
+  developerId: string;
+};
+export type PostsFindManyDeveloperResponse = Promise<
+  PostsFindManySchema & {
+    posts: PostEntity[];
+    count: number;
+  }
+>;
+
 export abstract class PostsRepository {
   create: (params: PostsCreateParams) => PostsCreateResponse;
   findMany: (params: PostsFindManyParams) => PostsFindManyResponse;
+  findManyDeveloperPosts: (
+    params: PostsFindManyDeveloperParams,
+  ) => PostsFindManyDeveloperResponse;
   delete: (params: PostsDeleteParams) => PostsDeleteResponse;
   findOne: (params: PostsFindOneParams) => PostsFindOneResponse;
   update: (params: PostsUpdateParams) => PostsUpdateResponse;

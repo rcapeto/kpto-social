@@ -11,6 +11,8 @@ import {
   PostsFindOneParams,
   PostsUpdateParams,
   PostsUpdateResponse,
+  PostsFindManyDeveloperParams,
+  PostsFindManyDeveloperResponse,
 } from '~/app/repositories/posts';
 import { client } from '~/service/prisma';
 import { PostEntity } from '~/app/models/entity/post';
@@ -130,6 +132,63 @@ export class PostsPrismaRepository implements PostsRepository {
                 name: {
                   contains: search,
                 },
+              },
+            },
+            {
+              description: {
+                contains: search,
+              },
+            },
+          ],
+        },
+        select: {
+          _count: true,
+          author: true,
+          createdAt: true,
+          description: true,
+          editAt: true,
+          developerId: true,
+          id: true,
+          thumbnail: true,
+          title: true,
+        },
+      });
+
+      return {
+        count,
+        page,
+        perPage,
+        posts: posts as PostEntity[],
+        search,
+      };
+    } catch (err) {
+      const error = getErrorMessage(err);
+      throw error;
+    }
+  }
+
+  async findManyDeveloperPosts(
+    params: PostsFindManyDeveloperParams,
+  ): PostsFindManyDeveloperResponse {
+    try {
+      const { developerId, page, perPage, search } = params;
+
+      const developer = await this.findDeveloperById(developerId);
+      const count = await client.posts.count({
+        where: {
+          developerId: developer.id,
+        },
+      });
+
+      const posts = await client.posts.findMany({
+        take: perPage,
+        skip: (page - 1) * perPage,
+        where: {
+          developerId: developer.id,
+          OR: [
+            {
+              title: {
+                contains: search,
               },
             },
             {

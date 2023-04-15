@@ -37,6 +37,7 @@ export const serverConfig = {
       delete: '/posts/delete/:id',
       findMany: '/posts',
       findOne: '/posts/detail/:id',
+      findManyDevelopers: '/posts/developer/:id',
     },
     comments: {
       findMany: '/comments/posts/:id',
