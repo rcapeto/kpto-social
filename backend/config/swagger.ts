@@ -81,7 +81,7 @@ export const swaggerConfig: JsonObject = {
       },
     },
     [routes.account.login]: {
-      get: {
+      post: {
         tags: ['Account'],
         summary: 'Login',
         description: 'Sign in a developer in application.',

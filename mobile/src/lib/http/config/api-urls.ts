@@ -21,6 +21,8 @@ export const apiURLs = {
     delete: (postId: string) => `/posts/delete/${postId} `,
     findMany: '/posts',
     findOne: (postId: string) => `/posts/detail/${postId}`,
+    findManyDevelopers: (developerId: string) =>
+      `/posts/developer/${developerId}`,
   },
   comments: {
     findMany: (postId: string) => `/comments/posts/${postId}`,

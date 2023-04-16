@@ -9,6 +9,6 @@ const route = Router();
 const routes = serverConfig.routes.account;
 
 route.post(routes.register, registerDeveloper);
-route.get(routes.login, loginDeveloper);
+route.post(routes.login, loginDeveloper);
 
 export { route as accountRoute };
