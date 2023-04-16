@@ -26,3 +26,7 @@ export function RenderValidation(props: RenderValidationProps) {
   const { validation, validComponent, unvalidComponent } = props
   return <>{validation ? validComponent : unvalidComponent}</>
 }
+
+export function checkValidation(data: any) {
+  return Boolean(data)
+}

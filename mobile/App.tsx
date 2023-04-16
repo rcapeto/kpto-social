@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {
   Roboto_400Regular,
@@ -7,10 +8,9 @@ import {
   useFonts,
 } from '@expo-google-fonts/roboto'
 
-import { Fragment } from 'react'
-import { Routes } from '~/routes'
 import { LoadingPage } from '~/screens/static/Loading'
 import { RenderValidation } from '~/components/RenderValidation'
+import { Main } from '~/main'
 
 export default function App() {
   const [isFontsLoaded] = useFonts({
@@ -26,7 +26,7 @@ export default function App() {
 
       <RenderValidation
         validation={isFontsLoaded}
-        validComponent={<Routes />}
+        validComponent={<Main />}
         unvalidComponent={<LoadingPage />}
       />
     </Fragment>

@@ -62,7 +62,11 @@ export class EventManager {
     return Object.assign(emmitConfig, config)
   }
 
-  middleware(event: string, params?: Partial<EventManagerCallbackParams>) {
+  // TO-DO: transform data to emmit event
+  private middleware(
+    event: string,
+    params?: Partial<EventManagerCallbackParams>,
+  ) {
     const paramsSTR = JSON.stringify(params)
     console.log(
       `[EventManager] >>>> Emmit event: ${event} with params: ${paramsSTR}`,

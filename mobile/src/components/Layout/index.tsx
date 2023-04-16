@@ -1,4 +1,4 @@
-import React, { useMemo, Fragment } from 'react'
+import React, { useMemo, Fragment, PropsWithChildren } from 'react'
 import {
   StyleProp,
   View,
@@ -9,13 +9,12 @@ import {
 } from 'react-native'
 
 import { useTheme } from '~/hooks/useTheme'
-import { ComponentWithChildren } from '~/interfaces/children'
 import { type HeaderProps, Header } from '~/components/Header'
 import { RenderValidation } from '~/components/RenderValidation'
 
 import styles from './styles'
 
-export interface LayoutProps extends ComponentWithChildren {
+export interface LayoutProps extends PropsWithChildren {
   activeHeader?: boolean
   headerProps?: HeaderProps
   contentWithPadding?: boolean
