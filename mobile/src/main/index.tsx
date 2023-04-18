@@ -5,9 +5,16 @@ import { Compose } from '~/components/Compose'
 import { Routes } from '~/routes'
 import { ModalProvider } from '~/contexts/modal'
 import { EventContextProvider } from '~/contexts/events'
+import { AccountProvider } from '~/contexts/account'
+import { StorageProvider } from '~/contexts/storage'
 import { client } from '~/config/react-query'
 
-const appContexts = [EventContextProvider, ModalProvider]
+const appContexts = [
+  StorageProvider,
+  EventContextProvider,
+  ModalProvider,
+  AccountProvider,
+]
 
 export function Main() {
   return (

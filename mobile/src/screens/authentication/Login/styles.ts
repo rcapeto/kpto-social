@@ -7,4 +7,8 @@ export default StyleSheet.create({
   input: {
     marginBottom: 30,
   },
+  rememberContainer: {
+    marginVertical: 15,
+    paddingHorizontal: 10,
+  },
 })

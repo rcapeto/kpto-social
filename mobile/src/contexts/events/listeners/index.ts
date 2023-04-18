@@ -1,10 +1,10 @@
 import { EventManager } from '@events/event-manager'
 
-import { loginListeners } from '~/contexts/events/listeners/authentication/login'
+import { authenticationListeners } from '~/contexts/events/listeners/authentication'
 import { modalListeners } from '~/contexts/events/listeners/components/modal'
 
 export function startListeners(eventManager: EventManager) {
-  const listeners = [loginListeners, modalListeners]
+  const listeners = [authenticationListeners, modalListeners]
 
   for (const listener of listeners) {
     listener(eventManager)

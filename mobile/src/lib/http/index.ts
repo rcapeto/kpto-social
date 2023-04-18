@@ -1,13 +1,16 @@
 import { ApiResponse } from '@http/types/http'
 import { HTTPErrorEnum } from '@http/enums/errors'
 import { httpMessages } from '@http/constants/messages'
+import {} from '@http/routes/account'
 
-class Http {
+export class Http {
   private static INSTANCE: Http
 
-  private contructor() {}
+  private constructor() {
+    console.log('>>> Create: [HTTP library]')
+  }
 
-  public static getInstance(): Http {
+  public static getInstance() {
     if (!this.INSTANCE) {
       this.INSTANCE = new Http()
     }
@@ -28,13 +31,9 @@ class Http {
   }
 
   account() {}
-
   developers() {}
-
   comments() {}
-
   posts() {}
-
   likes() {}
 }
 

@@ -9,3 +9,5 @@ export interface ErrorResponse {
 }
 
 export type HTTPErrorCallback = (errorMessage?: string) => void
+export type HTTPCallback = () => void
+export type HTTPUnauthorizedCallback = () => void

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useForm, Controller } from 'react-hook-form'
@@ -17,6 +17,8 @@ import {
 
 import styles from './styles'
 import { Button } from '~/components/Button'
+import { useAccount } from '~/hooks/useAccount'
+import { Checkbox } from '~/components/Checkbox'
 
 const { colors, fontSize } = useTheme()
 
@@ -27,17 +29,30 @@ const defaultIconStyle = {
 
 export function Login() {
   const navigation = useNavigation()
+  const account = useAccount()
 
-  const { control, handleSubmit } = useForm<LoginSchema>({
+  const [rememberChecked, setRememberChecked] = useState(false)
+  const { control, handleSubmit, reset, formState } = useForm<LoginSchema>({
     defaultValues: {
-      github: '',
-      password: '',
+      github: 'admin',
+      password: '@Senha123',
     },
     resolver: zodResolver(loginSchema),
   })
 
-  function handlePressLoginButton(values: LoginSchema) {
-    console.log('values here', values)
+  async function handlePressLoginButton(values: LoginSchema) {}
+
+  function onSuccessLogin() {
+    if (rememberChecked) {
+      console.log('here here', formState)
+    }
+
+    resetForm()
+  }
+
+  function resetForm() {
+    reset()
+    setRememberChecked(false)
   }
 
   function handleGoToRegisterScreen() {
@@ -53,7 +68,7 @@ export function Login() {
         iconLeft: <Feather name="user" {...defaultIconStyle} />,
         name: 'github',
         nativeProps: {
-          autoComplete: 'off',
+          autoCapitalize: 'none',
           autoCorrect: false,
         },
       },
@@ -64,10 +79,6 @@ export function Login() {
         placeholder: 'Sua senha',
         iconLeft: <Feather name="lock" {...defaultIconStyle} />,
         name: 'password',
-        nativeProps: {
-          autoComplete: 'off',
-          autoCorrect: false,
-        },
       },
     ]
   }, [])
@@ -91,18 +102,26 @@ export function Login() {
                   formState: { errors },
                 }) => (
                   <Input
-                    {...input}
-                    name={name}
                     value={value}
                     onChangeText={onChange}
                     errorMessage={errors[name]?.message}
                     nativeProps={{ onBlur }}
+                    {...input}
+                    name={name}
                   />
                 )}
               />
             </View>
           )}
         />
+
+        <View style={styles.rememberContainer}>
+          <Checkbox
+            checkboxLabel="Salvar meu login"
+            checked={rememberChecked}
+            onCheck={setRememberChecked}
+          />
+        </View>
 
         <Button onPress={handleSubmit(handlePressLoginButton)} text="Entrar" />
 
