@@ -81,7 +81,7 @@ export const swaggerConfig: JsonObject = {
       },
     },
     [routes.account.login]: {
-      get: {
+      post: {
         tags: ['Account'],
         summary: 'Login',
         description: 'Sign in a developer in application.',
@@ -1034,6 +1034,146 @@ export const swaggerConfig: JsonObject = {
         responses: {
           200: {
             description: 'Get posts data with success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/FindManyPostsResponse',
+                },
+                example: {
+                  data: {
+                    posts: [
+                      {
+                        id: 'the-incredible-post-id',
+                        title: 'React Documentation',
+                        description: 'Look this new react documentation here: ',
+                        createdAt: '2023-04-10T05:05:21.713Z',
+                        editAt: null,
+                        developerId: 'developerId',
+                        author: {
+                          name: 'John Doe',
+                          avatar_url: {
+                            origin: '',
+                            web: '',
+                            mobile: '',
+                          },
+                          github: 'johndoe',
+                        },
+                        thumbnail: {
+                          origin: '',
+                          web: '',
+                          mobile: '',
+                        },
+                      },
+                    ],
+                    perPage: 10,
+                    page: 1,
+                    search: 'react',
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Some validation error',
+                    cause: 'validation_error',
+                  },
+                },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Please login to use this route.',
+                    cause: 'unauthorized_error',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ErrorResponse',
+                },
+                example: {
+                  data: {
+                    error: true,
+                    message: 'Internal Server Error',
+                    cause: 'server_error',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    [routes.posts.findManyDevelopers]: {
+      get: {
+        tags: ['Post'],
+        summary: 'Posts',
+        description: 'Get all developer posts',
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'Developer ID',
+          },
+          {
+            in: 'query',
+            name: 'page',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Page',
+          },
+          {
+            in: 'query',
+            name: 'perPage',
+            schema: {
+              type: 'number',
+            },
+            required: false,
+            description: 'Number of posts per page',
+          },
+          {
+            in: 'query',
+            name: 'search',
+            schema: {
+              type: 'string',
+            },
+            required: false,
+            description: 'Filter by post title or description',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Get developer posts data with success',
             content: {
               'application/json': {
                 schema: {

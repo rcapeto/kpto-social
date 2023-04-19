@@ -45,8 +45,8 @@ export class AccountPrismaRepository implements AccountRepository {
   async register(params: AccountRepositoryRegisterParams) {
     try {
       const { confirm_password, github, name, password } = params;
-
-      const developer = await this.findOneDeveloperByGithub(github);
+      const showError = false;
+      const developer = await this.findOneDeveloperByGithub(github, showError);
 
       if (password !== confirm_password) {
         throw new ErrorMessage(
@@ -79,14 +79,14 @@ export class AccountPrismaRepository implements AccountRepository {
     }
   }
 
-  async findOneDeveloperByGithub(github: string) {
+  async findOneDeveloperByGithub(github: string, showError = true) {
     const [developer] = await client.developers.findMany({
       where: {
         github,
       },
     });
 
-    if (!developer) {
+    if (!developer && showError) {
       throw new ErrorMessage(
         messages.NOT_FOUND_DEVELOPER,
         ErrorMessageCause.VALIDATION,

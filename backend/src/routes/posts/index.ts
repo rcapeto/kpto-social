@@ -10,6 +10,7 @@ import { findManyPosts } from '~/routes/posts/findMany';
 import { deletePost } from '~/routes/posts/delete';
 import { findOnePost } from '~/routes/posts/findOne';
 import { updatePost } from '~/routes/posts/update';
+import { findManyDeveloperPosts } from '~/routes/posts/findManyDeveloper';
 
 const multerPath = multer(multerConfig.posts);
 
@@ -24,6 +25,11 @@ route.post(
 );
 
 route.get(routes.findMany, ensureDeveloperIsAuthenticate, findManyPosts);
+route.get(
+  routes.findManyDevelopers,
+  ensureDeveloperIsAuthenticate,
+  findManyDeveloperPosts,
+);
 route.delete(routes.delete, ensureDeveloperIsAuthenticate, deletePost);
 route.get(routes.findOne, ensureDeveloperIsAuthenticate, findOnePost);
 

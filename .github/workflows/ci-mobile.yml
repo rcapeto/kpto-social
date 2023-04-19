@@ -1,0 +1,46 @@
+name: CI - Mobile
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'mobile/**'
+    branches:
+      - '**'
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./mobile
+
+      - name: Lint
+        run: yarn lint
+        working-directory: ./mobile
+  
+  types:
+    name: Types Checking
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./mobile
+
+      - name: Types check
+        run: yarn types:check
+        working-directory: ./mobile
