@@ -12,7 +12,7 @@ const api = axios.create({
   baseURL: appConfig.baseUrl[isAndroid ? 'android' : 'iOS'](
     appConfig.serverPort,
   ),
-  validateStatus: false,
+  validateStatus: () => true,
 })
 
 api.interceptors.response.use((response) => {
