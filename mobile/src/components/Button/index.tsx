@@ -1,4 +1,4 @@
-import { Fragment, ReactElement, ReactNode, useMemo } from 'react'
+import { Fragment, ReactElement, ReactNode, useCallback, useMemo } from 'react'
 import {
   StyleProp,
   Text,
@@ -82,10 +82,16 @@ export function Button({
     return style
   }, [variation, type])
 
+  const onPressButton = useCallback(() => {
+    if (!isLoading) {
+      onPress?.()
+    }
+  }, [isLoading, onPress])
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={onPressButton}
         {...nativeProps}
         style={buttonStyle}
         disabled={disabled || isLoading}>

@@ -60,7 +60,7 @@ export function Layout({
 
         <View style={contentStyles}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View>{children}</View>
+            <Fragment>{children}</Fragment>
           </TouchableWithoutFeedback>
         </View>
       </View>
