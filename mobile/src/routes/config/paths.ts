@@ -8,7 +8,7 @@ export const paths = {
     chat: 'chat',
     profile: 'profile',
     search: 'search',
-    createPublication: 'createPublication',
+    createPost: 'createPost',
   },
   bottomTabs: 'bottomTabs',
 }

@@ -5,11 +5,11 @@ import styles from './styles'
 
 const title = 'Publicar'
 
-export function CreatePublication() {
+export function CreatePost() {
   return (
     <Layout headerProps={{ title }} activeHeader contentWithPadding>
       <View style={styles.container}>
-        <Text style={{ color: 'white' }}>CreatePublication</Text>
+        <Text style={{ color: 'white' }}>CreatePost</Text>
       </View>
     </Layout>
   )
