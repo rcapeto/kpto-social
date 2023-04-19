@@ -3,6 +3,7 @@ import { ScrollView, Text, View } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigation } from '@react-navigation/native'
 
 import { Layout } from '~/components/Layout'
 import { Input, InputProps } from '~/components/Input'
@@ -16,6 +17,8 @@ import {
 import styles from './styles'
 import { Button } from '~/components/Button'
 import { HelpPassword } from '~/components/HelpPassword'
+import { useAccount } from '~/hooks/useAccount'
+import { useModal } from '~/hooks/useModal'
 
 const { colors, fontSize } = useTheme()
 
@@ -25,6 +28,10 @@ const defaultIconStyle = {
 }
 
 export function Register() {
+  const account = useAccount()
+  const navigation = useNavigation()
+  const modal = useModal()
+
   const { control, handleSubmit } = useForm<RegisterSchema>({
     defaultValues: {
       github: '',
@@ -35,8 +42,19 @@ export function Register() {
     resolver: zodResolver(registerSchema),
   })
 
-  function handlePressRegisterButton(values: RegisterSchema) {
-    console.log('values here', values)
+  async function handlePressRegisterButton(values: RegisterSchema) {
+    await account.register(values, handleGoToLogin)
+  }
+
+  function handleGoToLogin() {
+    navigation.goBack()
+    modal.open({
+      isSuccess: true,
+      title: 'Sucesso!',
+      description: 'Usuário criado com sucesso!',
+      icon: <Feather name="check-circle" color={colors.green[500]} size={50} />,
+      buttons: [{ text: 'Ok!', type: 'success', fullWidth: true }],
+    })
   }
 
   const inputs = useMemo<InputProps[]>(() => {
@@ -60,9 +78,8 @@ export function Register() {
         iconLeft: <Feather name="user" {...defaultIconStyle} />,
         name: 'github',
         nativeProps: {
-          autoCorrect: false,
           autoCapitalize: 'none',
-          autoComplete: 'off',
+          autoCorrect: false,
         },
       },
       {
@@ -119,8 +136,8 @@ export function Register() {
                     value={value}
                     onChangeText={onChange}
                     errorMessage={errors[name]?.message}
-                    nativeProps={{ onBlur }}
-                    hasValidation={name === 'confirm_password'}
+                    nativeProps={{ onBlur, ...input.nativeProps }}
+                    hasValidation={name === 'password'}
                     validationComponent={(text) => <HelpPassword text={text} />}
                   />
                 )}

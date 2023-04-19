@@ -11,3 +11,9 @@ export interface ErrorResponse {
 export type HTTPErrorCallback = (errorMessage?: string) => void
 export type HTTPCallback = () => void
 export type HTTPUnauthorizedCallback = () => void
+
+export interface HTTPConfig {
+  errorCallback?: HTTPErrorCallback
+  unauthorizedCallback?: HTTPUnauthorizedCallback
+  dispatchLoading?: HTTPCallback
+}

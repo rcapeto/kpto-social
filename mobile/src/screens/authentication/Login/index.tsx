@@ -19,6 +19,7 @@ import styles from './styles'
 import { Button } from '~/components/Button'
 import { useAccount } from '~/hooks/useAccount'
 import { Checkbox } from '~/components/Checkbox'
+import { useStorage } from '~/hooks/useStorage'
 
 const { colors, fontSize } = useTheme()
 
@@ -30,21 +31,32 @@ const defaultIconStyle = {
 export function Login() {
   const navigation = useNavigation()
   const account = useAccount()
+  const storage = useStorage()
 
   const [rememberChecked, setRememberChecked] = useState(false)
-  const { control, handleSubmit, reset, formState } = useForm<LoginSchema>({
-    defaultValues: {
-      github: 'admin',
-      password: '@Senha123',
-    },
-    resolver: zodResolver(loginSchema),
-  })
+  const { control, handleSubmit, reset, getValues, setValue } =
+    useForm<LoginSchema>({
+      defaultValues: {
+        github: '',
+        password: '',
+      },
+      resolver: zodResolver(loginSchema),
+    })
 
-  async function handlePressLoginButton(values: LoginSchema) {}
+  async function handlePressLoginButton(values: LoginSchema) {
+    await account.login(values, onSuccessLogin)
+  }
+
+  function saveLoginInStorage(login: LoginSchema) {
+    storage.insertNewValue('loginRemember', login)
+  }
 
   function onSuccessLogin() {
     if (rememberChecked) {
-      console.log('here here', formState)
+      const values = getValues()
+      saveLoginInStorage(values)
+    } else {
+      storage.removeItem('loginRemember')
     }
 
     resetForm()
@@ -82,6 +94,18 @@ export function Login() {
       },
     ]
   }, [])
+
+  useEffect(() => {
+    storage.getAsync('loginRemember').then((login) => {
+      if (login) {
+        const data = storage.convertData(login) as LoginSchema
+
+        setValue('github', data.github)
+        setValue('password', data.password)
+        setRememberChecked(true)
+      }
+    })
+  }, [storage, setValue])
 
   return (
     <Layout contentWithPadding>
@@ -123,7 +147,11 @@ export function Login() {
           />
         </View>
 
-        <Button onPress={handleSubmit(handlePressLoginButton)} text="Entrar" />
+        <Button
+          onPress={handleSubmit(handlePressLoginButton)}
+          text="Entrar"
+          isLoading={account.isRequesting}
+        />
 
         <Button
           onPress={handleGoToRegisterScreen}

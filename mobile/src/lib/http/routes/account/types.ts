@@ -35,7 +35,7 @@ export type RegisterParams = z.infer<typeof registerParams>
 export type RegisterResponse = ApiResponse<void>
 
 export const meParams = z.object({
-  token: z.string(errors.token.required).nonempty(errors.token.empty),
+  token: z.string(errors.token.required),
 })
 
 export type MeParams = z.infer<typeof meParams>

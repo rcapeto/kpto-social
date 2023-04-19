@@ -3,6 +3,8 @@ import axios from 'axios'
 import { http } from '@http/index'
 import { useTheme } from '~/hooks/useTheme'
 import { appConfig } from '~/config/app'
+import { HTTPErrorEnum } from '@http/enums/errors'
+import { httpMessages } from '@http/constants/messages'
 
 const { isAndroid } = useTheme()
 
@@ -14,7 +16,15 @@ const api = axios.create({
 })
 
 api.interceptors.response.use((response) => {
-  http.security(response)
+  const isError = Boolean(response?.data?.error)
+  const isUnauthorized = Boolean(
+    response?.data?.cause === HTTPErrorEnum.UNAUTHORIZED,
+  )
+
+  if (isError && isUnauthorized) {
+    const message = httpMessages.errors.unauthorized
+    throw new Error(message)
+  }
   return response
 })
 

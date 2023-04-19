@@ -1,7 +1,4 @@
-import { ApiResponse } from '@http/types/http'
-import { HTTPErrorEnum } from '@http/enums/errors'
-import { httpMessages } from '@http/constants/messages'
-import {} from '@http/routes/account'
+import * as account from '@http/routes/account'
 
 export class Http {
   private static INSTANCE: Http
@@ -18,23 +15,17 @@ export class Http {
     return this.INSTANCE
   }
 
-  security(response: ApiResponse) {
-    const isError = Boolean(response?.data?.error)
-    const isUnauthorized = Boolean(
-      response?.data?.cause === HTTPErrorEnum.UNAUTHORIZED,
-    )
-
-    if (isError && isUnauthorized) {
-      const message = httpMessages.errors.unauthorized
-      throw new Error(message)
+  getAccountRoutes() {
+    return {
+      login: account.login,
+      me: account.me,
+      register: account.register,
     }
   }
-
-  account() {}
-  developers() {}
-  comments() {}
-  posts() {}
-  likes() {}
+  // developers() {}
+  // comments() {}
+  // posts() {}
+  // likes() {}
 }
 
 export const http = Http.getInstance()

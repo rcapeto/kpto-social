@@ -27,7 +27,7 @@ export const registerSchema = z
   })
   .refine((data) => data.password === data.confirm_password, {
     message: 'Os campos de senha devem ser iguais',
-    path: ['password', 'confirm_password'],
+    path: ['confirm_password'],
   })
   .refine(
     (data) => {
