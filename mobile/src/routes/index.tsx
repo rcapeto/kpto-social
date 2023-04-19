@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { Text } from 'react-native'
 
 import { RenderValidation } from '~/components/RenderValidation'
 import { useAccount } from '~/hooks/useAccount'
 import { AuthenticationRoutes } from '~/routes/authentication'
 import { LoadingPage } from '~/screens/static/Loading'
+import { AppRoutes } from '~/routes/app'
 
 export function Routes() {
   const { checkIsLogged, isLogged } = useAccount()
@@ -17,7 +17,7 @@ export function Routes() {
         unvalidComponent={
           <RenderValidation
             validation={isLogged}
-            validComponent={<Text>Está logado</Text>}
+            validComponent={<AppRoutes />}
             unvalidComponent={<AuthenticationRoutes />}
           />
         }
