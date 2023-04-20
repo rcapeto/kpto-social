@@ -8,6 +8,7 @@ import { Home } from '~/screens/app/Home'
 import { Chat } from '~/screens/app/Chat'
 import { Profile } from '~/screens/app/Profile'
 import { Search } from '~/screens/app/Search'
+import { CreatePost } from '~/screens/app/CreatePost'
 
 interface TabbarItem {
   name: string
@@ -27,6 +28,14 @@ export const bottomTabs: TabbarItem[] = [
     options: createTabbarOptions({
       icon: 'message-circle',
       label: 'Conversas',
+    }),
+  },
+  {
+    name: paths.app.createPost,
+    component: CreatePost,
+    options: createTabbarOptions({
+      icon: 'plus',
+      label: 'Publicar',
     }),
   },
   {

@@ -7,6 +7,7 @@ export declare global {
       search: undefined
       chat: undefined
       profile: undefined
+      createPost: undefined
     }
   }
 }

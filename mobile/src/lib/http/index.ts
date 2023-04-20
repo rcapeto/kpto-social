@@ -1,6 +1,7 @@
 import * as account from '@http/routes/account'
+import * as posts from '@http/routes/posts'
 
-export class Http {
+class Http {
   private static INSTANCE: Http
 
   private constructor() {
@@ -20,6 +21,12 @@ export class Http {
       login: account.login,
       me: account.me,
       register: account.register,
+    }
+  }
+
+  getPostRoutes() {
+    return {
+      findMany: posts.findMany,
     }
   }
   // developers() {}

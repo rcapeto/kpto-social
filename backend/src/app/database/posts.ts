@@ -42,6 +42,7 @@ export class PostsPrismaRepository implements PostsRepository {
           thumbnail: thumbnail || post.thumbnail,
           title: title || post.title,
           description: description || post.description,
+          editAt: new Date(),
         },
       });
     } catch (err) {

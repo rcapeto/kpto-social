@@ -3899,6 +3899,11 @@ expo-keep-awake@~12.0.1:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-12.0.1.tgz#19c5ab55391394ded3f6c262b0707c7140658a11"
   integrity sha512-hqeCnb4033TyuZaXs93zTK7rjVJ3bywXATyMmKmKkLEsH2PKBAl/VmjlCOPQL/2Ncqz6aj7Wo//tjeJTARBD4g==
 
+expo-linear-gradient@~12.1.2:
+  version "12.1.2"
+  resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-12.1.2.tgz#25e352b179a73fb7c2de3c1bc48186557e445348"
+  integrity sha512-e1d6Hq5qsRL8sWutrOuQhuir4vHiRJ1PmvDIL8P33mt51Y8VFTQjTG/mr5qJlT8lUD/ADJfaBLzV7SNqSuDTLQ==
+
 expo-modules-autolinking@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-1.1.2.tgz#a81c65c63bd281922410c6d8c3ad6255b6305246"
@@ -6766,7 +6771,7 @@ react-native-gradle-plugin@^0.71.17:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz#cf780a27270f0a32dca8184eff91555d7627dd00"
   integrity sha512-OXXYgpISEqERwjSlaCiaQY6cTY5CH6j73gdkWpK0hedxtiWMWgH+i5TOi4hIGYitm9kQBeyDu+wim9fA8ROFJA==
 
-react-native-reanimated@2.14.4:
+react-native-reanimated@~2.14.4:
   version "2.14.4"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.14.4.tgz#3fa3da4e7b99f5dfb28f86bcf24d9d1024d38836"
   integrity sha512-DquSbl7P8j4SAmc+kRdd75Ianm8G+IYQ9T4AQ6lrpLVeDkhZmjWI0wkutKWnp6L7c5XNVUrFDUf69dwETLCItQ==

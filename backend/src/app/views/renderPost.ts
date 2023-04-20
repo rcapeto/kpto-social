@@ -9,8 +9,12 @@ export function renderPost(post?: PostEntity) {
 
   const { thumbnail: image, author, _count, comments, likes, ...rest } = post;
   const isEmptyImage = !String(image).length;
-  const mobile = getUrlEnvironment({ imagePath: image, isMobile: true });
-  const web = getUrlEnvironment({ imagePath: image });
+  const mobile = getUrlEnvironment({
+    imagePath: image,
+    isMobile: true,
+    uploadFolder: 'posts',
+  });
+  const web = getUrlEnvironment({ imagePath: image, uploadFolder: 'posts' });
 
   const thumbnail = {
     origin: image,
