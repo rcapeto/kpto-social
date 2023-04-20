@@ -1388,6 +1388,7 @@ export const swaggerConfig: JsonObject = {
                               web: '',
                               mobile: '',
                             },
+                            techs: 'react,react-native',
                           },
                           id: '74486506-e4b6-4d31-9da7-7c425f7260a8',
                           createdAt: '2023-04-12T20:37:47.112Z',
@@ -2548,6 +2549,9 @@ export const swaggerConfig: JsonObject = {
                     type: 'string',
                   },
                 },
+              },
+              techs: {
+                type: 'string',
               },
             },
           },
