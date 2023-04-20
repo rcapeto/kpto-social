@@ -12,14 +12,17 @@ import { RenderPost } from '~/screens/app/tabs/Home/components/RenderPost'
 import { FindManyPost } from '~/interfaces/entity/posts'
 import { useModal } from '~/hooks/useModal'
 import { useTheme } from '~/hooks/useTheme'
+import { getErrorMessage } from '~/utils/getErrorMessage'
 
 import styles from './styles'
+import { useAccount } from '~/hooks/useAccount'
 
 const title = 'Início'
 
 export function Home() {
   const modal = useModal()
   const { colors } = useTheme()
+  const { logout } = useAccount()
 
   const [posts, setPosts] = useState<FindManyPost[]>([])
   const [count, setCount] = useState(0)
@@ -31,17 +34,10 @@ export function Home() {
     refetch,
     isLoading,
     isRefetching,
-  } = usePosts({ perPage: 1 }, showModalError)
-
-  function showModalError(errorMessage?: string) {
-    modal.open({
-      isError: true,
-      title: 'Ops! Ocorreu algum erro',
-      description: errorMessage,
-      icon: <Feather name="alert-circle" color={colors.red[500]} size={50} />,
-      buttons: [{ text: 'Ok!', type: 'error', fullWidth: true }],
-    })
-  }
+  } = usePosts(
+    { perPage: 1 },
+    { errorCallback: modal.handleShowModalError, unauthorizedCallback: logout },
+  )
 
   async function handleRefresh() {
     setRefreshing(true)
@@ -55,11 +51,11 @@ export function Home() {
       setPosts(items)
       setCount(results?.[0]?.count ?? 0)
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : 'Ocorreu algum erro, por favor tente novamente'
-      showModalError(errorMessage)
+      const errorMessage = getErrorMessage(
+        err,
+        'Ocorreu algum erro, por favor tente novamente',
+      )
+      modal.handleShowModalError(errorMessage)
     } finally {
       setRefreshing(false)
     }

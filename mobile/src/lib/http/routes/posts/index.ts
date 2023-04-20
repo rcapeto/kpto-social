@@ -1,8 +1,11 @@
 import { HTTPConfig } from '@http/types/http'
 import {
-  FindManyPostsParams,
   findManyParams,
+  FindManyPostsParams,
   FindManyPostsResponse,
+  findOneParams,
+  FindOnePostParams,
+  FindOneResponse,
 } from '~/lib/http/routes/posts/types'
 
 import api from '~/services/api'
@@ -35,6 +38,24 @@ export async function findMany(
     const response = responseMapper(data, status)
 
     return { ...response, count }
+  } catch (err) {
+    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+  } finally {
+    config?.dispatchLoading?.()
+  }
+}
+
+export async function findOne(params: FindOnePostParams, config?: HTTPConfig) {
+  try {
+    config?.dispatchLoading?.()
+
+    const { postId } = findOneParams.parse(params)
+
+    const { data, status } = await api.get<FindOneResponse>(
+      path.findOne(postId),
+    )
+
+    return responseMapper(data, status)
   } catch (err) {
     errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
   } finally {

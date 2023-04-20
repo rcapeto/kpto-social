@@ -1,4 +1,5 @@
 import { ImageObject } from '~/interfaces/entity'
+import { FindOnePostComment } from '~/interfaces/entity/comment'
 
 export interface FindManyPost {
   createdAt: string
@@ -18,4 +19,8 @@ export interface FindManyPost {
     avatar_url: ImageObject
   }
   thumbnail: ImageObject
+}
+
+export type FindOnePost = Omit<FindManyPost, 'comments'> & {
+  comments: FindOnePostComment[]
 }

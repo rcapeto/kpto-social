@@ -8,6 +8,9 @@ export declare global {
       chat: undefined
       profile: undefined
       createPost: undefined
+      postDetail: {
+        postId: string
+      }
     }
   }
 }

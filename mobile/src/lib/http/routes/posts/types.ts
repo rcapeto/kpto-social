@@ -2,9 +2,11 @@ import { z } from 'zod'
 
 import { ApiResponse } from '@http/types/http'
 import { renderValidationError } from '~/utils/validations/renderError'
-import { FindManyPost } from '~/interfaces/entity/posts'
+import { FindManyPost, FindOnePost } from '~/interfaces/entity/posts'
 
-const errors = {}
+const errors = {
+  postId: renderValidationError('postId'),
+}
 
 export const findManyParams = z.object({
   search: z.string(),
@@ -19,4 +21,13 @@ export type FindManyPostsResponse = ApiResponse<{
   perPage: number
   search: string
   totalPages: number
+}>
+
+export const findOneParams = z.object({
+  postId: z.string(errors.postId.required).nonempty(errors.postId.empty),
+})
+
+export type FindOnePostParams = z.infer<typeof findOneParams>
+export type FindOneResponse = ApiResponse<{
+  post: FindOnePost
 }>

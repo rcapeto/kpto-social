@@ -14,7 +14,7 @@ import { RenderValidation } from '~/components/RenderValidation'
 import styles from './styles'
 import { useTheme } from '~/hooks/useTheme'
 
-type NativeProps = Omit<TouchableOpacityProps, 'onPress' | 'disabled'>
+type NativeProps = Omit<TouchableOpacityProps, 'onPress' | 'disabled' | 'style'>
 export type ButtonType = 'success' | 'error' | 'info' | 'default'
 export type ButtonVariation = 'default' | 'outlined'
 

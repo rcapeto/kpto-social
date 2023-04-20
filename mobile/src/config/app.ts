@@ -8,4 +8,5 @@ export const appConfig = {
     iOS: (port: string | number) => `http://localhost:${port}`,
   },
   serverPort: 3333,
+  locale: 'pt-br',
 }

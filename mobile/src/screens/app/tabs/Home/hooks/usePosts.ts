@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from 'react-query'
 import { http } from '@http/index'
 import { picker } from '~/utils/picker'
-import { HTTPErrorCallback } from '~/lib/http/types/http'
+import { HTTPConfig, HTTPErrorCallback } from '@http/types/http'
 
 interface Params {
   perPage?: number
@@ -11,13 +11,8 @@ interface Params {
 
 export type HookParams = Omit<Params, 'page'>
 
-async function findManyPosts(
-  params: Required<Params>,
-  errorCallback?: HTTPErrorCallback,
-) {
-  const response = await http
-    .getPostRoutes()
-    .findMany(params, { errorCallback })
+async function findManyPosts(params: Required<Params>, httpConfig: HTTPConfig) {
+  const response = await http.getPostRoutes().findMany(params, httpConfig)
 
   if (response && picker(response, 'data')) {
     const page = response.data.page ?? 1
@@ -41,16 +36,13 @@ async function findManyPosts(
   }
 }
 
-export function usePosts(
-  params: HookParams,
-  errorCallback?: HTTPErrorCallback,
-) {
+export function usePosts(params: HookParams, httpConfig: HTTPConfig) {
   const query = Object.assign({ search: '', perPage: 10 }, params)
 
   return useInfiniteQuery(
     ['developers', params.search],
     async ({ pageParam = 1 }) =>
-      await findManyPosts({ ...query, page: pageParam }, errorCallback),
+      await findManyPosts({ ...query, page: pageParam }, httpConfig),
     {
       getNextPageParam: (lastPage) => {
         if (lastPage?.hasNextPage) {

@@ -11,4 +11,7 @@ export const paths = {
     createPost: 'createPost',
   },
   bottomTabs: 'bottomTabs',
+  posts: {
+    detail: 'postDetail',
+  },
 }
