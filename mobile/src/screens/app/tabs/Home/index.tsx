@@ -4,16 +4,16 @@ import { Feather } from '@expo/vector-icons'
 
 import { Layout } from '~/components/Layout'
 import { Loading } from '~/components/Loading'
-import { usePosts } from '~/screens/app/Home/hooks/usePosts'
-import { PostsLoading } from '~/screens/app/Home/components/PostsLoading'
-import { RenderPost } from '~/screens/app/Home/components/RenderPost'
+import { RenderValidation } from '~/components/RenderValidation'
+import { usePosts } from '~/screens/app/tabs/Home/hooks/usePosts'
+import { PostsLoading } from '~/screens/app/tabs/Home/components/PostsLoading'
+import { RenderPost } from '~/screens/app/tabs/Home/components/RenderPost'
 
 import { FindManyPost } from '~/interfaces/entity/posts'
 import { useModal } from '~/hooks/useModal'
 import { useTheme } from '~/hooks/useTheme'
 
 import styles from './styles'
-import { RenderValidation } from '~/components/RenderValidation'
 
 const title = 'Início'
 
@@ -80,6 +80,10 @@ export function Home() {
   return (
     <Layout headerProps={{ title }} activeHeader>
       <View style={styles.container}>
+        <View style={styles.countContainer}>
+          <Text style={styles.countTitle}>Posts</Text>
+          <Text style={styles.count}>{count}</Text>
+        </View>
         <FlatList
           data={posts}
           keyExtractor={(post) => post.id}

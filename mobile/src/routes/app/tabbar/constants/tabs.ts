@@ -4,11 +4,11 @@ import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { paths } from '~/routes/config/paths'
 import { createTabbarOptions } from '~/routes/app/tabbar/utils/createTabbarOptions'
 
-import { Home } from '~/screens/app/Home'
-import { Chat } from '~/screens/app/Chat'
-import { Profile } from '~/screens/app/Profile'
-import { Search } from '~/screens/app/Search'
-import { CreatePost } from '~/screens/app/CreatePost'
+import { Home } from '~/screens/app/tabs/Home'
+import { Chat } from '~/screens/app/tabs/Chat'
+import { Profile } from '~/screens/app/tabs/Profile'
+import { Search } from '~/screens/app/tabs/Search'
+import { CreatePost } from '~/screens/app/tabs/CreatePost'
 
 interface TabbarItem {
   name: string

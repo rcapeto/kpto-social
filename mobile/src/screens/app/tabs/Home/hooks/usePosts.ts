@@ -2,7 +2,6 @@ import { useInfiniteQuery } from 'react-query'
 import { http } from '@http/index'
 import { picker } from '~/utils/picker'
 import { HTTPErrorCallback } from '~/lib/http/types/http'
-import { wait } from '~/utils/wait'
 
 interface Params {
   perPage?: number
