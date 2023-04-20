@@ -60,7 +60,11 @@ export class PostsPrismaRepository implements PostsRepository {
           id: postId,
         },
         select: {
-          _count: true,
+          _count: {
+            select: {
+              likes: true,
+            },
+          },
           createdAt: true,
           editAt: true,
           author: true,
@@ -69,6 +73,23 @@ export class PostsPrismaRepository implements PostsRepository {
           id: true,
           developerId: true,
           title: true,
+          comments: {
+            take: 3,
+            select: {
+              id: true,
+              createdAt: true,
+              author: {
+                select: {
+                  avatar_url: true,
+                  name: true,
+                  github: true,
+                  id: true,
+                },
+              },
+              developerId: true,
+              text: true,
+            },
+          },
         },
       });
 
@@ -80,7 +101,7 @@ export class PostsPrismaRepository implements PostsRepository {
       }
 
       return {
-        post: post as PostEntity,
+        post: post as unknown as PostEntity,
       };
     } catch (err) {
       const error = getErrorMessage(err);

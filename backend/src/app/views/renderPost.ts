@@ -1,4 +1,5 @@
 import { renderDeveloper } from '~/app/views/renderDeveloper';
+import { renderComment } from '~/app/views/renderComment';
 import { PostEntity } from '~/app/models/entity/post';
 import { getUrlEnvironment } from '~/utils/url-environment';
 
@@ -24,7 +25,7 @@ export function renderPost(post?: PostEntity) {
 
   return {
     ...rest,
-    comments: _count?.comments ?? 0,
+    comments: _count?.comments ?? comments.map(renderComment),
     likes: _count?.likes ?? 0,
     author: author ? renderDeveloper(author) : undefined,
     thumbnail,

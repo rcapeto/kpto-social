@@ -1376,8 +1376,25 @@ export const swaggerConfig: JsonObject = {
                       description: 'Post description',
                       id: '017ee7f0-6a23-4205-bd75-205b7fe32bde',
                       developerId: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
-                      comments: 8,
                       likes: 8,
+                      comments: [
+                        {
+                          author: {
+                            name: 'Jonathan Doe',
+                            id: 'dd8baf5e-dcbe-41e0-8282-3d2c713c7c48',
+                            github: 'jonathandoe',
+                            avatar_url: {
+                              origin: '',
+                              web: '',
+                              mobile: '',
+                            },
+                          },
+                          id: '74486506-e4b6-4d31-9da7-7c425f7260a8',
+                          createdAt: '2023-04-12T20:37:47.112Z',
+                          developerId: 'dd8baf5e-dcbe-41e0-8282-3d2c713c7c48',
+                          text: 'Comment add by: user: dd8baf5e-dcbe-41e0-8282-3d2c713c7c48',
+                        },
+                      ],
                       author: {
                         id: '57ab2ca0-64b8-44c6-bdbe-898fb45de074',
                         name: 'John Doe',
@@ -2538,7 +2555,52 @@ export const swaggerConfig: JsonObject = {
             type: 'number',
           },
           comments: {
-            type: 'number',
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                text: {
+                  type: 'string',
+                },
+                id: {
+                  type: 'string',
+                },
+                createdAt: {
+                  type: 'string',
+                },
+                developerId: {
+                  type: 'string',
+                },
+                author: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                    },
+                    name: {
+                      type: 'string',
+                    },
+                    github: {
+                      type: 'string',
+                    },
+                    avatar_url: {
+                      type: 'object',
+                      properties: {
+                        origin: {
+                          type: 'string',
+                        },
+                        web: {
+                          type: 'string',
+                        },
+                        mobile: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
