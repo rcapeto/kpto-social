@@ -11,7 +11,7 @@ import {
   registerParams,
 } from '@http/routes/account/types'
 
-import api, { manipulateHeaderAPI } from '~/services/api'
+import api from '~/services/api'
 import { apiURLs } from '@http/config/api-urls'
 import { responseMapper, errorMapper } from '@http/utils/mapper'
 
