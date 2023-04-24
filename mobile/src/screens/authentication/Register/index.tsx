@@ -47,13 +47,19 @@ export function Register() {
   }
 
   function handleGoToLogin() {
-    navigation.goBack()
     modal.open({
       isSuccess: true,
       title: 'Sucesso!',
       description: 'Usuário criado com sucesso!',
       icon: <Feather name="check-circle" color={colors.green[500]} size={50} />,
-      buttons: [{ text: 'Ok!', type: 'success', fullWidth: true }],
+      buttons: [
+        {
+          text: 'Ok!',
+          type: 'success',
+          fullWidth: true,
+          onPress: navigation.goBack,
+        },
+      ],
     })
   }
 
