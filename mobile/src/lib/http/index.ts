@@ -27,6 +27,7 @@ class Http {
   getPostRoutes() {
     return {
       findMany: posts.findMany,
+      findOne: posts.findOne,
     }
   }
   // developers() {}

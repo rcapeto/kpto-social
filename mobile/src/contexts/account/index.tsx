@@ -26,25 +26,12 @@ export function AccountProvider(props: PropsWithChildren) {
   const { colors } = useTheme()
   const [state, dispatch] = useAccountReducer()
 
-  const handleShowModalError = useCallback(
-    (errorMessage?: string) => {
-      modal.open({
-        isError: true,
-        title: 'Ops! Ocorreu algum erro',
-        description: errorMessage,
-        icon: <Feather name="alert-circle" color={colors.red[500]} size={50} />,
-        buttons: [{ text: 'Ok!', type: 'error', fullWidth: true }],
-      })
-    },
-    [modal, colors.red],
-  )
-
   function dispatchLoading() {
     dispatch({ type: 'TOGGLE_REQUEST' })
   }
 
   async function login(params: LoginParams, successCallback?: SuccessCallback) {
-    const errorCallback = handleShowModalError
+    const errorCallback = modal.handleShowModalError
 
     const response = await http.getAccountRoutes().login(params, {
       errorCallback,
@@ -67,7 +54,7 @@ export function AccountProvider(props: PropsWithChildren) {
 
   const checkDeveloper = useCallback(
     async (params: MeParams) => {
-      const errorCallback = handleShowModalError
+      const errorCallback = modal.handleShowModalError
       const { token } = Object.assign({ token: '' }, params)
       const query = { token }
 
@@ -87,14 +74,14 @@ export function AccountProvider(props: PropsWithChildren) {
         dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer } })
       }
     },
-    [dispatch, storage, handleShowModalError],
+    [dispatch, storage, modal],
   )
 
   async function register(
     params: RegisterParams,
     successCallback?: SuccessCallback,
   ) {
-    const errorCallback = handleShowModalError
+    const errorCallback = modal.handleShowModalError
 
     const response = await http.getAccountRoutes().register(params, {
       dispatchLoading,

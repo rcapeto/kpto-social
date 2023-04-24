@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import moment from 'moment'
+import { useNavigation } from '@react-navigation/native'
 
 import { FindManyPost } from '~/interfaces/entity/posts'
 import { getImage } from '~/utils/getImage'
@@ -21,11 +22,13 @@ interface Props {
 const { colors, fontSize } = useTheme()
 
 export function RenderPost({ post }: Props) {
+  const navigation = useNavigation()
+
   const [liked, setLiked] = useState(false)
 
   const handleNavigatePostDetail = useCallback(() => {
-    console.log('navigate to screen [detailPost]', post.id)
-  }, [post.id])
+    navigation.navigate('postDetail', { postId: post.id })
+  }, [post.id, navigation])
 
   const handleNavigateComments = useCallback(() => {
     console.log('navigate to screen [comments]', post.id)

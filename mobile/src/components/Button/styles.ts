@@ -79,9 +79,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   iconLeft: {
-    marginRight: 5,
+    marginRight: 10,
   },
   iconRight: {
-    marginLeft: 5,
+    marginLeft: 10,
   },
 })
