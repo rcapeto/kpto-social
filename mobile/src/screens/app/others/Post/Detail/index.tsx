@@ -22,8 +22,8 @@ export function PostDetail() {
   const { logout } = useAccount()
   const modal = useModal()
   const navigation = useNavigation()
-
   const route = useRoute()
+
   const params = route.params as Route
   const postId = useMemo(() => params.postId ?? '', [params])
 
