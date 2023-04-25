@@ -1,76 +1,76 @@
 import { useMemo, useState } from 'react'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import { Text } from 'react-native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useQuery } from 'react-query'
 
 import { Layout } from '~/components/Layout'
+import { useModal } from '~/hooks/useModal'
 import { http } from '@http/index'
 import { useAccount } from '~/hooks/useAccount'
-import { useModal } from '~/hooks/useModal'
 
 import { ErrorPage } from '~/screens/static/Error'
 import { RenderValidation } from '~/components/RenderValidation'
-import { Content } from '~/screens/app/others/Post/Detail/components/Content'
-import { Loader } from '~/screens/app/others/Post/Detail/components/Loader'
+import { Content } from '~/screens/app/others/Developer/Detail/components/Content'
+import { Loader } from '~/screens/app/others/Developer/Detail/components/Loader'
 
 interface Route {
-  postId: string
+  developerId: string
 }
 
-export function PostDetail() {
+const title = 'Detalhes do(a) Dev.'
+
+export function DeveloperDetail() {
   const [refreshing, setRefreshing] = useState(false)
 
-  const { logout } = useAccount()
   const modal = useModal()
-  const navigation = useNavigation()
   const route = useRoute()
+  const { logout } = useAccount()
+  const navigation = useNavigation()
 
   const params = route.params as Route
-  const postId = useMemo(() => params.postId ?? '', [params])
+
+  const developerId = useMemo(() => params.developerId ?? '', [params])
 
   const {
     data: response,
+    isError,
     isLoading,
     isRefetching,
-    isError,
     refetch,
-  } = useQuery(['post', postId], async () => {
-    return await http.getPostRoutes().findOne(
-      { postId },
-      {
-        unauthorizedCallback: logout,
-        errorCallback: modal.handleShowModalError,
-      },
-    )
-  })
-
-  const post = useMemo(() => {
-    return response?.data.post
-  }, [response])
+  } = useQuery(
+    ['developer', developerId],
+    async () =>
+      await http.getDeveloperRoutes().findOne(
+        { developerId },
+        {
+          errorCallback: modal.handleShowModalError,
+          unauthorizedCallback: logout,
+        },
+      ),
+  )
 
   async function onRefresh() {
     try {
       setRefreshing(true)
       await refetch()
     } catch (err) {
-      console.error('error [post-detail]', err)
+      console.error('error [developer-detail]', err)
     } finally {
       setRefreshing(false)
     }
   }
 
   return (
-    <Layout
-      activeHeader
-      headerProps={{ title: 'Detalhes do Post', showBack: true }}>
+    <Layout activeHeader headerProps={{ title, showBack: true }}>
       <RenderValidation
         validation={isLoading || isRefetching}
         validComponent={<Loader />}
         unvalidComponent={
           <RenderValidation
-            validation={!post || isError}
+            validation={isError}
             validComponent={
               <ErrorPage
-                errorMessage="O post que você deseja acessar não existe mais, procure por outros 👻 "
+                errorMessage="O desenvolvedor não existe!"
                 errorTitle="Uh-oh nada por aqui"
                 onPressButton={navigation.goBack}
                 buttonText="Voltar"
@@ -78,9 +78,9 @@ export function PostDetail() {
             }
             unvalidComponent={
               <Content
-                post={post}
-                refreshing={refreshing}
                 onRefresh={onRefresh}
+                refreshing={refreshing}
+                developer={response?.data.developer}
               />
             }
           />

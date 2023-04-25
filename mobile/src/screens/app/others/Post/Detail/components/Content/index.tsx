@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { View, Text, ScrollView, Image, RefreshControl } from 'react-native'
 import moment from 'moment'
 import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 import { FindOnePost } from '~/interfaces/entity/posts'
 import { getImage } from '~/utils/getImage'
@@ -29,6 +30,7 @@ interface ContentProps {
 export function Content({ post, refreshing, onRefresh }: ContentProps) {
   const { colors, fontSize } = useTheme()
   const { developer } = useAccount()
+  const navigation = useNavigation()
   const modal = useModal()
 
   function getCorrectDateText(date: string, editAt?: boolean) {
@@ -69,7 +71,9 @@ export function Content({ post, refreshing, onRefresh }: ContentProps) {
   function handleNavigateToDeveloperDetail(developerId?: string) {
     return () => {
       if (developerId) {
-        console.log('Navegar para tela de desenvolvedor', developerId)
+        navigation.navigate('developerDetail', {
+          developerId,
+        })
       }
     }
   }

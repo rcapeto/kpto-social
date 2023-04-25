@@ -1,10 +1,10 @@
 import { HTTPConfig } from '@http/types/http'
 import {
   findManyParams,
-  FindManyPostsParams,
-  FindManyPostsResponse,
+  FindManyParams,
+  FindManyResponse,
   findOneParams,
-  FindOnePostParams,
+  FindOneParams,
   FindOneResponse,
 } from '~/lib/http/routes/posts/types'
 
@@ -14,10 +14,7 @@ import { responseMapper, errorMapper } from '@http/utils/mapper'
 
 const path = apiURLs.posts
 
-export async function findMany(
-  params: FindManyPostsParams,
-  config?: HTTPConfig,
-) {
+export async function findMany(params: FindManyParams, config?: HTTPConfig) {
   try {
     config?.dispatchLoading?.()
 
@@ -27,7 +24,7 @@ export async function findMany(
     )
     const query = findManyParams.parse(formattedParams)
 
-    const { data, status, headers } = await api.get<FindManyPostsResponse>(
+    const { data, status, headers } = await api.get<FindManyResponse>(
       path.findMany,
       {
         params: query,
@@ -45,7 +42,7 @@ export async function findMany(
   }
 }
 
-export async function findOne(params: FindOnePostParams, config?: HTTPConfig) {
+export async function findOne(params: FindOneParams, config?: HTTPConfig) {
   try {
     config?.dispatchLoading?.()
 

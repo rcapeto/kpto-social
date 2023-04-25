@@ -11,6 +11,9 @@ export declare global {
       postDetail: {
         postId: string
       }
+      developerDetail: {
+        developerId: string
+      }
     }
   }
 }
