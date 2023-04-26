@@ -14,8 +14,8 @@ export const findManyParams = z.object({
   page: z.number(),
 })
 
-export type FindManyPostsParams = z.infer<typeof findManyParams>
-export type FindManyPostsResponse = ApiResponse<{
+export type FindManyParams = z.infer<typeof findManyParams>
+export type FindManyResponse = ApiResponse<{
   posts: FindManyPost[]
   page: number
   perPage: number
@@ -27,7 +27,7 @@ export const findOneParams = z.object({
   postId: z.string(errors.postId.required).nonempty(errors.postId.empty),
 })
 
-export type FindOnePostParams = z.infer<typeof findOneParams>
+export type FindOneParams = z.infer<typeof findOneParams>
 export type FindOneResponse = ApiResponse<{
   post: FindOnePost
 }>

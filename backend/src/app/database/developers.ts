@@ -133,6 +133,7 @@ export class DevelopersPrismaRepository implements DevelopersRepository {
             title: true,
             thumbnail: true,
             _count: true,
+            id: true,
           },
         },
       },

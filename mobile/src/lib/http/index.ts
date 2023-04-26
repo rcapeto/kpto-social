@@ -1,5 +1,6 @@
 import * as account from '@http/routes/account'
 import * as posts from '@http/routes/posts'
+import * as developers from '@http/routes/developers'
 
 class Http {
   private static INSTANCE: Http
@@ -30,7 +31,13 @@ class Http {
       findOne: posts.findOne,
     }
   }
-  // developers() {}
+
+  getDeveloperRoutes() {
+    return {
+      findOne: developers.findOne,
+    }
+  }
+
   // comments() {}
   // posts() {}
   // likes() {}

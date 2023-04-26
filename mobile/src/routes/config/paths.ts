@@ -14,4 +14,7 @@ export const paths = {
   posts: {
     detail: 'postDetail',
   },
+  developers: {
+    detail: 'developerDetail',
+  },
 }
