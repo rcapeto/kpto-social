@@ -52,6 +52,11 @@ export function AccountProvider(props: PropsWithChildren) {
     }
   }
 
+  const logout = useCallback(() => {
+    storage.removeItem('token')
+    dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer: null } })
+  }, [storage, dispatch])
+
   const checkDeveloper = useCallback(
     async (params: MeParams) => {
       const errorCallback = modal.handleShowModalError
@@ -60,6 +65,7 @@ export function AccountProvider(props: PropsWithChildren) {
 
       const response = await http.getAccountRoutes().me(query, {
         errorCallback,
+        unauthorizedCallback: logout,
       })
 
       if (
@@ -74,7 +80,7 @@ export function AccountProvider(props: PropsWithChildren) {
         dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer } })
       }
     },
-    [dispatch, storage, modal],
+    [dispatch, storage, modal, logout],
   )
 
   async function register(
@@ -95,11 +101,6 @@ export function AccountProvider(props: PropsWithChildren) {
         successCallback?.()
       }
     }
-  }
-
-  function logout() {
-    storage.removeItem('token')
-    dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer: null } })
   }
 
   useEffect(() => {

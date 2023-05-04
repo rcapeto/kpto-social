@@ -29,6 +29,7 @@ class Http {
     return {
       findMany: posts.findMany,
       findOne: posts.findOne,
+      create: posts.create,
     }
   }
 
