@@ -63,7 +63,7 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
   }
 }
 
-export async function create(params: CreatePostParams, config: HTTPConfig) {
+export async function create(params: CreatePostParams, config?: HTTPConfig) {
   try {
     config?.dispatchLoading?.()
 
@@ -86,7 +86,9 @@ export async function create(params: CreatePostParams, config: HTTPConfig) {
       formData,
     )
 
-    return responseMapper(data, status)
+    const response = responseMapper(data, status)
+
+    return { ...response, status }
   } catch (err) {
     errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
   } finally {

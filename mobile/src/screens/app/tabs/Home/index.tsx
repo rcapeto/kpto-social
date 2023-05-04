@@ -1,6 +1,5 @@
 import { View, Text, FlatList, RefreshControl } from 'react-native'
-import { useEffect, useState } from 'react'
-import { Feather } from '@expo/vector-icons'
+import { useEffect, useState, useCallback } from 'react'
 
 import { Layout } from '~/components/Layout'
 import { Loading } from '~/components/Loading'
@@ -35,21 +34,25 @@ export function Home() {
     isLoading,
     isRefetching,
   } = usePosts(
-    { perPage: 1 },
+    { perPage: 10 },
     { errorCallback: modal.handleShowModalError, unauthorizedCallback: logout },
   )
+
+  const refreshList = useCallback(async () => {
+    const { data: response } = await refetch()
+    const results = response?.pages ?? []
+    const items = results.map((result) => result?.posts ?? []).flat()
+
+    setPosts(items)
+    setCount(results?.[0]?.count ?? 0)
+  }, [refetch])
 
   async function handleRefresh() {
     setRefreshing(true)
     setPosts([])
 
     try {
-      const { data: response } = await refetch()
-      const results = response?.pages ?? []
-      const items = results.map((result) => result?.posts ?? []).flat()
-
-      setPosts(items)
-      setCount(results?.[0]?.count ?? 0)
+      await refreshList()
     } catch (err) {
       const errorMessage = getErrorMessage(
         err,
