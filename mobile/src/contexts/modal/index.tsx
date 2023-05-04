@@ -6,6 +6,7 @@ import Modal, { ModalActions, ModalState } from '~/components/Modal'
 import {
   ModalContextValues,
   ShowModalErrorConfig,
+  ShowModalSuccessConfig,
 } from '~/interfaces/contexts/modal'
 import { EventManagerCallbackParams } from '@events/types'
 import { useTheme } from '~/hooks/useTheme'
@@ -58,8 +59,42 @@ export function ModalProvider(props: PropsWithChildren) {
     })
   }
 
+  function handleShowModalSuccess(
+    successMessage: string,
+    config?: ShowModalSuccessConfig,
+  ) {
+    const modal = modalRef.current
+
+    modal?.openModal(
+      {
+        isSuccess: true,
+        title: 'Sucesso!',
+        description: successMessage,
+        icon: (
+          <Feather name="check-circle" color={colors.green[500]} size={50} />
+        ),
+        buttons: [
+          {
+            text: 'Ok!',
+            type: 'success',
+            fullWidth: true,
+            onPress: config?.onPressSuccessButton,
+          },
+        ],
+      },
+      config?.eventParams,
+    )
+  }
+
   return (
-    <ModalContext.Provider value={{ close, open, handleShowModalError, alert }}>
+    <ModalContext.Provider
+      value={{
+        close,
+        open,
+        handleShowModalError,
+        alert,
+        handleShowModalSuccess,
+      }}>
       {props.children}
       <Modal ref={modalRef} />
     </ModalContext.Provider>
