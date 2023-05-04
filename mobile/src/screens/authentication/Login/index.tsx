@@ -129,7 +129,7 @@ export function Login() {
                     value={value}
                     onChangeText={onChange}
                     errorMessage={errors[name]?.message}
-                    nativeProps={{ onBlur }}
+                    nativeProps={{ onBlur, ...input.nativeProps }}
                     {...input}
                     name={name}
                   />
