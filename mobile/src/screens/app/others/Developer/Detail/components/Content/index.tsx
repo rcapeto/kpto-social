@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Feather } from '@expo/vector-icons'
 
 import { getImage } from '~/utils/getImage'
+import { formatDate } from '~/utils/formatDate'
 import { appConfig } from '~/config/app'
 import { useTheme } from '~/hooks/useTheme'
 import { SectionTitle } from '~/components/SectionTitle'
@@ -13,8 +14,6 @@ import { Button } from '~/components/Button'
 import { Mapper } from '~/components/Mapper'
 import { Post } from '~/screens/app/others/Developer/Detail/components/Post'
 import styles from './styles'
-
-moment.locale(appConfig.locale)
 
 interface ContentProps {
   developer?: FindOneDeveloper
@@ -47,7 +46,7 @@ export function Content(props: ContentProps) {
       },
       {
         label: 'Membro desde',
-        value: moment(developer.createdAt).format('DD/MM/YYYY'),
+        value: formatDate(developer.createdAt),
       },
     ]
   }, [props.developer])

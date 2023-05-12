@@ -1,25 +1,22 @@
 import { Fragment } from 'react'
 import { View, Text, ScrollView, Image, RefreshControl } from 'react-native'
-import moment from 'moment'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
 import { FindOnePost } from '~/interfaces/entity/posts'
 import { getImage } from '~/utils/getImage'
 import { appConfig } from '~/config/app'
-
 import { RenderValidation } from '~/components/RenderValidation'
 import { Button } from '~/components/Button'
 import { SectionTitle } from '~/components/SectionTitle'
 import { Comment } from '~/screens/app/others/Post/Detail/components/Comment'
 import { Mapper } from '~/components/Mapper'
 import { useTheme } from '~/hooks/useTheme'
-
-import styles from './styles'
 import { useAccount } from '~/hooks/useAccount'
 import { useModal } from '~/hooks/useModal'
+import { formatDate, FormatDate } from '~/utils/formatDate'
 
-moment.locale(appConfig.locale)
+import styles from './styles'
 
 interface ContentProps {
   post?: FindOnePost
@@ -38,7 +35,7 @@ export function Content({ post, refreshing, onRefresh }: ContentProps) {
       return ''
     }
 
-    const formattedDate = moment(date).format('DD/MM/YYYY HH:MM')
+    const formattedDate = formatDate(date, FormatDate.YEAR_AND_HOURS)
     const message = editAt ? 'Última edição em:' : 'Pulicado em:'
 
     return `${message} ${formattedDate}`
