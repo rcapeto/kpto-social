@@ -1,1 +1,3 @@
-export enum EventsErrorEnum {}
+export enum EventsErrorEnum {
+  REQUEST = 'ON_REQUEST_ERROR',
+}
