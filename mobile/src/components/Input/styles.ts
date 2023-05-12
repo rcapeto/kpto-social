@@ -22,12 +22,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
+    padding: 5,
+    paddingRight: 15,
   },
   inputContainer: {
     flexDirection: 'row',
     backgroundColor: colors.gray[800],
-    padding: 5,
+    padding: 15,
     borderRadius: 8,
   },
   input: {

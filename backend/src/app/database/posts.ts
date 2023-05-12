@@ -174,6 +174,9 @@ export class PostsPrismaRepository implements PostsRepository {
           thumbnail: true,
           title: true,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
 
       return {

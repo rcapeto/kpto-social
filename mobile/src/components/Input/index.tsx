@@ -85,7 +85,6 @@ export function Input({
         />
 
         <TextInput
-          style={styles.input}
           id={name}
           placeholder={placeholder}
           placeholderTextColor={colors.gray[300]}
@@ -94,6 +93,7 @@ export function Input({
           secureTextEntry={hideValue}
           keyboardAppearance="dark"
           {...nativeProps}
+          style={[styles.input, nativeProps?.style]}
         />
 
         <RenderValidation

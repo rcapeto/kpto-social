@@ -6,6 +6,9 @@ import {
   findOneParams,
   FindOneParams,
   FindOneResponse,
+  createPostParams,
+  CreatePostParams,
+  CreatePostResponse,
 } from '~/lib/http/routes/posts/types'
 
 import api from '~/services/api'
@@ -53,6 +56,39 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
     )
 
     return responseMapper(data, status)
+  } catch (err) {
+    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+  } finally {
+    config?.dispatchLoading?.()
+  }
+}
+
+export async function create(params: CreatePostParams, config?: HTTPConfig) {
+  try {
+    config?.dispatchLoading?.()
+
+    const { description, title, thumbnail } = createPostParams.parse(params)
+    const formData = new FormData()
+
+    formData.append('title', title)
+    formData.append('description', description)
+
+    if (thumbnail) {
+      formData.append('thumbnail', {
+        name: `image-${thumbnail}.jpg`,
+        type: 'image/jpg',
+        uri: thumbnail,
+      } as any)
+    }
+
+    const { status, data } = await api.post<CreatePostResponse>(
+      path.create,
+      formData,
+    )
+
+    const response = responseMapper(data, status)
+
+    return { ...response, status }
   } catch (err) {
     errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
   } finally {

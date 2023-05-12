@@ -6,6 +6,8 @@ import { FindManyPost, FindOnePost } from '~/interfaces/entity/posts'
 
 const errors = {
   postId: renderValidationError('postId'),
+  title: renderValidationError('titulo'),
+  description: renderValidationError('descrição'),
 }
 
 export const findManyParams = z.object({
@@ -31,3 +33,14 @@ export type FindOneParams = z.infer<typeof findOneParams>
 export type FindOneResponse = ApiResponse<{
   post: FindOnePost
 }>
+
+export const createPostParams = z.object({
+  title: z.string(errors.title.required).nonempty(errors.title.empty),
+  description: z
+    .string(errors.description.required)
+    .nonempty(errors.description.empty),
+  thumbnail: z.string().nullish(),
+})
+
+export type CreatePostParams = z.infer<typeof createPostParams>
+export type CreatePostResponse = ApiResponse
