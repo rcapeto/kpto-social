@@ -23,7 +23,14 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
 
     return responseMapper(data, status)
   } catch (err) {
-    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+    const endpoint = path.findOne(params.developerId ?? '')
+
+    errorMapper({
+      endpoint,
+      error: err,
+      errorCallback: config?.errorCallback,
+      unauthorizedCallback: config?.unauthorizedCallback,
+    })
   } finally {
     config?.dispatchLoading?.()
   }

@@ -18,6 +18,8 @@ import { responseMapper, errorMapper } from '@http/utils/mapper'
 const path = apiURLs.posts
 
 export async function findMany(params: FindManyParams, config?: HTTPConfig) {
+  const endpoint = path.findMany
+
   try {
     config?.dispatchLoading?.()
 
@@ -28,7 +30,7 @@ export async function findMany(params: FindManyParams, config?: HTTPConfig) {
     const query = findManyParams.parse(formattedParams)
 
     const { data, status, headers } = await api.get<FindManyResponse>(
-      path.findMany,
+      endpoint,
       {
         params: query,
       },
@@ -39,7 +41,12 @@ export async function findMany(params: FindManyParams, config?: HTTPConfig) {
 
     return { ...response, count }
   } catch (err) {
-    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+    errorMapper({
+      endpoint,
+      error: err,
+      errorCallback: config?.errorCallback,
+      unauthorizedCallback: config?.unauthorizedCallback,
+    })
   } finally {
     config?.dispatchLoading?.()
   }
@@ -57,13 +64,22 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
 
     return responseMapper(data, status)
   } catch (err) {
-    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+    const endpoint = path.findOne(params.postId ?? '')
+
+    errorMapper({
+      endpoint,
+      error: err,
+      errorCallback: config?.errorCallback,
+      unauthorizedCallback: config?.unauthorizedCallback,
+    })
   } finally {
     config?.dispatchLoading?.()
   }
 }
 
 export async function create(params: CreatePostParams, config?: HTTPConfig) {
+  const endpoint = path.create
+
   try {
     config?.dispatchLoading?.()
 
@@ -82,7 +98,7 @@ export async function create(params: CreatePostParams, config?: HTTPConfig) {
     }
 
     const { status, data } = await api.post<CreatePostResponse>(
-      path.create,
+      endpoint,
       formData,
     )
 
@@ -90,7 +106,12 @@ export async function create(params: CreatePostParams, config?: HTTPConfig) {
 
     return { ...response, status }
   } catch (err) {
-    errorMapper(err, config?.errorCallback, config?.unauthorizedCallback)
+    errorMapper({
+      endpoint,
+      error: err,
+      errorCallback: config?.errorCallback,
+      unauthorizedCallback: config?.unauthorizedCallback,
+    })
   } finally {
     config?.dispatchLoading?.()
   }
