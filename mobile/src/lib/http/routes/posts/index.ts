@@ -14,6 +14,7 @@ import {
 import api from '~/services/api'
 import { apiURLs } from '@http/config/api-urls'
 import { responseMapper, errorMapper } from '@http/utils/mapper'
+import { wait } from '~/utils/wait'
 
 const path = apiURLs.posts
 
@@ -28,6 +29,10 @@ export async function findMany(params: FindManyParams, config?: HTTPConfig) {
       params,
     )
     const query = findManyParams.parse(formattedParams)
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
 
     const { data, status, headers } = await api.get<FindManyResponse>(
       endpoint,
@@ -57,6 +62,10 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
     config?.dispatchLoading?.()
 
     const { postId } = findOneParams.parse(params)
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
 
     const { data, status } = await api.get<FindOneResponse>(
       path.findOne(postId),
@@ -95,6 +104,10 @@ export async function create(params: CreatePostParams, config?: HTTPConfig) {
         type: 'image/jpg',
         uri: thumbnail,
       } as any)
+    }
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
     }
 
     const { status, data } = await api.post<CreatePostResponse>(

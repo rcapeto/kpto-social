@@ -14,6 +14,7 @@ import {
 import api from '~/services/api'
 import { apiURLs } from '@http/config/api-urls'
 import { responseMapper, errorMapper } from '@http/utils/mapper'
+import { wait } from '~/utils/wait'
 
 const path = apiURLs.account
 
@@ -24,6 +25,11 @@ export async function login(params: LoginParams, config?: HTTPConfig) {
     config?.dispatchLoading?.()
 
     const query = loginParams.parse(params)
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
+
     const { data, status } = await api.post<LoginResponse>(endpoint, query)
 
     return responseMapper(data, status)
@@ -47,6 +53,11 @@ export async function me(params: MeParams, config?: HTTPConfig) {
 
     const { token } = meParams.parse(params)
     const headers = token ? { Authorization: `Bearer ${token}` } : undefined
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
+
     const { data, status } = await api.get<MeResponse>(endpoint, { headers })
 
     return responseMapper(data, status)
@@ -69,7 +80,12 @@ export async function register(params: RegisterParams, config?: HTTPConfig) {
     config?.dispatchLoading?.()
 
     const query = registerParams.parse(params)
-    const { data, status } = await api.post(endpoint, query)
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
+
+    const { data, status } = await api.post<RegisterResponse>(endpoint, query)
 
     responseMapper(data, status)
 

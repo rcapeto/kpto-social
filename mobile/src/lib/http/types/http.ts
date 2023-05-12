@@ -21,6 +21,7 @@ export interface HTTPConfig<Response = {}> {
   unauthorizedCallback?: HTTPUnauthorizedCallback
   dispatchLoading?: HTTPCallback
   middleware?: (params?: MiddlewareParams<Response>) => void
+  waitTime?: number // in seconds
 }
 
 export interface HTTPErrorMapperParams {

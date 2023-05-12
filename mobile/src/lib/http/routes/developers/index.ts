@@ -8,6 +8,7 @@ import {
 import api from '~/services/api'
 import { apiURLs } from '@http/config/api-urls'
 import { responseMapper, errorMapper } from '@http/utils/mapper'
+import { wait } from '~/utils/wait'
 
 const path = apiURLs.developers
 
@@ -16,6 +17,10 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
     config?.dispatchLoading?.()
 
     const { developerId } = findOneParams.parse(params)
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
 
     const { data, status } = await api.get<FindOneResponse>(
       path.findOne(developerId),
