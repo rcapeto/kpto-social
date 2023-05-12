@@ -27,7 +27,7 @@ export function ErrorPage({
       <Octicons
         name="stop"
         color={colors.purple[500]}
-        size={fontSize.xl * 12}
+        size={fontSize.xl * 10}
       />
 
       <View style={styles.footer}>

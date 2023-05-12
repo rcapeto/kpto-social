@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import moment from 'moment'
 import { useNavigation } from '@react-navigation/native'
 
 import { FindManyPost } from '~/interfaces/entity/posts'
@@ -14,6 +13,7 @@ import { useTheme } from '~/hooks/useTheme'
 import { Button } from '~/components/Button'
 
 import styles from './styles'
+import { formatDate } from '~/utils/formatDate'
 
 interface Props {
   post: FindManyPost
@@ -106,7 +106,7 @@ export function RenderPost({ post }: Props) {
           </View>
 
           <Text style={styles.postDate}>
-            Criado: {moment(post.createdAt).format('DD/MM/YYYY')}
+            Criado: {formatDate(post.createdAt)}
           </Text>
         </View>
 

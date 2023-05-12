@@ -1,13 +1,11 @@
 import { Image, View, Text } from 'react-native'
-import moment from 'moment'
 
 import { FindOnePostComment } from '~/interfaces/entity/comment'
 import { appConfig } from '~/config/app'
 import { getImage } from '~/utils/getImage'
+import { formatDate } from '~/utils/formatDate'
 
 import styles from './styles'
-
-moment.locale(appConfig.locale)
 
 interface CommentProps {
   comment: FindOnePostComment
@@ -32,9 +30,7 @@ export function Comment({ comment }: CommentProps) {
           </Text>
         </View>
 
-        <Text style={styles.commentDate}>
-          {moment(comment.createdAt).format('DD/MM/YYYY')}
-        </Text>
+        <Text style={styles.commentDate}>{formatDate(comment.createdAt)}</Text>
       </View>
 
       <View style={styles.commentContent}>
