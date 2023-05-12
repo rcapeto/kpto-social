@@ -11,9 +11,14 @@ export interface ErrorResponse {
 export type HTTPErrorCallback = (errorMessage?: string) => void
 export type HTTPCallback = () => void
 export type HTTPUnauthorizedCallback = () => void
+interface MiddlewareParams<Response> {
+  response: Response
+  status: number
+}
 
-export interface HTTPConfig {
+export interface HTTPConfig<Response = {}> {
   errorCallback?: HTTPErrorCallback
   unauthorizedCallback?: HTTPUnauthorizedCallback
   dispatchLoading?: HTTPCallback
+  middleware?: (params?: MiddlewareParams<Response>) => void
 }
