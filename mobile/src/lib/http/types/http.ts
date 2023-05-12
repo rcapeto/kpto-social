@@ -22,3 +22,10 @@ export interface HTTPConfig<Response = {}> {
   dispatchLoading?: HTTPCallback
   middleware?: (params?: MiddlewareParams<Response>) => void
 }
+
+export interface HTTPErrorMapperParams {
+  error: any
+  endpoint: string
+  errorCallback?: HTTPErrorCallback
+  unauthorizedCallback?: HTTPUnauthorizedCallback
+}

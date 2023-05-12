@@ -23,6 +23,11 @@ import { first } from '~/utils/first'
 import { picker } from '~/utils/picker'
 import { Status } from '@http/enums/status'
 import { http } from '@http/index'
+import { useEvents } from '~/hooks/useEvents'
+import { EventsPostsEnum } from '@events/enums/posts'
+import { EventType } from '@events/types'
+import { paths } from '~/routes/config/paths'
+import { createEventName } from '@events/utils/createEventName'
 
 import styles from './styles'
 
@@ -43,6 +48,7 @@ export function CreatePost() {
   const { colors, fontSize } = useTheme()
   const { logout } = useAccount()
   const navigation = useNavigation()
+  const { eventManager } = useEvents()
 
   const { handleSubmit, control, reset } = useForm<CreatePostSchema>({
     defaultValues: {
@@ -60,20 +66,25 @@ export function CreatePost() {
 
   async function handleCreatePost(values: CreatePostSchema) {
     const { description, title } = values
+    const params = { description, title, thumbnail }
 
-    const response = await http.getPostRoutes().create(
-      { description, title, thumbnail },
-      {
-        dispatchLoading: toggleLoading,
-        unauthorizedCallback: modal.handleShowModalError,
-        errorCallback: logout,
-      },
-    )
+    const response = await http.getPostRoutes().create(params, {
+      dispatchLoading: toggleLoading,
+      unauthorizedCallback: modal.handleShowModalError,
+      errorCallback: logout,
+    })
 
     if (response) {
       const status = picker(response, 'status')
 
       if (status === Status.CREATED) {
+        eventManager.emmit(EventsPostsEnum.CREATE, {
+          eventName: createEventName('Create Post'),
+          eventScreenId: paths.app.createPost,
+          eventType: EventType.INTERACTION,
+          eventValue: params,
+        })
+
         modal.handleShowModalSuccess('Post criado com sucesso!', {
           onPressSuccessButton: () => {
             navigation.navigate('home')

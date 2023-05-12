@@ -1,7 +1,11 @@
+export enum EventType {
+  INTERACTION = 'interaction',
+  APP = 'application',
+}
 export interface EventManagerCallbackParams {
   eventValue?: string | Record<string, string>
   eventName?: string
-  eventType?: string
+  eventType?: EventType
   eventScreenId?: string
 }
 

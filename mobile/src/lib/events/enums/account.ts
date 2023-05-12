@@ -1,3 +1,4 @@
 export enum EventsAccountEnum {
-  LOGIN = 'ON_PRESS_LOGIN',
+  LOGIN = 'ON_LOGIN',
+  REGISTER = 'ON_REGISTER',
 }

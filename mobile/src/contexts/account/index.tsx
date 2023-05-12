@@ -1,5 +1,4 @@
 import { PropsWithChildren, createContext, useCallback, useEffect } from 'react'
-import { Feather } from '@expo/vector-icons'
 
 import { AccountContextValues } from '~/interfaces/contexts/account'
 import {
@@ -8,7 +7,6 @@ import {
   RegisterParams,
 } from '@http/routes/account/types'
 import { useModal } from '~/hooks/useModal'
-import { useTheme } from '~/hooks/useTheme'
 import { SuccessCallback } from '~/interfaces/contexts'
 import { picker } from '~/utils/picker'
 import { useStorage } from '~/hooks/useStorage'
@@ -17,14 +15,19 @@ import { useAccountReducer } from '~/reducers/account'
 import { MeDeveloper } from '~/interfaces/entity/developer'
 import { manipulateHeaderAPI } from '~/services/api'
 import { Status } from '@http/enums/status'
+import { EventsAccountEnum } from '@events/enums/account'
+import { EventType } from '@events/types'
+import { useEvents } from '~/hooks/useEvents'
+import { createEventName } from '@events/utils/createEventName'
+import { paths } from '~/routes/config/paths'
 
 export const AccountContext = createContext({} as AccountContextValues)
 
 export function AccountProvider(props: PropsWithChildren) {
   const modal = useModal()
   const storage = useStorage()
-  const { colors } = useTheme()
   const [state, dispatch] = useAccountReducer()
+  const { eventManager } = useEvents()
 
   function dispatchLoading() {
     dispatch({ type: 'TOGGLE_REQUEST' })
@@ -46,8 +49,7 @@ export function AccountProvider(props: PropsWithChildren) {
       const token = picker(response.data, 'token') as string
 
       if (token) {
-        await checkDeveloper({ token })
-        successCallback?.()
+        await checkDeveloper({ token }, successCallback)
       }
     }
   }
@@ -58,7 +60,7 @@ export function AccountProvider(props: PropsWithChildren) {
   }, [storage, dispatch])
 
   const checkDeveloper = useCallback(
-    async (params: MeParams) => {
+    async (params: MeParams, successCallback?: SuccessCallback) => {
       const errorCallback = modal.handleShowModalError
       const { token } = Object.assign({ token: '' }, params)
       const query = { token }
@@ -77,10 +79,20 @@ export function AccountProvider(props: PropsWithChildren) {
 
         manipulateHeaderAPI('Authorization', `Bearer ${token}`)
         storage.insertNewValue('token', token)
+
         dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer } })
+
+        eventManager.emmit(EventsAccountEnum.LOGIN, {
+          eventName: createEventName('Login account'),
+          eventType: EventType.INTERACTION,
+          eventScreenId: paths.authentication.login,
+          eventValue: params,
+        })
+
+        successCallback?.()
       }
     },
-    [dispatch, storage, modal, logout],
+    [dispatch, storage, modal, logout, eventManager],
   )
 
   async function register(
@@ -98,6 +110,15 @@ export function AccountProvider(props: PropsWithChildren) {
       const status = picker(response, 'status') as number
 
       if (status === Status.CREATED) {
+        eventManager.emmit(EventsAccountEnum.REGISTER, {
+          eventName: createEventName('Create account'),
+          eventType: EventType.INTERACTION,
+          eventScreenId: paths.authentication.register,
+          eventValue: Object.assign(params, {
+            password: '',
+            confirm_password: '',
+          }),
+        })
         successCallback?.()
       }
     }
