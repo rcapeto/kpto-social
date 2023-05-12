@@ -1,8 +1,4 @@
-import {
-  ApiResponse,
-  HTTPErrorCallback,
-  HTTPUnauthorizedCallback,
-} from '@http/types/http'
+import { ApiResponse, HTTPErrorMapperParams } from '@http/types/http'
 import { checkResponseAPI } from '@http/utils/checkResponse'
 import { getZodError } from '@http/utils/getZodError'
 import { checkIsUnauthorized } from '@http/utils/checkIsUnauthorized'
@@ -27,22 +23,22 @@ export function responseMapper<Type>(
   return response
 }
 
-export function errorMapper(
-  error: any,
-  errorCallback?: HTTPErrorCallback,
-  unauthorizedCallback?: HTTPUnauthorizedCallback,
-) {
+export function errorMapper(params: HTTPErrorMapperParams) {
+  const { error, errorCallback, endpoint, unauthorizedCallback } = params
+
   const eventManager = EventManager.getInstance()
-  const { message } = getZodError(error)
+  const { message, isZodError } = getZodError(error)
 
   errorCallback?.(message)
 
-  eventManager.emmit(EventsErrorEnum.REQUEST, {
-    eventName: createEventName('Request error'),
-    eventScreenId: 'eventLib',
-    eventType: EventType.APP,
-    eventValue: { message },
-  })
+  if (!isZodError) {
+    eventManager.emmit(EventsErrorEnum.REQUEST, {
+      eventName: createEventName('Request error'),
+      eventScreenId: 'eventLib',
+      eventType: EventType.APP,
+      eventValue: { message, endpoint },
+    })
+  }
 
   if (unauthorizedCallback) {
     checkIsUnauthorized(error, unauthorizedCallback)
