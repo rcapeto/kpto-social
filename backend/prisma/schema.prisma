@@ -42,7 +42,7 @@ model Posts {
   description String
 
   // Who create/update the post
-  author      Developers @relation(fields: [developerId], references: [id])
+  author      Developers @relation(fields: [developerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   developerId String
 
   // Comments & Likes
@@ -56,7 +56,7 @@ model Comments {
   text      String
 
   // Who create the comment
-  author      Developers @relation(fields: [developerId], references: [id])
+  author      Developers @relation(fields: [developerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   developerId String
 
   // Where is this comment?
