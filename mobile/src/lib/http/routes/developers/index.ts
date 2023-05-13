@@ -3,6 +3,7 @@ import {
   FindOneParams,
   FindOneResponse,
   findOneParams,
+  DeleteResponse,
 } from '~/lib/http/routes/developers/types'
 
 import api from '~/services/api'
@@ -30,6 +31,33 @@ export async function findOne(params: FindOneParams, config?: HTTPConfig) {
   } catch (err) {
     const endpoint = path.findOne(params.developerId ?? '')
 
+    errorMapper({
+      endpoint,
+      error: err,
+      errorCallback: config?.errorCallback,
+      unauthorizedCallback: config?.unauthorizedCallback,
+    })
+  } finally {
+    config?.dispatchLoading?.()
+  }
+}
+
+export async function remove(config?: HTTPConfig) {
+  const endpoint = path.delete
+
+  try {
+    config?.dispatchLoading?.()
+
+    if (config?.waitTime) {
+      await wait(config.waitTime)
+    }
+
+    const { data, status } = await api.delete<DeleteResponse>(endpoint)
+
+    responseMapper(data, status)
+
+    return { status }
+  } catch (err) {
     errorMapper({
       endpoint,
       error: err,

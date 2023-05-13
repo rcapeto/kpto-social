@@ -17,6 +17,7 @@ const title = 'Perfil'
 
 export function Profile() {
   const [refreshing, setRefreshing] = useState(false)
+  const [developerToken, setDeveloperToken] = useState('')
 
   const storage = useStorage()
   const { logout } = useAccount()
@@ -33,6 +34,8 @@ export function Profile() {
     if (!token) {
       return undefined
     }
+
+    setDeveloperToken(token)
 
     const response = await http.getAccountRoutes().me(
       { token },
@@ -83,6 +86,7 @@ export function Profile() {
                 developer={data}
                 refreshing={refreshing}
                 onRefresh={handleRefreshPage}
+                developerToken={developerToken}
               />
             }
           />

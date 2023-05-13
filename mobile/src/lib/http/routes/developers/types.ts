@@ -18,3 +18,5 @@ export type FindOneParams = z.infer<typeof findOneParams>
 export type FindOneResponse = ApiResponse<{
   developer: FindOneDeveloper
 }>
+
+export type DeleteResponse = ApiResponse<void>

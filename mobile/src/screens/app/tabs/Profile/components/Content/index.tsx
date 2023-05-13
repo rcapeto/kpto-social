@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { View, ScrollView, RefreshControl, Image } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 // import { useNavigation } from '@react-navigation/native'
@@ -9,24 +9,35 @@ import { Button } from '~/components/Button'
 import { SectionTitle } from '~/components/SectionTitle'
 import { useTheme } from '~/hooks/useTheme'
 import { useModal } from '~/hooks/useModal'
+import { useEvents } from '~/hooks/useEvents'
 import { useAccount } from '~/hooks/useAccount'
 import { formatDate } from '~/utils/formatDate'
+import { picker } from '~/utils/picker'
 import { getImage } from '~/utils/getImage'
 import { MeDeveloper } from '~/interfaces/entity/developer'
 import { appConfig } from '~/config/app'
+import { http } from '@http/index'
+import { Status } from '@http/enums/status'
+import { EventsDeveloperEnum } from '@events/enums/developers'
+import { paths } from '~/routes/config/paths'
+import { EventType } from '@events/types'
 
 import styles from './styles'
+import { createEventName } from '~/lib/events/utils/createEventName'
 
 interface Props {
   developer?: MeDeveloper
   refreshing: boolean
   onRefresh: () => Promise<void>
+  developerToken: string
 }
 
 export function Content(props: Props) {
+  const [requestLoading, setRequestLoading] = useState(false)
   const { colors, fontSize } = useTheme()
   const { logout } = useAccount()
   const modal = useModal()
+  const { eventManager } = useEvents()
   // const navigation = useNavigation()
 
   const fields = useMemo<FieldProps[]>(() => {
@@ -87,7 +98,37 @@ export function Content(props: Props) {
     console.log('Navigate to Correct screen [update developer]')
   }
 
-  async function handleDelete() {}
+  async function handleDelete() {
+    const response = await http.getDeveloperRoutes().delete({
+      errorCallback: modal.handleShowModalError,
+      unauthorizedCallback: logout,
+    })
+
+    if (response && picker(response, 'status')) {
+      const status = picker(response, 'status')
+
+      if (status === Status.OK) {
+        const message = 'Conta deletada com sucesso.'
+        modal.handleShowModalSuccess(message, {
+          onPressSuccessButton: onPressModalSuccessButton,
+        })
+      }
+    }
+  }
+
+  function onPressModalSuccessButton() {
+    eventManager.emmit(EventsDeveloperEnum.DELETE, {
+      eventName: createEventName('Delete developer'),
+      eventScreenId: paths.app.profile,
+      eventType: EventType.INTERACTION,
+      eventValue: Object.assign({
+        developer: props.developer,
+        token: props.developerToken,
+      }),
+    })
+
+    logout()
+  }
 
   function handlePressDeleteDev() {
     const message = 'Você tem certeza que quer apagar sua conta?'
@@ -177,6 +218,7 @@ export function Content(props: Props) {
           rightIcon={
             <Feather name="trash-2" size={fontSize.sm} color={colors.white} />
           }
+          disabled={requestLoading}
         />
       </View>
     </ScrollView>

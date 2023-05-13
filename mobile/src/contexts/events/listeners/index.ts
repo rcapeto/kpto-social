@@ -4,6 +4,7 @@ import { authenticationListeners } from '~/contexts/events/listeners/authenticat
 import { modalListeners } from '~/contexts/events/listeners/components/modal'
 import { postsListeners } from '~/contexts/events/listeners/entities/posts'
 import { errorsListeners } from '~/contexts/events/listeners/errors'
+import { developersListeners } from '~/contexts/events/listeners/entities/developers'
 
 export function startListeners(eventManager: EventManager) {
   const listeners = [
@@ -11,6 +12,7 @@ export function startListeners(eventManager: EventManager) {
     authenticationListeners,
     modalListeners,
     postsListeners,
+    developersListeners,
   ]
 
   for (const listener of listeners) {

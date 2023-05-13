@@ -36,6 +36,7 @@ class Http {
   getDeveloperRoutes() {
     return {
       findOne: developers.findOne,
+      delete: developers.remove,
     }
   }
 
