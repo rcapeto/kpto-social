@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { View, Image, ScrollView, RefreshControl } from 'react-native'
 import { FindOneDeveloper } from '~/interfaces/entity/developer'
-import moment from 'moment'
 import { Feather } from '@expo/vector-icons'
 
 import { getImage } from '~/utils/getImage'
@@ -42,7 +41,9 @@ export function Content(props: ContentProps) {
       },
       {
         label: 'Tecnologias',
-        value: developer.techs.split(',').map((tech) => tech.trim()),
+        value: developer.techs
+          ? developer.techs.split(',').map((tech) => tech.trim())
+          : '',
       },
       {
         label: 'Membro desde',

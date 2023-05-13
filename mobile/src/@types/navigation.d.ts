@@ -14,6 +14,9 @@ export declare global {
       developerDetail: {
         developerId: string
       }
+      developerUpdate: {
+        developerId: string
+      }
     }
   }
 }

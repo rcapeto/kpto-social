@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { View, ScrollView, RefreshControl, Image } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-// import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 import { FieldProps, Field } from '~/components/Field'
 import { Mapper } from '~/components/Mapper'
@@ -25,20 +25,20 @@ import { EventType } from '@events/types'
 import styles from './styles'
 import { createEventName } from '~/lib/events/utils/createEventName'
 
-interface Props {
+interface ContentProps {
   developer?: MeDeveloper
   refreshing: boolean
   onRefresh: () => Promise<void>
   developerToken: string
 }
 
-export function Content(props: Props) {
+export function Content(props: ContentProps) {
   const [requestLoading, setRequestLoading] = useState(false)
   const { colors, fontSize } = useTheme()
   const { logout } = useAccount()
   const modal = useModal()
   const { eventManager } = useEvents()
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
 
   const fields = useMemo<FieldProps[]>(() => {
     const developer = props.developer
@@ -58,7 +58,9 @@ export function Content(props: Props) {
       },
       {
         label: 'Tecnologias',
-        value: developer.techs.split(',').map((tech) => tech.trim()),
+        value: developer.techs
+          ? developer.techs.split(',').map((tech) => tech.trim())
+          : '',
       },
       {
         label: 'Membro desde',
@@ -95,13 +97,20 @@ export function Content(props: Props) {
   }, [props.developer])
 
   function handleNavigateUpdateDeveloper() {
-    console.log('Navigate to Correct screen [update developer]')
+    navigation.navigate('developerUpdate', {
+      developerId: props.developer?.id ?? '',
+    })
+  }
+
+  function dispatchLoading() {
+    setRequestLoading((prevState) => !prevState)
   }
 
   async function handleDelete() {
     const response = await http.getDeveloperRoutes().delete({
       errorCallback: modal.handleShowModalError,
       unauthorizedCallback: logout,
+      dispatchLoading,
     })
 
     if (response && picker(response, 'status')) {

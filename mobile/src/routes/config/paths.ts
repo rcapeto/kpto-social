@@ -16,5 +16,6 @@ export const paths = {
   },
   developers: {
     detail: 'developerDetail',
+    update: 'developerUpdate',
   },
 }
