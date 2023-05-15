@@ -12,6 +12,7 @@ import { picker } from '~/utils/picker'
 import { useStorage } from '~/hooks/useStorage'
 import { http } from '@http/index'
 import { useAccountReducer } from '~/reducers/account'
+import { AccountReducerType } from '~/reducers/account/types'
 import { MeDeveloper } from '~/interfaces/entity/developer'
 import { manipulateHeaderAPI } from '~/services/api'
 import { Status } from '@http/enums/status'
@@ -30,7 +31,7 @@ export function AccountProvider(props: PropsWithChildren) {
   const { eventManager } = useEvents()
 
   function dispatchLoading() {
-    dispatch({ type: 'TOGGLE_REQUEST' })
+    dispatch({ type: AccountReducerType.REQUEST })
   }
 
   async function login(params: LoginParams, successCallback?: SuccessCallback) {
@@ -56,7 +57,10 @@ export function AccountProvider(props: PropsWithChildren) {
 
   const logout = useCallback(() => {
     storage.removeItem('token')
-    dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer: null } })
+    dispatch({
+      type: AccountReducerType.UPDATE_DEVELOPER,
+      payload: { developer: null },
+    })
   }, [storage, dispatch])
 
   const checkDeveloper = useCallback(
@@ -80,7 +84,10 @@ export function AccountProvider(props: PropsWithChildren) {
         manipulateHeaderAPI('Authorization', `Bearer ${token}`)
         storage.insertNewValue('token', token)
 
-        dispatch({ type: 'UPDATE_DEVELOPER', payload: { developer } })
+        dispatch({
+          type: AccountReducerType.UPDATE_DEVELOPER,
+          payload: { developer },
+        })
 
         eventManager.emmit(EventsAccountEnum.LOGIN, {
           eventName: createEventName('Login account'),
@@ -128,13 +135,13 @@ export function AccountProvider(props: PropsWithChildren) {
     storage
       .getAsync('token')
       .then(async (token) => {
-        dispatch({ type: 'TOGGLE_CHECK_LOGGED' })
+        dispatch({ type: AccountReducerType.CHECK_LOGGED })
         if (token) {
           await checkDeveloper({ token })
         }
       })
       .finally(() => {
-        dispatch({ type: 'TOGGLE_CHECK_LOGGED' })
+        dispatch({ type: AccountReducerType.CHECK_LOGGED })
       })
   }, [checkDeveloper, dispatch, storage])
 

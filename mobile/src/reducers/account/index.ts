@@ -2,6 +2,7 @@ import { useReducer } from 'react'
 import {
   AccountReducerAction,
   AccountReducerState,
+  AccountReducerType,
 } from '~/reducers/account/types'
 
 const initialState: AccountReducerState = {
@@ -12,17 +13,17 @@ const initialState: AccountReducerState = {
 
 function dispatch(state: AccountReducerState, action: AccountReducerAction) {
   switch (action.type) {
-    case 'TOGGLE_CHECK_LOGGED':
+    case AccountReducerType.CHECK_LOGGED:
       return {
         ...state,
         checkIsLogged: !state.checkIsLogged,
       }
-    case 'TOGGLE_REQUEST':
+    case AccountReducerType.REQUEST:
       return {
         ...state,
         isRequesting: !state.isRequesting,
       }
-    case 'UPDATE_DEVELOPER':
+    case AccountReducerType.UPDATE_DEVELOPER:
       return {
         ...state,
         developer: action.payload.developer,
